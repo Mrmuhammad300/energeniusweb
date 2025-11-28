@@ -65,6 +65,16 @@ export default function ProductsPage() {
                   fill
                   className="object-cover"
                 />
+                {/* EnerGenius Branding Badge */}
+                <div className="absolute bottom-2 left-2 bg-white/95 backdrop-blur rounded-lg p-2 shadow-md">
+                  <Image
+                    src="/energenius-badge.png"
+                    alt="EnerGenius"
+                    width={40}
+                    height={40}
+                    className="object-contain"
+                  />
+                </div>
                 <div className="absolute top-2 right-2">
                   <Badge className="bg-emerald-600">{product?.tier}</Badge>
                 </div>

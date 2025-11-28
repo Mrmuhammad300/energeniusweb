@@ -1,0 +1,76 @@
+{
+  "brand": {
+    "company": {
+      "name": "Renewable Resource Group LLC",
+      "short_name": "RRG"
+    },
+    "product": {
+      "name": "EnerGenius",
+      "primary_logo": {
+        "source_asset": "energenius-logo.png",
+        "role": "Primary EnerGenius product logo",
+        "description": "Centered composition with a stylized green lightning bolt rising from layered teal/green leaves, framed by a golden sun arc and small floral/eco icons. Below the emblem is the word 'EnerGenius' in rounded, bold green sans-serif, and under that the words 'RENEWABLE RESOURCE GROUP' in black all-caps sans-serif.",
+        "key_elements": [
+          "Central vertical lightning bolt in medium green",
+          "Symmetrical leaf shapes in gradient teal/green forming a base",
+          "Golden arc above with star and small yellow/teal floral icons",
+          "'EnerGenius' wordmark in rounded, bold green sans-serif",
+          "Subline 'RENEWABLE RESOURCE GROUP' in black uppercase sans-serif"
+        ],
+        "intended_usage": [
+          "Website hero and main product banners",
+          "Product detail pages",
+          "Marketing PDFs and sales decks",
+          "Large prints where full text is legible"
+        ],
+        "primary_colors_hex": {
+          "leaf_green_dark": "#006C4A",
+          "leaf_green_light": "#4AA84B",
+          "teal_leaf_shadow": "#006A73",
+          "light_teal": "#1CA6A3",
+          "arc_gold": "#F5B932",
+          "flower_yellow": "#F9C841",
+          "wordmark_green": "#6BA928",
+          "text_black": "#222222",
+          "background_white": "#FFFFFF"
+        },
+        "typography": {
+          "wordmark_font_style": "Rounded, friendly sans-serif similar to Nunito / Poppins SemiBold.",
+          "subline_font_style": "Simple geometric sans-serif in all caps for 'RENEWABLE RESOURCE GROUP'."
+        }
+      },
+      "secondary_logo": {
+        "role": "Compact EnerGenius secondary mark for small or constrained spaces",
+        "concept": "A simplified circular badge using the same emblem (lightning bolt + leaves + sun arc) with the 'EnerGenius' wordmark either wrapped around the circle or set tightly beneath it, and no 'Renewable Resource Group' subline.",
+        "layout_variants": [
+          {
+            "id": "badge_circle",
+            "description": "Circular or soft-rounded badge containing the emblem centered. Around the bottom curve of the circle, small uppercase text reads 'EnerGenius' or 'EnerGenius Solar'. No company subline.",
+            "usage": [
+              "Favicon and app icon",
+              "Social profile avatar",
+              "Small corner bug on product imagery",
+              "Generator casing badges or stickers"
+            ]
+          },
+          {
+            "id": "horizontal_mark",
+            "description": "Emblem on the left, 'EnerGenius' wordmark on the right in a single line. No small floral icons outside the emblem; simplified for clarity. No 'Renewable Resource Group' text.",
+            "usage": [
+              "Header lockup where vertical space is limited",
+              "Narrow website nav bars",
+              "Product labels with constrained height"
+            ]
+          }
+        ],
+        "visual_alignment_rules": [
+          "Reuse the exact emblem forms (leaves, lightning bolt, arc, small icons) from the primary logo so they are immediately recognizable as the same brand.",
+          "Keep the same green and gold palette as the primary logo; minor balancing adjustments (e.g., slightly less shadow/gradient) are allowed to improve legibility at small sizes.",
+          "Remove the 'RENEWABLE RESOURCE GROUP' subline in secondary uses to keep the mark clean.",
+          "Maintain rounded, friendly sans-serif for 'EnerGenius' to stay consistent with the primary wordmark.",
+          "Use white or very light backgrounds wherever possible for maximum contrast."
+        ]
+      }
+    }
+  }
+}

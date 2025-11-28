@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -49,6 +50,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
           {/* Company Info */}
           <div className="lg:col-span-1">
+            <div className="mb-4">
+              <Image
+                src="/energenius-badge.png"
+                alt="EnerGenius Logo"
+                width={60}
+                height={60}
+                className="object-contain mb-3"
+              />
+            </div>
             <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent mb-2">
               EnerGenius
             </h3>

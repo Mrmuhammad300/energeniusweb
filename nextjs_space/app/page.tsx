@@ -108,6 +108,19 @@ export default function HomePage() {
             animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8 }}
           >
+            {/* EnerGenius Logo */}
+            <div className="flex justify-center mb-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 inline-block">
+                <Image
+                  src="/energenius-logo.png"
+                  alt="EnerGenius Logo"
+                  width={320}
+                  height={200}
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
               Power That Thinks Ahead
             </h1>

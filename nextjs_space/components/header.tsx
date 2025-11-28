@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -12,7 +13,15 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8">
         <div className="flex lg:flex-1">
-          <Link href="/" className="-m-1.5 p-1.5">
+          <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-3">
+            <Image
+              src="/energenius-badge.png"
+              alt="EnerGenius Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+              priority
+            />
             <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent">
               EnerGenius
             </span>
@@ -65,7 +74,14 @@ export default function Header() {
           <div className="fixed inset-0 z-50" />
           <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm">
             <div className="flex items-center justify-between">
-              <Link href="/" className="-m-1.5 p-1.5">
+              <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-3">
+                <Image
+                  src="/energenius-badge.png"
+                  alt="EnerGenius Logo"
+                  width={36}
+                  height={36}
+                  className="object-contain"
+                />
                 <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent">
                   EnerGenius
                 </span>
