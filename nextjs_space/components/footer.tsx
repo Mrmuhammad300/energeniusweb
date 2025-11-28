@@ -49,11 +49,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
           {/* Company Info */}
           <div className="lg:col-span-1">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent mb-4">
-              Energenius
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent mb-2">
+              EnerGenius
             </h3>
+            <p className="text-xs text-gray-500 mb-3">
+              by Renewable Resource Group LLC
+            </p>
             <p className="text-sm text-gray-400 mb-4">
-              Professional-grade solar generators with honest pricing and exceptional support. Your energy independence partner.
+              Professional-grade solar generators with fast shipping and exceptional support. Your energy independence partner.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors">
@@ -139,7 +142,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Energenius. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} EnerGenius. All rights reserved.</p>
           <p className="mt-2">5-Year Warranty | 30% Federal Tax Credit Eligible | Free Shipping on Orders $2,000+</p>
         </div>
       </div>

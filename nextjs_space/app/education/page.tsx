@@ -31,7 +31,7 @@ const faqs = [
   {
     question: 'How long will a solar generator last?',
     answer:
-      'Energenius generators feature 8,000 cycle lifespan, providing up to 30 years of daily use. Our lithium batteries maintain 80% capacity even after thousands of charge cycles.',
+      'EnerGenius generators feature 8,000 cycle lifespan, providing up to 30 years of daily use. Our lithium batteries maintain 80% capacity even after thousands of charge cycles.',
   },
   {
     question: 'What can I power with a solar generator?',
@@ -46,7 +46,7 @@ const faqs = [
   {
     question: 'What about the 30% tax credit?',
     answer:
-      'All Energenius products qualify for the 30% Federal Solar Tax Credit through 2032. This credit applies to the entire system cost including installation, significantly reducing your investment.',
+      'All EnerGenius products qualify for the 30% Federal Solar Tax Credit through 2032. This credit applies to the entire system cost including installation, significantly reducing your investment.',
   },
   {
     question: 'How much maintenance do they require?',

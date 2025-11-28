@@ -1,4 +1,4 @@
-# Energenius Business Strategy Document
+# EnerGenius Business Strategy Document
 **Comprehensive Market Entry & Competitive Positioning Strategy**
 
 **Date:** November 28, 2025  
@@ -9,11 +9,11 @@
 
 ## 1. Executive Summary
 
-### Overview of Energenius Positioning
+### Overview of EnerGenius Positioning
 
-Energenius enters the solar generator market as a **premium value provider**, leveraging PowerX's advanced lithium technology to deliver superior performance at competitive prices. Our white-label strategy combines industry-leading product specifications with best-in-class customer service to address the critical gaps left by established competitors.
+EnerGenius enters the solar generator market as a **premium value provider**, leveraging PowerX's advanced lithium technology to deliver superior performance at competitive prices. Our white-label strategy combines industry-leading product specifications with best-in-class customer service to address the critical gaps left by established competitors.
 
-Unlike competitors who force customers to choose between affordability and quality, **Energenius delivers both**: PowerX's proven 8,000-cycle lithium technology rivals or exceeds the longevity of premium LiFePO4 systems, while our pricing remains 15-25% below comparable competitor offerings.
+Unlike competitors who force customers to choose between affordability and quality, **EnerGenius delivers both**: PowerX's proven 8,000-cycle lithium technology rivals or exceeds the longevity of premium LiFePO4 systems, while our pricing remains 15-25% below comparable competitor offerings.
 
 ### Key Competitive Advantages
 
@@ -126,7 +126,7 @@ Unlike competitors who force customers to choose between affordability and quali
 
 ## 3. Cons to Eliminate Strategy
 
-### Identified Industry Cons & Energenius Solutions
+### Identified Industry Cons & EnerGenius Solutions
 
 #### **CON #1: High Prices & Hidden Costs**
 
@@ -135,14 +135,14 @@ Unlike competitors who force customers to choose between affordability and quali
 - Jackery: Frequent "sales" suggest inflated base pricing
 - Industry average: 20-40% cost increase when adding necessary accessories
 
-**Energenius Solution:**
+**EnerGenius Solution:**
 - **All-Inclusive Bundle Pricing**: Every generator 750W+ includes solar panels and 50-foot MC4 connector cable
 - **Transparent Pricing**: Single price listed includes everything needed to start generating power
 - **No Hidden Fees**: Free shipping on orders $2,000+ within target markets
 - **Price Match Guarantee**: Beat any legitimate competitor quote by 5% on comparable systems
 
 **Action Items:**
-- Create pricing comparison calculator on website showing total cost (Energenius vs. competitors with accessories)
+- Create pricing comparison calculator on website showing total cost (EnerGenius vs. competitors with accessories)
 - Train sales team to emphasize "total cost of ownership" over initial price
 - Develop bundle packages at 3 price tiers: Essential, Complete, Premium
 - Publish transparent pricing policy document on website
@@ -157,7 +157,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - EcoFlow: Delivery communication issues
 - Industry standard: Email-only support with 48-72 hour response
 
-**Energenius Solution:**
+**EnerGenius Solution:**
 - **U.S.-Based Support Team**: All customer service handled domestically (Ohio headquarters)
 - **Multi-Channel Access**: Phone (toll-free), email, live chat, SMS text support
 - **Guaranteed Response Times**: 24 hours email, 4 hours phone callback, instant chat during business hours
@@ -183,7 +183,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Anker: High-capacity models require two-person lifting
 - Weight ranges: 40-100+ lbs for 2-5kWh units
 
-**Energenius Solution:**
+**EnerGenius Solution:**
 - **Tiered Portability Options**: 
   - **Ultra-Portable Line**: 400W-1500W models (33-55 lbs) with retractable handles
   - **Home Backup Line**: 3kW-10kW models (105-425 lbs) with folding handles and optional wheel kits
@@ -209,7 +209,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Goal Zero: 2 years standard, 5-year extension costs extra
 - Complex claim processes with unclear requirements
 
-**Energenius Solution:**
+**EnerGenius Solution:**
 - **5-Year Comprehensive Warranty**: Standard on all generators (no upgrade fee)
 - **Lifetime Battery Coverage**: Free replacement if battery falls below 70% capacity within 8 years
 - **3-Year Panel Warranty**: Triple EcoFlow's 12-month standard
@@ -234,7 +234,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Goal Zero: System works best with Goal Zero panels
 - Limited expandability with third-party components
 
-**Energenius Solution:**
+**EnerGenius Solution:**
 - **Universal Compatibility**: Standard MC4 connectors on all solar inputs
 - **Open System Architecture**: Works with any solar panel brand (recommendations provided but not required)
 - **Published Specifications**: Full electrical specs available so customers can DIY expand
@@ -245,7 +245,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Create "Compatible Equipment" database on website listing tested third-party products
 - Publish detailed electrical specifications for all models
 - Develop solar panel compatibility calculator tool
-- Produce video series: "Connecting Third-Party Equipment to Your Energenius System"
+- Produce video series: "Connecting Third-Party Equipment to Your EnerGenius System"
 - Offer "DIY Expansion Kit" with cables, connectors, and instructions for adding external batteries
 - Establish partnerships with major panel manufacturers (Renogy, Newpowa) for bundle discounts
 
@@ -258,12 +258,12 @@ Unlike competitors who force customers to choose between affordability and quali
 - EcoFlow: Battery degradation in older models
 - Industry: Defect rates 2-5% on arrival
 
-**Energenius Solution:**
+**EnerGenius Solution:**
 - **Pre-Delivery Inspection**: 100% of units power-tested before shipment
 - **Multi-Point QC Checklist**: 23-point inspection covering electrical, mechanical, and cosmetic standards
 - **Serial Number Tracking**: Full component traceability from manufacturer to customer
 - **Burn-In Testing**: All 10kW+ units run for 8 hours under 50% load before approval
-- **White-Glove Repackaging**: Inspect PowerX packaging, add protective inserts, Energenius branding
+- **White-Glove Repackaging**: Inspect PowerX packaging, add protective inserts, EnerGenius branding
 - **Zero-Defect Guarantee**: Any DOA or defect within 7 days = free upgrade to next model up
 
 **Action Items:**
@@ -284,7 +284,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Industry: Apps required for basic functions, poor offline capability
 - Customer frustration with mandatory app updates
 
-**Energenius Solution:**
+**EnerGenius Solution:**
 - **Full Manual Control**: All essential functions accessible via built-in controls (no app required)
 - **Optional App Enhancement**: Mobile app provides monitoring and advanced features, but system fully functional without it
 - **Local Wi-Fi Only Option**: No cloud/internet dependency for basic monitoring
@@ -294,7 +294,7 @@ Unlike competitors who force customers to choose between affordability and quali
 **Action Items:**
 - Source PowerX models with largest available displays
 - Consider adding aftermarket display upgrade for models with small screens (cost: ~$50/unit)
-- Develop optional Energenius monitoring app (Phase 2, after initial launch)
+- Develop optional EnerGenius monitoring app (Phase 2, after initial launch)
 - Create "Quick Start" laminated card showing all physical controls
 - Market as "Tech-Optional: Full Control Without Smartphone Dependency"
 
@@ -307,7 +307,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Complicated expansion processes
 - Expensive scaling (buying 2-3 smaller units costs more than one large unit)
 
-**Energenius Solution:**
+**EnerGenius Solution:**
 - **True Whole-Home Models**: 15kW-30kW options power entire home including HVAC
 - **Expandable Architecture**: Start with base unit, add battery modules as budget allows
 - **Capacity Calculator**: Website tool calculates exact wattage needed based on home appliances
@@ -316,7 +316,7 @@ Unlike competitors who force customers to choose between affordability and quali
 
 **Action Items:**
 - Develop home energy calculator tool showing runtime for common appliances
-- Create comparison chart: Single 20kW Energenius vs. Three 7kW competitor units (cost & performance)
+- Create comparison chart: Single 20kW EnerGenius vs. Three 7kW competitor units (cost & performance)
 - Partner with electricians in OH, TX, AZ, NM for transfer switch installation
 - Produce installation guide for transfer switches (for electricians)
 - Offer "Expansion Roadmap Consultation": Free analysis showing optimal scaling path
@@ -331,7 +331,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Industry: Inverter efficiency varies, often not disclosed
 - Customers surprised by actual runtime vs. theoretical capacity
 
-**Energenius Solution:**
+**EnerGenius Solution:**
 - **High-Efficiency Inverters**: Pure sine wave inverters with >92% efficiency (PowerX standard)
 - **Transparent Performance Data**: Publish real-world efficiency numbers, not just theoretical capacity
 - **Runtime Calculator**: Website tool shows actual expected runtime accounting for efficiency losses
@@ -355,7 +355,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Restocking fees 10-20%
 - Strict "unused" conditions
 
-**Energenius Solution:**
+**EnerGenius Solution:**
 - **60-Day Test Period**: Double the industry standard (residential customers)
 - **Free Return Shipping**: We cover return shipping costs within continental U.S.
 - **No Restocking Fees**: Full refund if returned in working, resalable condition
@@ -374,7 +374,7 @@ Unlike competitors who force customers to choose between affordability and quali
 
 ## 4. Pros to Maximize Strategy
 
-### Identified Industry Pros & How Energenius Matches or Exceeds
+### Identified Industry Pros & How EnerGenius Matches or Exceeds
 
 #### **PRO #1: LiFePO4/Advanced Battery Technology**
 
@@ -382,7 +382,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Bluetti, EcoFlow, Anker: LiFePO4 batteries with 2,500-6,000 cycles
 - Long lifespan compared to lead-acid or NMC
 
-**Energenius Match/Exceed:**
+**EnerGenius Match/Exceed:**
 - **PowerX Lithium Technology: 8,000 Cycles** (33% more than best competitors)
 - **30-Year Lifespan** at one charge/discharge per day (vs. 7-16 years for competitors)
 - **Superior Cycle Life**: More charge cycles = lower cost per use over lifetime
@@ -390,9 +390,9 @@ Unlike competitors who force customers to choose between affordability and quali
 
 **Marketing Approach:**
 - Position as "Next-Generation Lithium": Not LiFePO4, but comparable longevity with better power density
-- Create comparison chart: "Cost Per Cycle" showing Energenius advantage
+- Create comparison chart: "Cost Per Cycle" showing EnerGenius advantage
 - Emphasize 8,000 cycles in all product descriptions
-- Develop calculator: "How long will your Energenius last?" based on usage patterns
+- Develop calculator: "How long will your EnerGenius last?" based on usage patterns
 
 ---
 
@@ -403,7 +403,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Anker: 49-minute recharge for C1000
 - Industry: 1-4 hour charging times
 
-**Energenius Match/Exceed:**
+**EnerGenius Match/Exceed:**
 - **PowerX 2x Faster Recharge**: 2x faster than traditional generators
 - **Dual Input Charging**: Solar + AC simultaneously for maximum charge rate
 - **160A Solar Charge Controllers**: (on 20kW-30kW models) for rapid solar charging
@@ -424,7 +424,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - EcoFlow DELTA Pro: Expandable to 25kWh
 - Modular design allows capacity increases
 
-**Energenius Match/Exceed:**
+**EnerGenius Match/Exceed:**
 - **Stackable Mini Units**: 400W-1000W models compatible with each other
 - **Wide Capacity Range**: 40Ah-800Ah battery options
 - **External Battery Support**: All 5kW+ models accept additional battery modules
@@ -447,7 +447,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Bluetti Apex 300: 3,840W
 - EcoFlow DELTA Pro: 3,600W expandable
 
-**Energenius Match/Exceed:**
+**EnerGenius Match/Exceed:**
 - **Up to 30,000W Continuous**: 5x higher than top competitors
 - **40,000W Peak Capability**: Handle large surge loads (HVAC startup, well pumps)
 - **Dual Voltage Output**: 120V and 240V (5kW+ models) for whole-home compatibility
@@ -455,7 +455,7 @@ Unlike competitors who force customers to choose between affordability and quali
 
 **Marketing Approach:**
 - Create market position: "From Camping to Commercial"
-- Power output comparison chart showing Energenius range advantage
+- Power output comparison chart showing EnerGenius range advantage
 - Case studies: "Powering a [Specific Business] for 3 Days"
 - Appliance compatibility lists for each model
 - Target keywords: "whole home backup generator," "commercial solar generator"
@@ -469,7 +469,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Multiple outlets for simultaneous device charging
 - Various amperage options
 
-**Energenius Match/Exceed:**
+**EnerGenius Match/Exceed:**
 - **8 Duplex AC Outlets**: 16 total AC receptacles on larger models
 - **4x USB 3.0 Quick Charge Ports**: Fast charging for modern devices
 - **2x 12V DC 20A Ports**: High-amperage DC for RV appliances, power tools
@@ -491,7 +491,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Anker: UPS capability (noted slow switching)
 - Instant switchover during power outages
 
-**Energenius Action:**
+**EnerGenius Action:**
 - **Verify PowerX UPS Capability**: Confirm which models support UPS mode
 - **If Available**: Market as "Zero-Interruption Backup" for critical equipment
 - **If Not Available**: Position as "Rapid Response Backup" (manual or sub-second switching)
@@ -518,8 +518,8 @@ Unlike competitors who force customers to choose between affordability and quali
 - Safe for sensitive electronics
 - Clean power output
 
-**Energenius Match:**
-- **Pure Sine Wave Standard**: All Energenius models feature pure sine wave inverters
+**EnerGenius Match:**
+- **Pure Sine Wave Standard**: All EnerGenius models feature pure sine wave inverters
 - **120/240V Dual Output**: Commercial-grade power quality
 - **Low THD (Total Harmonic Distortion)**: <3% for sensitive equipment safety
 
@@ -538,7 +538,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Durable construction for outdoor/rugged use
 - Weather-resistant designs
 
-**Energenius Match/Exceed:**
+**EnerGenius Match/Exceed:**
 - **Weatherproof Enclosures**: All PowerX units feature weather-resistant housing
 - **Folding/Retractable Handles**: Integrated carrying solutions
 - **EMP Protection**: Certified on select models (15kW-30kW)
@@ -560,9 +560,9 @@ Unlike competitors who force customers to choose between affordability and quali
 - Bluetooth and Wi-Fi connectivity
 - Real-time performance data
 
-**Energenius Approach:**
+**EnerGenius Approach:**
 - **Phase 1 (Launch)**: Emphasize manual controls as reliability advantage (see CON #7 solution)
-- **Phase 2 (6-12 months)**: Develop Energenius monitoring app
+- **Phase 2 (6-12 months)**: Develop EnerGenius monitoring app
   - Basic monitoring: battery level, input/output watts, runtime estimate
   - No critical functions app-dependent
   - Local Wi-Fi connection (no cloud requirement)
@@ -570,7 +570,7 @@ Unlike competitors who force customers to choose between affordability and quali
 
 **Marketing Approach:**
 - Phase 1: "No App Required: Full Control at Your Fingertips"
-- Phase 2: "Enhanced Monitoring Available: Energenius App (Optional)"
+- Phase 2: "Enhanced Monitoring Available: EnerGenius App (Optional)"
 - Position app as value-add, not necessity
 - Focus on large, clear displays as primary interface
 
@@ -583,7 +583,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Passive cooling on smaller units
 - Low fan noise on larger models
 
-**Energenius Verification Needed:**
+**EnerGenius Verification Needed:**
 - **Test PowerX Units**: Measure decibel levels for each model
 - **Document Noise Levels**: Create spec sheet with dB ratings at various loads
 - **Compare to Competitors**: Benchmark against Jackery, Bluetti, EcoFlow
@@ -602,14 +602,14 @@ Unlike competitors who force customers to choose between affordability and quali
 - EcoFlow: Includes some accessories
 - Most brands: Sell panels and cables separately
 
-**Energenius Exceed:**
+**EnerGenius Exceed:**
 - **Solar Panels Included**: Every 750W+ unit includes matched solar panels
 - **50-Foot MC4 Connector Cable**: Included standard (competitors charge $50-100)
 - **All-in-One Packages**: Everything needed to start generating power immediately
 
 **Marketing Approach:**
 - "Complete System, One Price" messaging
-- Calculate "Hidden Savings": Show competitor base price + panel + cable vs. Energenius bundled price
+- Calculate "Hidden Savings": Show competitor base price + panel + cable vs. EnerGenius bundled price
 - Create unboxing videos showing everything included
 - "Plug and Power: No Additional Purchases Required"
 
@@ -617,10 +617,10 @@ Unlike competitors who force customers to choose between affordability and quali
 
 ## 5. Product Differentiation Strategy
 
-### PowerX to Energenius Brand Positioning
+### PowerX to EnerGenius Brand Positioning
 
 **Brand Identity:**
-- **Name**: Energenius = "Energy" + "Genius" (smart energy solutions)
+- **Name**: EnerGenius = "Energy" + "Genius" (smart energy solutions)
 - **Tagline Options**:
   - "Power That Thinks Ahead"
   - "Smart Energy for Real Life"
@@ -629,52 +629,52 @@ Unlike competitors who force customers to choose between affordability and quali
 - **Visual Identity**: Clean, modern, professional (differentiate from rugged/outdoor-only brands)
 
 **Positioning Statement:**
-*"Energenius delivers professional-grade solar generators at honest prices, combining advanced lithium technology with industry-leading support. We empower homes and businesses across America's heartland to achieve energy independence without sacrificing quality or affordability."*
+*"EnerGenius delivers professional-grade solar generators at honest prices, combining advanced lithium technology with industry-leading support. We empower homes and businesses across America's heartland to achieve energy independence without sacrificing quality or affordability."*
 
 ### Product Line Architecture
 
 #### **Tier 1: Portable Power Series (400W-2000W)**
 **Target**: RV, camping, emergency kits, tailgating, mobile professionals
-- Lithium 400W Mini: $750 → **Energenius Scout 400** - *"Your Adventure Companion"*
-- Lithium 750W Mini: $945 → **Energenius Scout 750** - *"Weekend Warrior"*
-- Lithium 1000W Mini: $1,000 → **Energenius Scout 1000** - *"Ultra-Portable Powerhouse"*
-- Lithium 1500W: $2,045 → **Energenius Nomad 1500** - *"Extended Adventure Power"*
-- Lithium 2000W: $2,495 → **Energenius Nomad 2000** - *"Off-Grid Freedom"*
+- Lithium 400W Mini: $750 → **EnerGenius Scout 400** - *"Your Adventure Companion"*
+- Lithium 750W Mini: $945 → **EnerGenius Scout 750** - *"Weekend Warrior"*
+- Lithium 1000W Mini: $1,000 → **EnerGenius Scout 1000** - *"Ultra-Portable Powerhouse"*
+- Lithium 1500W: $2,045 → **EnerGenius Nomad 1500** - *"Extended Adventure Power"*
+- Lithium 2000W: $2,495 → **EnerGenius Nomad 2000** - *"Off-Grid Freedom"*
 
 **Bundle Strategy**: "Adventure Pack" includes solar panel, 25ft extension cable, protective case (+$150)
 
 #### **Tier 2: Home Backup Series (3000W-8000W)**
 **Target**: Homeowners, small offices, workshops, essential backup
-- Lithium 3000W: $3,750 → **Energenius Guardian 3000** - *"Essential Home Backup"*
-- Lithium 5000W: $6,325 → **Energenius Guardian 5000** - *"Whole-Home Ready"*
-- Lithium 8000W: $8,825 → **Energenius Guardian 8000** - *"Extended Outage Protection"*
+- Lithium 3000W: $3,750 → **EnerGenius Guardian 3000** - *"Essential Home Backup"*
+- Lithium 5000W: $6,325 → **EnerGenius Guardian 5000** - *"Whole-Home Ready"*
+- Lithium 8000W: $8,825 → **EnerGenius Guardian 8000** - *"Extended Outage Protection"*
 
 **Bundle Strategy**: "Home Safety Pack" includes transfer switch prep guide, electrician referral, surge protector (+$299 value, free with purchase)
 
 #### **Tier 3: Professional Power Series (10000W-15000W)**
 **Target**: Large homes, small businesses, farms, remote worksites
-- Lithium 10000W: $10,350 → **Energenius Titan 10K** - *"Business Continuity"*
-- Lithium 15000W: $14,950 → **Energenius Titan 15K** - *"Commercial-Grade Power"*
+- Lithium 10000W: $10,350 → **EnerGenius Titan 10K** - *"Business Continuity"*
+- Lithium 15000W: $14,950 → **EnerGenius Titan 15K** - *"Commercial-Grade Power"*
 
 **Bundle Strategy**: "Business Assurance Pack" includes extended warranty (5yr→8yr), priority support, annual maintenance check (+$995 value, $495 with purchase)
 
 #### **Tier 4: Commercial Power Series (20000W-30000W)**
 **Target**: Large businesses, farms, construction sites, remote operations, community centers
-- Lithium 20000W: $18,750 → **Energenius Apex 20K** - *"Industrial Strength"*
-- Lithium 25000W: $24,750 → **Energenius Apex 25K** - *"Maximum Capacity"*
-- Lithium 30000W: $31,475 → **Energenius Apex 30K** - *"Ultimate Power Solution"*
+- Lithium 20000W: $18,750 → **EnerGenius Apex 20K** - *"Industrial Strength"*
+- Lithium 25000W: $24,750 → **EnerGenius Apex 25K** - *"Maximum Capacity"*
+- Lithium 30000W: $31,475 → **EnerGenius Apex 30K** - *"Ultimate Power Solution"*
 
 **Bundle Strategy**: "Commercial Complete Pack" includes installation consultation, custom load analysis, 10-year warranty, bi-annual maintenance (+$2,500 value, $1,200 with purchase)
 
 #### **Expansion Products**
-- **Energenius PowerBank Series**: Standalone batteries for system expansion
+- **EnerGenius PowerBank Series**: Standalone batteries for system expansion
   - PowerBank 40: $850 (40Ah)
   - PowerBank 45: $950 (45Ah)
   - PowerBank 80: $1,200 (80Ah)
   - PowerBank 90: $1,300 (90Ah)
   - PowerBank 120: $1,745 (120Ah)
 
-- **Energenius Solar Panel Upgrades**: Higher-efficiency panel options
+- **EnerGenius Solar Panel Upgrades**: Higher-efficiency panel options
   - Premium 200W Panel: $299
   - Premium 400W Panel: $549
   - Portable 100W Foldable: $199
@@ -688,7 +688,7 @@ Unlike competitors who force customers to choose between affordability and quali
 4. "Family Safety": Keep medical devices, communications, security systems running
 
 **For Commercial Customers:**
-1. "Business Continuity": Every hour of downtime costs $X, Energenius keeps you operational
+1. "Business Continuity": Every hour of downtime costs $X, EnerGenius keeps you operational
 2. "Mobile Power Solutions": Construction sites, events, food trucks, remote operations
 3. "Demand Charge Reduction": Peak shaving capabilities (advanced use case)
 4. "Tax Advantages": 30% Federal Tax Credit + accelerated depreciation
@@ -733,14 +733,14 @@ Unlike competitors who force customers to choose between affordability and quali
 
 **Recommended Bundles:**
 
-1. **The Starter Bundle** - Energenius Scout 1000 ($1,495, save $100)
+1. **The Starter Bundle** - EnerGenius Scout 1000 ($1,495, save $100)
    - Scout 1000 Mini Generator
    - 100W Portable Foldable Panel (upgrade)
    - 25ft MC4 Extension Cable
    - Protective Carrying Case
    - *Target: First-time buyers, gift purchases*
 
-2. **The Weekend Warrior** - Energenius Nomad 2000 ($2,795, save $150)
+2. **The Weekend Warrior** - EnerGenius Nomad 2000 ($2,795, save $150)
    - Nomad 2000 Generator
    - Dual 100W Portable Panels
    - 50ft Extension Cable
@@ -748,7 +748,7 @@ Unlike competitors who force customers to choose between affordability and quali
    - 12V Cooler Adapter
    - *Target: RV owners, serious campers*
 
-3. **The Home Essential** - Energenius Guardian 5000 ($6,799, save $300)
+3. **The Home Essential** - EnerGenius Guardian 5000 ($6,799, save $300)
    - Guardian 5000 Generator
    - Premium Solar Panels (included standard)
    - Transfer Switch Installation Guide
@@ -757,7 +757,7 @@ Unlike competitors who force customers to choose between affordability and quali
    - 5-Year Warranty
    - *Target: Homeowners in storm-prone areas*
 
-4. **The Total Security** - Energenius Guardian 8000 + Expansion ($10,495, save $500)
+4. **The Total Security** - EnerGenius Guardian 8000 + Expansion ($10,495, save $500)
    - Guardian 8000 Generator
    - PowerBank 120 Expansion Battery
    - Premium 400W Solar Panel (upgrade)
@@ -767,7 +767,7 @@ Unlike competitors who force customers to choose between affordability and quali
    - Priority Support Upgrade
    - *Target: Large homes, multi-day outage preparation*
 
-5. **The Business Pro** - Energenius Titan 15K Commercial ($16,495, save $750)
+5. **The Business Pro** - EnerGenius Titan 15K Commercial ($16,495, save $750)
    - Titan 15K Generator
    - Commercial-Grade Panels
    - Installation Consultation (2 hours)
@@ -788,7 +788,7 @@ Unlike competitors who force customers to choose between affordability and quali
 
 ### Customer Service Standards
 
-**Mission**: "Every customer interaction strengthens their confidence in choosing Energenius."
+**Mission**: "Every customer interaction strengthens their confidence in choosing EnerGenius."
 
 **Service Principles:**
 1. **Responsive**: Fast reply times build trust
@@ -980,7 +980,7 @@ Unlike competitors who force customers to choose between affordability and quali
 **Packaging Standards:**
 - **PowerX Original Packaging**: Inspect for damage, reinforce weak points
 - **Additional Protection**: Custom foam inserts for corners and sensitive components
-- **Energenius Branding**: Outer box sleeve or sticker with branding, handling instructions
+- **EnerGenius Branding**: Outer box sleeve or sticker with branding, handling instructions
 - **Accessories**: All included items (panels, cables) clearly marked and secured
 - **Documentation**: Quick-start guide, warranty card, support contact card included
 
@@ -1023,11 +1023,11 @@ Unlike competitors who force customers to choose between affordability and quali
 
 **Day 2-3 (Shipment):**
 - Tracking email with delivery estimate
-- "Prepare for Your Energenius" email: Clear space, gather tools, watch setup video
+- "Prepare for Your EnerGenius" email: Clear space, gather tools, watch setup video
 
 **Day of Delivery:**
-- "Your Energenius Arrives Today" email with inspection instructions
-- SMS: "Your Energenius was delivered. Any issues? Reply YES or call us."
+- "Your EnerGenius Arrives Today" email with inspection instructions
+- SMS: "Your EnerGenius was delivered. Any issues? Reply YES or call us."
 
 **Day 1 Post-Delivery:**
 - "Getting Started Guide" email with links to:
@@ -1047,7 +1047,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - Customer satisfaction survey
 
 **Month 1 Post-Delivery:**
-- "You're an Energenius Pro Now" email
+- "You're an EnerGenius Pro Now" email
 - Advanced features tutorial
 - Referral program invitation
 - Review request (Google, Trustpilot)
@@ -1068,7 +1068,7 @@ Unlike competitors who force customers to choose between affordability and quali
 **Professional Installation (Large Home & Commercial Units):**
 - **Certified Electrician Network**: Vetted partners in OH, TX, AZ, NM
 - **Free Consultation**: 30-minute phone consultation with technical specialist
-- **Transfer Switch Guide**: For electricians - how to integrate Energenius with home panel
+- **Transfer Switch Guide**: For electricians - how to integrate EnerGenius with home panel
 - **Load Analysis Tool**: Help customers/electricians determine critical loads
 - **Site Assessment**: For commercial ($500, credited toward installation if customer proceeds)
 
@@ -1092,7 +1092,7 @@ Unlike competitors who force customers to choose between affordability and quali
 
 ## 7. Marketing and Positioning
 
-### Brand Messaging for Energenius
+### Brand Messaging for EnerGenius
 
 **Core Brand Messages:**
 
@@ -1107,7 +1107,7 @@ Unlike competitors who force customers to choose between affordability and quali
    - Builds trust through authenticity
 
 3. **"Your Energy Independence Partner"**
-   - Positions Energenius as ally, not just vendor
+   - Positions EnerGenius as ally, not just vendor
    - Emphasizes ongoing relationship: support, education, expansion
    - Community-building angle (customer forums, shared stories)
 
@@ -1219,12 +1219,12 @@ Unlike competitors who force customers to choose between affordability and quali
 **Pillar 2: Buying Guides & Comparisons**
 - "How to Size a Solar Generator for Your Home"
 - "Best Solar Generators for [RVs / Off-Grid / Home Backup / Construction]"
-- "Energenius vs. [Competitor]: Honest Comparison"
+- "EnerGenius vs. [Competitor]: Honest Comparison"
 - "Solar Generator Buying Checklist: 10 Things to Consider"
 - "Portable vs. Home Backup vs. Commercial: Which Category is Right for You?"
 
 **Pillar 3: Installation & Setup**
-- "Setting Up Your Energenius: Step-by-Step Guide (with Video)"
+- "Setting Up Your EnerGenius: Step-by-Step Guide (with Video)"
 - "Solar Panel Placement: How to Maximize Charging"
 - "Integrating a Solar Generator with Your Home's Electrical Panel"
 - "DIY vs. Professional Installation: When to Call an Electrician"
@@ -1232,7 +1232,7 @@ Unlike competitors who force customers to choose between affordability and quali
 
 **Pillar 4: Use Cases & Applications**
 - "Powering Your Home During an Outage: What to Expect"
-- "Off-Grid Living: Real Stories from Energenius Customers"
+- "Off-Grid Living: Real Stories from EnerGenius Customers"
 - "Running a Construction Site on Solar: Case Study"
 - "RV Solar Power: Full-Time RVer's Guide"
 - "Emergency Preparedness: Building Your Power Plan"
@@ -1289,13 +1289,13 @@ Unlike competitors who force customers to choose between affordability and quali
 - Recorded and archived on website
 
 **Email Newsletter:**
-- Bi-weekly "Energenius Insights" newsletter
+- Bi-weekly "EnerGenius Insights" newsletter
 - Content: New blog posts, customer stories, seasonal tips, promotions
 - Segmented: Separate tracks for prospects vs. customers, residential vs. commercial
 
 **Community Building:**
-- **Customer Forum**: Online community for Energenius owners to share tips, ask questions
-- **Facebook Group**: "Energenius Owners Community" for informal discussion
+- **Customer Forum**: Online community for EnerGenius owners to share tips, ask questions
+- **Facebook Group**: "EnerGenius Owners Community" for informal discussion
 - **User-Generated Content**: Encourage customers to share photos/videos of their setups, feature on social media
 - **Case Study Program**: Invite customers to participate in detailed case studies (incentive: $200 credit)
 
@@ -1341,13 +1341,13 @@ Unlike competitors who force customers to choose between affordability and quali
 - **Speaking Engagements**: Present at trade shows, industry conferences
 - **Media Appearances**: Seek local news interviews, podcast appearances
 - **Educational Partnerships**: Collaborate with universities on renewable energy research
-- **Certification Program**: Offer "Energenius Certified Installer" program for electricians
+- **Certification Program**: Offer "EnerGenius Certified Installer" program for electricians
 
 ---
 
 ## 8. Competitive Advantages Summary
 
-### What Makes Energenius Better Than Competitors
+### What Makes EnerGenius Better Than Competitors
 
 #### **Product Superiority**
 
@@ -1360,7 +1360,7 @@ Unlike competitors who force customers to choose between affordability and quali
 2. **Widest Product Range in Industry: 400W to 30,000W**
    - **vs. Competitors**: Most top out at 3-6kW, requiring multiple units for whole-home power
    - **Advantage**: One brand from camping to commercial, scalable as needs grow
-   - **Market Gap**: Mid-range (10-20kW) underserved, Energenius owns this space
+   - **Market Gap**: Mid-range (10-20kW) underserved, EnerGenius owns this space
 
 3. **All-Inclusive Pricing: Solar Panels Included**
    - **vs. Competitors**: Most sell panels separately, adding 20-40% to total cost
@@ -1482,7 +1482,7 @@ Unlike competitors who force customers to choose between affordability and quali
 
 ### Key Differentiators (Elevator Pitch Version)
 
-**"Why Choose Energenius Over [Competitor]?"**
+**"Why Choose EnerGenius Over [Competitor]?"**
 
 **vs. Jackery:**
 - 8,000 cycles vs. 1,000 = 8x longer lifespan
@@ -1517,13 +1517,13 @@ Unlike competitors who force customers to choose between affordability and quali
 ### Value Proposition Statement
 
 **For Residential Customers:**
-*"Energenius delivers professional-grade solar generators with 8,000-cycle battery longevity, 5-year warranties, and all-inclusive pricing—providing 2-3x the lifespan of competitors at 15-20% lower total cost. Backed by U.S.-based support and a 60-day risk-free trial, we make energy independence accessible, affordable, and worry-free."*
+*"EnerGenius delivers professional-grade solar generators with 8,000-cycle battery longevity, 5-year warranties, and all-inclusive pricing—providing 2-3x the lifespan of competitors at 15-20% lower total cost. Backed by U.S.-based support and a 60-day risk-free trial, we make energy independence accessible, affordable, and worry-free."*
 
 **For Commercial Customers:**
-*"Energenius powers businesses from 400W portable solutions to 30kW commercial systems—the widest range in the industry. With 8,000 battery cycles ensuring decades of reliable service, 5-year warranties minimizing downtime risk, and flexible financing preserving cash flow, we deliver measurable ROI and true business continuity."*
+*"EnerGenius powers businesses from 400W portable solutions to 30kW commercial systems—the widest range in the industry. With 8,000 battery cycles ensuring decades of reliable service, 5-year warranties minimizing downtime risk, and flexible financing preserving cash flow, we deliver measurable ROI and true business continuity."*
 
 **One-Line Positioning:**
-*"Energenius: Premium solar generators at honest prices, backed by the industry's best warranty and support."*
+*"EnerGenius: Premium solar generators at honest prices, backed by the industry's best warranty and support."*
 
 ---
 
@@ -1538,7 +1538,7 @@ Unlike competitors who force customers to choose between affordability and quali
 - [ ] Set up fulfillment and inspection facility
 
 **Brand & Website:**
-- [ ] Finalize Energenius branding (logo, colors, visual identity)
+- [ ] Finalize EnerGenius branding (logo, colors, visual identity)
 - [ ] Build e-commerce website with calculator tools
 - [ ] Create product pages for all models with complete specs
 - [ ] Develop initial content library (20 blog posts, 10 videos)
@@ -1663,7 +1663,7 @@ Unlike competitors who force customers to choose between affordability and quali
 
 ## Conclusion
 
-Energenius is strategically positioned to capture significant market share in the solar generator industry by addressing critical gaps left by established competitors. Our strategy leverages PowerX's superior product specifications—particularly the industry-leading 8,000 battery cycle lifespan—combined with best-in-class customer service, transparent pricing, and extended warranties to deliver unmatched value.
+EnerGenius is strategically positioned to capture significant market share in the solar generator industry by addressing critical gaps left by established competitors. Our strategy leverages PowerX's superior product specifications—particularly the industry-leading 8,000 battery cycle lifespan—combined with best-in-class customer service, transparent pricing, and extended warranties to deliver unmatched value.
 
 **Our competitive moat is built on three pillars:**
 
@@ -1673,13 +1673,13 @@ Energenius is strategically positioned to capture significant market share in th
 
 3. **Transparent Value**: All-inclusive pricing, no proprietary lock-in, and honest communication build trust and simplify purchasing decisions.
 
-By systematically eliminating every major competitor weakness while matching or exceeding their strengths, Energenius will not just compete—we will redefine customer expectations in the solar generator market. Our regional focus on Ohio, Texas, Arizona, New Mexico, and the Midwest allows us to develop deep expertise and relationships in underserved markets where national brands lack specialization.
+By systematically eliminating every major competitor weakness while matching or exceeding their strengths, EnerGenius will not just compete—we will redefine customer expectations in the solar generator market. Our regional focus on Ohio, Texas, Arizona, New Mexico, and the Midwest allows us to develop deep expertise and relationships in underserved markets where national brands lack specialization.
 
-**The opportunity is significant:** The solar generator market is growing 15-20% annually, driven by grid reliability concerns, extreme weather events, rising energy costs, and environmental consciousness. Yet, customer satisfaction with existing brands remains mixed due to poor service, hidden costs, and short product lifespans. Energenius addresses these pain points directly.
+**The opportunity is significant:** The solar generator market is growing 15-20% annually, driven by grid reliability concerns, extreme weather events, rising energy costs, and environmental consciousness. Yet, customer satisfaction with existing brands remains mixed due to poor service, hidden costs, and short product lifespans. EnerGenius addresses these pain points directly.
 
-**This is not just a white-label resale business**—it's a customer experience transformation. Every touchpoint, from initial research through years of ownership, is designed to exceed expectations and build loyalty. Our commitment to education, transparency, and long-term relationships positions Energenius as a trusted energy partner, not just a product vendor.
+**This is not just a white-label resale business**—it's a customer experience transformation. Every touchpoint, from initial research through years of ownership, is designed to exceed expectations and build loyalty. Our commitment to education, transparency, and long-term relationships positions EnerGenius as a trusted energy partner, not just a product vendor.
 
-With disciplined execution of this strategy, Energenius will establish itself as the premier solar generator brand for residential and commercial customers seeking reliability, value, and peace of mind. The foundation is strong. The differentiation is clear. The market is ready.
+With disciplined execution of this strategy, EnerGenius will establish itself as the premier solar generator brand for residential and commercial customers seeking reliability, value, and peace of mind. The foundation is strong. The differentiation is clear. The market is ready.
 
 **It's time to power America's heartland with honest energy solutions.**
 
@@ -1688,7 +1688,7 @@ With disciplined execution of this strategy, Energenius will establish itself as
 ## Appendices
 
 ### Appendix A: Detailed Competitor Comparison Matrix
-*(Create spreadsheet comparing Energenius vs. each competitor across 20+ attributes)*
+*(Create spreadsheet comparing EnerGenius vs. each competitor across 20+ attributes)*
 
 ### Appendix B: Target Market Demographics & Psychographics
 *(Detailed customer personas for residential, commercial, off-grid segments)*
@@ -1703,7 +1703,7 @@ With disciplined execution of this strategy, Energenius will establish itself as
 *(Recommended spend by channel for Year 1)*
 
 ### Appendix F: Product Specification Comparison
-*(Side-by-side specs: Energenius models vs. competitor equivalents)*
+*(Side-by-side specs: EnerGenius models vs. competitor equivalents)*
 
 ### Appendix G: Sample Marketing Assets
 *(Ad copy examples, email templates, social media post ideas)*

@@ -9,7 +9,7 @@ import Footer from '@/components/footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Energenius - Premium Solar Generator Solutions',
+  title: 'EnerGenius - Premium Solar Generator Solutions',
   description: 'Professional-grade solar generators from 400W to 30,000W. Honest pricing, superior support, and industry-leading 5-year warranty. Serving OH, TX, AZ, NM, and Midwest states.',
   keywords: ['solar generator', 'backup power', 'emergency generator', 'off-grid power', 'portable solar', 'home backup', 'commercial solar'],
   icons: {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     shortcut: '/favicon.svg',
   },
   openGraph: {
-    title: 'Energenius - Power That Thinks Ahead',
+    title: 'EnerGenius - Power That Thinks Ahead',
     description: 'Premium solar generators with honest pricing and exceptional support',
     images: ['/og-image.png'],
     type: 'website',

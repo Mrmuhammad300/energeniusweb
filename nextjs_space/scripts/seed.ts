@@ -45,7 +45,7 @@ function determineApplications(model: string, category: string, wattage: number)
   return apps;
 }
 
-// Helper function to white-label product name from PowerX to Energenius
+// Helper function to white-label product name from PowerX to EnerGenius
 function whiteLabel(model: string): string {
   // Remove "Power X" and "PowerX" variations
   let energeniusModel = model
@@ -53,36 +53,36 @@ function whiteLabel(model: string): string {
     .replace(/Lithium\s*/gi, '')
     .trim();
   
-  // Map to Energenius product tiers based on wattage
-  if (energeniusModel.includes('400')) return 'Energenius Scout 400';
-  if (energeniusModel.includes('750') && energeniusModel.includes('Mini')) return 'Energenius Scout 750';
-  if (energeniusModel.includes('1000') && energeniusModel.includes('Mini')) return 'Energenius Scout 1000';
-  if (energeniusModel.includes('1500')) return 'Energenius Nomad 1500';
-  if (energeniusModel.includes('2000')) return 'Energenius Nomad 2000';
-  if (energeniusModel.includes('3000')) return 'Energenius Guardian 3000';
-  if (energeniusModel.includes('5000')) return 'Energenius Guardian 5000';
-  if (energeniusModel.includes('8000')) return 'Energenius Guardian 8000';
-  if (energeniusModel.includes('10000') || energeniusModel.includes('10K')) return 'Energenius Titan 10K';
-  if (energeniusModel.includes('15000') || energeniusModel.includes('15K')) return 'Energenius Titan 15K';
-  if (energeniusModel.includes('20000') || energeniusModel.includes('20K')) return 'Energenius Apex 20K';
-  if (energeniusModel.includes('25000') || energeniusModel.includes('25K')) return 'Energenius Apex 25K';
-  if (energeniusModel.includes('30000') || energeniusModel.includes('30K')) return 'Energenius Apex 30K';
-  if (energeniusModel.includes('750') && !energeniusModel.includes('Mini')) return 'Energenius Scout 750 Pro';
-  if (energeniusModel.includes('1000') && !energeniusModel.includes('Mini')) return 'Energenius Scout 1000 Pro';
+  // Map to EnerGenius product tiers based on wattage
+  if (energeniusModel.includes('400')) return 'EnerGenius Scout 400';
+  if (energeniusModel.includes('750') && energeniusModel.includes('Mini')) return 'EnerGenius Scout 750';
+  if (energeniusModel.includes('1000') && energeniusModel.includes('Mini')) return 'EnerGenius Scout 1000';
+  if (energeniusModel.includes('1500')) return 'EnerGenius Nomad 1500';
+  if (energeniusModel.includes('2000')) return 'EnerGenius Nomad 2000';
+  if (energeniusModel.includes('3000')) return 'EnerGenius Guardian 3000';
+  if (energeniusModel.includes('5000')) return 'EnerGenius Guardian 5000';
+  if (energeniusModel.includes('8000')) return 'EnerGenius Guardian 8000';
+  if (energeniusModel.includes('10000') || energeniusModel.includes('10K')) return 'EnerGenius Titan 10K';
+  if (energeniusModel.includes('15000') || energeniusModel.includes('15K')) return 'EnerGenius Titan 15K';
+  if (energeniusModel.includes('20000') || energeniusModel.includes('20K')) return 'EnerGenius Apex 20K';
+  if (energeniusModel.includes('25000') || energeniusModel.includes('25K')) return 'EnerGenius Apex 25K';
+  if (energeniusModel.includes('30000') || energeniusModel.includes('30K')) return 'EnerGenius Apex 30K';
+  if (energeniusModel.includes('750') && !energeniusModel.includes('Mini')) return 'EnerGenius Scout 750 Pro';
+  if (energeniusModel.includes('1000') && !energeniusModel.includes('Mini')) return 'EnerGenius Scout 1000 Pro';
   
   // For batteries, keep a simpler naming
-  if (energeniusModel.includes('X120')) return 'Energenius PowerBank 120';
-  if (energeniusModel.includes('X90')) return 'Energenius PowerBank 90';
-  if (energeniusModel.includes('X80')) return 'Energenius PowerBank 80';
-  if (energeniusModel.includes('45')) return 'Energenius PowerBank 45';
-  if (energeniusModel.includes('40')) return 'Energenius PowerBank 40';
-  if (energeniusModel.includes('AGM')) return 'Energenius Scout 750 AGM';
+  if (energeniusModel.includes('X120')) return 'EnerGenius PowerBank 120';
+  if (energeniusModel.includes('X90')) return 'EnerGenius PowerBank 90';
+  if (energeniusModel.includes('X80')) return 'EnerGenius PowerBank 80';
+  if (energeniusModel.includes('45')) return 'EnerGenius PowerBank 45';
+  if (energeniusModel.includes('40')) return 'EnerGenius PowerBank 40';
+  if (energeniusModel.includes('AGM')) return 'EnerGenius Scout 750 AGM';
   
-  return `Energenius ${energeniusModel}`;
+  return `EnerGenius ${energeniusModel}`;
 }
 
 async function main() {
-  console.log('🌟 Starting Energenius database seeding...');
+  console.log('🌟 Starting EnerGenius database seeding...');
   
   // Read the products JSON file
   const productsPath = path.join(process.cwd(), 'public', 'powerx_products.json');

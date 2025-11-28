@@ -1534,14 +1534,14 @@ Solar generator technology continues advancing rapidly, with improving efficienc
 
 ### Ready to Get Started?
 
-At **Energenius**, we're committed to helping you find the perfect solar generator solution for your specific needs. Our team of experts can guide you through the selection process, recommend optimal configurations, and provide ongoing support to ensure your solar generator delivers reliable, clean power for years to come.
+At **EnerGenius**, we're committed to helping you find the perfect solar generator solution for your specific needs. Our team of experts can guide you through the selection process, recommend optimal configurations, and provide ongoing support to ensure your solar generator delivers reliable, clean power for years to come.
 
 **Contact us today** to discuss your power needs and discover how solar generator technology can provide energy independence, cost savings, and peace of mind—wherever life takes you.
 
 ---
 
-*This educational guide is provided by Energenius to help residential and commercial customers understand solar generator technology. For personalized recommendations and expert guidance, please contact our solar specialists.*
+*This educational guide is provided by EnerGenius to help residential and commercial customers understand solar generator technology. For personalized recommendations and expert guidance, please contact our solar specialists.*
 
 **Document Version**: 1.0  
 **Last Updated**: November 28, 2025  
-**© 2025 Energenius - All Rights Reserved**
+**© 2025 EnerGenius - All Rights Reserved**

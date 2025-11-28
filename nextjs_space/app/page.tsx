@@ -64,7 +64,7 @@ const products = [
 
 const testimonials = [
   {
-    quote: 'After the ice storm knocked out our power for 5 days, our Energenius Guardian kept our family comfortable and safe. Worth every penny.',
+    quote: 'After the ice storm knocked out our power for 5 days, our EnerGenius Guardian kept our family comfortable and safe. Worth every penny.',
     author: 'Sarah M.',
     location: 'Columbus, OH',
   },
@@ -150,7 +150,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Why Choose Energenius?
+              Why Choose EnerGenius?
             </h2>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
               We eliminate the frustrations you experience with other solar generator brands
@@ -326,7 +326,7 @@ export default function HomePage() {
             Ready to Take Control of Your Power?
           </h2>
           <p className="text-xl text-emerald-50 mb-8">
-            Join thousands of satisfied customers who chose Energenius for their energy independence
+            Join thousands of satisfied customers who chose EnerGenius for their energy independence
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/products">
