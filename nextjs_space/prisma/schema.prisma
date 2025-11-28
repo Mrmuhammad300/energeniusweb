@@ -1,0 +1,94 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/energenius_website/nextjs_space/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Product {
+  id                    String   @id @default(cuid())
+  model                 String
+  sku                   String   @unique
+  price                 String
+  priceNumeric          Float
+  wattage               String
+  continuousPower       String
+  peakPower             String
+  batteryType           String
+  batteryCapacity       String
+  lifeCycles            String?
+  outputVoltage         String
+  solarChargeController String?
+  acOutlets             String?
+  dcPorts               String?
+  usbPorts              String?
+  weight                String
+  dimensions            String
+  inverterType          String?
+  features              String[]
+  description           String   @db.Text
+  imageUrl              String
+  warranty              String
+  category              String
+  includedAccessories   String[]
+  tier                  String   // Portable, Home, Professional, Commercial, Battery
+  application           String[] // residential, commercial, portable, battery
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([category])
+  @@index([tier])
+  @@index([priceNumeric])
+}
+
+model QuoteRequest {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  phone         String
+  location      String   // State
+  projectType   String   // Residential or Commercial
+  powerNeeds    String   @db.Text
+  timeline      String
+  message       String?  @db.Text
+  status        String   @default("new") // new, contacted, quoted, closed
+  interestedProducts String[] // Array of product SKUs
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status])
+  @@index([projectType])
+  @@index([createdAt])
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String   @db.Text
+  status    String   @default("new") // new, responded, resolved
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model NewsletterSubscriber {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  status      String   @default("active") // active, unsubscribed
+  source      String?  // homepage, footer, blog, etc.
+  subscribedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+}

@@ -1,0 +1,103 @@
+
+{
+  "hero_banner": [
+    {
+      "url": "https://growattportable.com/cdn/shop/files/Whole-home-Generator2Mobile.jpg?v=1757932468&width=670",
+      "description": "A modern solar generator in a clean, outdoor setting, suggesting power and portability."
+    },
+    {
+      "url": "https://www.lgcypower.com/wp-content/uploads/2021/11/how-much-solar.webp",
+      "description": "A beautiful suburban home with solar panels on the roof, representing residential solar solutions."
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29sYXIlMjBlbmVyZ3l8ZW58MHx8MHx8fDA%3D",
+      "description": "An inspiring image of a sunset over a field of solar panels, conveying a sense of clean energy and a sustainable future."
+    }
+  ],
+  "residential": [
+    {
+      "url": "https://naturesgenerator.com/cdn/shop/files/natures-generator-powerhouse-gold-system-262674_1200x1200_crop_center.jpg?v=1738189335",
+      "description": "A whole-house generator setup, showcasing a complete residential power solution."
+    },
+    {
+      "url": "https://media.istockphoto.com/id/1522808479/photo/happy-family-in-front-of-their-house-with-solar-panels-on-the-roof.jpg?s=612x612&w=0&k=20&c=tIANne5BcGfj7NiYdhFLnzoJEY7NnYrPe6iAwsxfJHw=",
+      "description": "A happy family standing in front of their home, which has solar panels on the roof."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0854/3820/2186/articles/solar-power-generator.jpg?v=1735551928",
+      "description": "A solar generator being used as a home backup power source, highlighting its reliability during outages."
+    },
+    {
+      "url": "https://frontend-cdn.solarreviews.com/solar-panels-and-installers-on-roof.jpg",
+      "description": "A team of professionals installing solar panels on a residential roof."
+    }
+  ],
+  "commercial": [
+    {
+      "url": "https://temaroofingservices.com/wp-content/uploads/2023/02/Solar-panel-on-a-commercial-rooftop.jpg",
+      "description": "A large-scale solar panel installation on a commercial rooftop."
+    },
+    {
+      "url": "https://www.solarelectricsupply.com/media/product-images/remote-industrial-solar/RD-Series/skid-mounted-emergency-portable-solar-system-x.jpg",
+      "description": "A robust, industrial-grade solar generator for commercial and remote applications."
+    },
+    {
+      "url": "http://selsled.com/cdn/shop/articles/temporary-solar-power-generator-construction-site_106477c7-260a-4bfa-b1bd-31965292d644_1200x1200.webp?v=1683883978",
+      "description": "A solar generator providing power to a construction site, demonstrating its versatility."
+    },
+    {
+      "url": "https://www.energy.gov/sites/default/files/2021-06/35502216484_c1b49186db_k.jpg",
+      "description": "A vast solar farm, representing large-scale solar energy solutions for businesses."
+    }
+  ],
+  "product_categories": [
+    {
+      "url": "https://www.cnet.com/a/img/resize/17a7f2f5a4c1b93a53b1a8195600736dfb0989a3/hub/2024/05/22/431359a2-df0e-4474-ba39-aa9b2b3dbaa7/gettyimages-1446730326.jpg?auto=webp&fit=crop&height=675&width=1200",
+      "description": "A portable solar generator being used outdoors, perfect for camping and other recreational activities."
+    },
+    {
+      "url": "https://m.media-amazon.com/images/I/71tW51wImrL._AC_UF894,1000_QL80_.jpg",
+      "description": "A high-capacity solar generator, suitable for powering multiple appliances and for home backup."
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Close-up_of_a_polycrystalline_solar_PV_panel.jpg/2560px-Close-up_of_a_polycrystalline_solar_PV_panel.jpg",
+      "description": "A close-up shot of a solar panel, highlighting the technology and quality of the product."
+    },
+    {
+      "url": "https://www.energy.gov/sites/default/files/2021-11/35974719113_24cfb03c24_o.jpg",
+      "description": "A home battery storage system, showcasing the ability to store solar energy for later use."
+    }
+  ],
+  "lifestyle": [
+    {
+      "url": "https://www.intelligentliving.co/wp-content/uploads/2023/07/jackery-power-station.jpg",
+      "description": "A person using a portable solar generator while camping, emphasizing an adventurous and off-grid lifestyle."
+    },
+    {
+      "url": "https://iallpowers.com/cdn/shop/files/allpowers_R600_SP027_100W_solar_panel.jpg?v=1736402935&width=2048",
+      "description": "A solar generator powering devices at an outdoor event, showing its utility for social gatherings."
+    },
+    {
+      "url": "https://oupes.com/a/blog/media/oupes.myshopify.com/Post/featured_img/Titan5_240_6-21.jpg",
+      "description": "A solar generator ready for use in an emergency, highlighting its importance for preparedness."
+    },
+    {
+      "url": "https://www.illinoisrenew.org/wp-content/uploads/2025/04/illinois-solar-energy-year-round-825x471.jpeg",
+      "description": "A home with solar panels, representing an off-grid and self-sufficient living scenario."
+    }
+  ],
+  "educational": [
+    {
+      "url": "https://www.letsgosolar.com/wp-content/themes/solar/images/consumer-education-guide/solar_complete_systems/solar_infograph.png",
+      "description": "A diagram illustrating the components of a home solar power system."
+    },
+    {
+      "url": "https://www.gogreensolar.com/pages/solar-components-101",
+      "description": "An infographic explaining how a solar generator works, from capturing sunlight to providing power."
+    },
+    {
+      "url": "https://www.hachettebookgroup.com/wp-content/uploads/2023/02/WEB-121_cHesh_InstallYourOwnSolarPanels.jpg",
+      "description": "A visual guide to the technical components of a solar panel installation."
+    }
+  ]
+}

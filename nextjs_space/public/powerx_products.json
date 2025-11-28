@@ -1,0 +1,811 @@
+{
+  "generators": [
+    {
+      "model": "Power X Lithium 30000 Watt Solar Generator",
+      "price": "$31,475.00",
+      "wattage": "30,000W Continuous / 40,000W Peak",
+      "specifications": {
+        "continuous_power": "30,000 Watts",
+        "peak_power": "40,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "800 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120/240V AC",
+        "solar_charge_controller": "160 Amp",
+        "ac_outlets": "8 Duplex 120V AC Receptacles",
+        "dc_ports": "2x 12V DC 20A Ports",
+        "usb_ports": "4x USB 3.0 Ports",
+        "weight": "675 lbs",
+        "dimensions": "60\" x 37\" x 30\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x longer runtime than traditional units",
+        "2x faster recharge capability",
+        "Built-in 48V Charger & Maintainer",
+        "Built-in Voltage Meter",
+        "Low Voltage Indicator",
+        "Overload Protection",
+        "Weatherproof Enclosure with Folding Handles",
+        "EMP Production Certified",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 30000 Watt is the ultimate solar generator solution, utilizing advanced lithium battery technology for extended runtime and faster recharging. With 30,000 watts of continuous power and 40,000 watts peak, it can handle the most demanding power needs. Features 800 amp hours of battery capacity, dual voltage output (120/240V), and weatherproof construction for reliability in any conditions.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-1-500x375.jpg",
+      "warranty": "1 Year (8-year warranty emphasized)",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panels",
+        "50 Foot MC4 Connector Cable"
+      ],
+      "sku": "Lithium-30000-1-1"
+    },
+    {
+      "model": "Power X Lithium 25000 Watt Solar Generator",
+      "price": "$24,750.00",
+      "wattage": "25,000W Continuous / 40,000W Peak",
+      "specifications": {
+        "continuous_power": "25,000 Watts",
+        "peak_power": "40,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "800 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120/240V AC",
+        "solar_charge_controller": "160 Amp",
+        "ac_outlets": "8 Duplex 120V AC Receptacles",
+        "dc_ports": "2x 12V DC 20A Ports",
+        "usb_ports": "4x USB 3.0 Quick Charge Ports",
+        "weight": "675 lbs",
+        "dimensions": "60\" x 37\" x 30\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x longer runtime than traditional units",
+        "2x faster recharge capability",
+        "Built-in 48V Charger Maintainer",
+        "Built-in Volt Meter",
+        "Low Voltage Indicator",
+        "Overload Protection",
+        "Weatherproof Enclosures with folding handles",
+        "EMP Production Certified",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 25000 Watt Solar Generator combines innovative design with lithium battery technology for superior performance. Delivering 25,000 watts continuous and 40,000 watts peak power, this unit offers exceptional reliability for large-scale power needs. Features 800 amp hours of capacity and dual voltage output for versatile applications.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-1-500x375.jpg",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panels",
+        "50 Foot MC4 Connector Cable"
+      ],
+      "sku": "Lithium-25000"
+    },
+    {
+      "model": "Power X Lithium 20000 Watt Solar Generator",
+      "price": "$18,750.00",
+      "wattage": "20,000W Continuous / 40,000W Peak",
+      "specifications": {
+        "continuous_power": "20,000 Watts",
+        "peak_power": "40,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "400 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120/240V AC",
+        "solar_charge_controller": "160 Amp",
+        "ac_outlets": "8 Duplex 120V AC Receptacles",
+        "dc_ports": "2x 12V DC 20A Ports",
+        "usb_ports": "4x USB 3.0 Quick Charge Ports",
+        "weight": "425 lbs",
+        "dimensions": "48\" x 24\" x 28\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x longer runtime than traditional units",
+        "2x faster recharge capability",
+        "120/12 Volt DC Charger Maintainer",
+        "Built-in Voltage Meter",
+        "Low Voltage Indicator",
+        "Overload Protection",
+        "Weather-Proof Enclosures with Folding Handles",
+        "EMP Production Provided",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 20000 Watt Solar Generator provides substantial power for demanding applications with 20,000 watts continuous output and 40,000 watts peak capacity. Built with lithium battery technology for extended runtime and rapid recharging, featuring 400 amp hours of storage and dual voltage capabilities.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-500x375.jpg",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panels",
+        "50 Foot MC4 Connector Cable"
+      ],
+      "sku": "Lithium-20000"
+    },
+    {
+      "model": "Power X Lithium 15000 Watt Solar Generator",
+      "price": "$14,950.00",
+      "wattage": "15,000W Continuous / 30,000W Peak",
+      "specifications": {
+        "continuous_power": "15,000 Watts",
+        "peak_power": "30,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "600 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120/240V AC",
+        "solar_charge_controller": "160 Amp",
+        "ac_outlets": "8 Duplex 120V AC Receptacles",
+        "dc_ports": "2x 12V DC 20A Ports",
+        "usb_ports": "4x USB 3.0 Quick Charge Ports",
+        "weight": "425 lbs",
+        "dimensions": "48\" x 24\" x 28\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x longer runtime than standard units",
+        "2x faster recharge capability",
+        "Built-in 12V DC Charger with 20A Ports",
+        "Weatherproof enclosure with retractable handle",
+        "Built-in AC/DC voltage meter",
+        "Low voltage indicator",
+        "Overload protection",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 15000 Watt Solar Generator delivers reliable 15,000 watts continuous power with 30,000 watts peak capacity. Advanced lithium battery technology provides 600 amp hours of storage with superior cycle life and performance for whole-home backup or commercial applications.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-500x375.jpg",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panels",
+        "50 Foot MC4 Connector Cable"
+      ],
+      "sku": "Lithium-15000"
+    },
+    {
+      "model": "Power X Lithium 10000 Watt Solar Generator",
+      "price": "$10,350.00",
+      "wattage": "10,000W Continuous / 20,000W Peak",
+      "specifications": {
+        "continuous_power": "10,000 Watts",
+        "peak_power": "20,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "400 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120/240V AC",
+        "solar_charge_controller": "100 Amp",
+        "ac_outlets": "8 Duplex 120V AC Receptacles",
+        "dc_ports": "2x 12V DC 20A Ports",
+        "usb_ports": "4x USB 3.0 Quick Charge Ports",
+        "weight": "350 lbs",
+        "dimensions": "48\" x 24\" x 28\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x more runtime than traditional units",
+        "2x faster recharge",
+        "Built-In 120/12 Volt DC Charger Maintainer",
+        "Weather-Proof Enclosures with Retractable Handle",
+        "Low Voltage Indicator",
+        "Overload Protection",
+        "EMP Production Provided",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 10000 Watt Solar Generator features the same innovative design as traditional Power X Solar Generators but utilizes lithium batteries for enhanced performance. With 10,000 watts continuous power and 400 amp hours of storage, it's ideal for home backup or off-grid applications.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/2new5000.jpg",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panels",
+        "50 Foot MC4 Connector Cable"
+      ],
+      "sku": "Lithium-10000"
+    },
+    {
+      "model": "Power X Lithium 8000 Watt Solar Generator",
+      "price": "$8,825.00",
+      "wattage": "8,000W Continuous / 16,000W Peak",
+      "specifications": {
+        "continuous_power": "8,000 Watts",
+        "peak_power": "16,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "400 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120/240V AC",
+        "solar_charge_controller": "100 Amp",
+        "ac_outlets": "8 Duplex 120V AC Receptacles",
+        "dc_ports": "2x 12V DC 20A Ports",
+        "usb_ports": "4x USB 3.0 Charging Ports",
+        "weight": "550 lbs",
+        "dimensions": "48\" x 24\" x 28\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x run time of traditional units",
+        "2x Faster Recharge",
+        "Internal 12V DC Charger Maintainer",
+        "Retractable Handle",
+        "Weatherproof Housing",
+        "EMP Proof Production",
+        "Overload Protection",
+        "Low Voltage Indicator",
+        "Integrated Volt Meter",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 8000 Watt Solar Generator provides robust 8,000 watts of continuous power with lithium battery technology for extended runtime and rapid recharging. Features 400 amp hours of capacity, dual voltage output, and weatherproof construction for reliable performance.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/2new5000.jpg",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panels",
+        "50 Foot MC4 Connector Cable"
+      ],
+      "sku": "Lithium-8000"
+    },
+    {
+      "model": "Power X Lithium 5000 Watt Solar Generator",
+      "price": "$6,325.00",
+      "wattage": "5,000W Continuous / 10,000W Peak",
+      "specifications": {
+        "continuous_power": "5,000 Watts",
+        "peak_power": "10,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "400 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120/240V AC",
+        "solar_charge_controller": "100 Amp",
+        "ac_outlets": "8x 120V AC Outlets",
+        "dc_ports": "2x 12V DC 20A Outlets",
+        "usb_ports": "4x 3.0A Quick Charge USB Ports",
+        "weight": "350 lbs",
+        "dimensions": "48\" x 24\" x 28\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x more runtime than traditional units",
+        "2x faster recharge",
+        "Lithium Battery Technology",
+        "Built-In 120/12 Volt DC Charger Maintainer",
+        "Built In Volt Meter",
+        "Weather Proof Enclosures with Retractable Handle",
+        "Overload Protection",
+        "Low Voltage Indicator",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 5000 Watt Solar Generator combines innovative design with lithium battery technology for superior performance. Delivers 5,000 watts continuous power with 10,000 watts peak capacity, featuring 400 amp hours of storage and dual voltage output for versatile applications.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/2new5000.jpg",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panels",
+        "50 Foot MC4 Connector Cable"
+      ],
+      "sku": "Lithium-5000"
+    },
+    {
+      "model": "Power X Lithium 3000 Watt Solar Generator",
+      "price": "$3,750.00",
+      "wattage": "3,000W Continuous / 6,000W Peak",
+      "specifications": {
+        "continuous_power": "3,000 Watts",
+        "peak_power": "6,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "200 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120/240V AC",
+        "solar_charge_controller": "80 Amp",
+        "ac_outlets": "8x 120V AC Outlets",
+        "dc_ports": "2x 12V DC 20A Outlets",
+        "usb_ports": "4x 3.0A USB Ports",
+        "weight": "105 lbs",
+        "dimensions": "41\" x 24\" x 17\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x more runtime than traditional units",
+        "2x faster recharging",
+        "Integrated 120V/12V DC Charger & Maintainer",
+        "Built-in Volt Meter",
+        "Weatherproof Enclosure with Retractable Handle",
+        "Overload & Low Voltage Protection",
+        "Includes Solar Panel Kit",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 3000 Watt Solar Generator retains the innovative Power X design with enhanced lithium battery technology. Perfect for medium power needs, providing 3,000 watts continuous and 6,000 watts peak with 200 amp hours of capacity.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/3600-500x357.png",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panel Kit"
+      ],
+      "sku": "Lithium-3000"
+    },
+    {
+      "model": "Power X Lithium 2000 Watt Solar Generator",
+      "price": "$2,495.00",
+      "wattage": "2,000W Continuous / 4,000W Peak",
+      "specifications": {
+        "continuous_power": "2,000 Watts",
+        "peak_power": "4,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "120 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120V AC",
+        "solar_charge_controller": "80 Amp",
+        "ac_outlets": "4x 120V Outlets",
+        "dc_ports": "2x 12V DC Ports",
+        "usb_ports": "4x 3.0A USB Ports",
+        "weight": "55 lbs",
+        "dimensions": "22\" x 16\" x 28\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x faster recharging than traditional units",
+        "Extended runtime with lithium technology",
+        "Integrated 120/12V Charger & Maintainer",
+        "Retractable Handle",
+        "Built-In Volt Meter",
+        "Overload & Low Voltage Protection",
+        "Solar Panel Kit Included",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 2000 Watt Solar Generator features lithium battery technology with 2.5x faster recharging and extended runtime. Compact and portable at 55 lbs, delivering 2,000 watts continuous power with 120 amp hours of capacity.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/Picture1-500x338.png",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panel Kit"
+      ],
+      "sku": "Lithium-2000"
+    },
+    {
+      "model": "Power X Lithium 1500 Watt Solar Generator",
+      "price": "$2,045.00",
+      "wattage": "1,500W Continuous / 3,000W Peak",
+      "specifications": {
+        "continuous_power": "1,500 Watts",
+        "peak_power": "3,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "120 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120V AC",
+        "solar_charge_controller": "80 Amp",
+        "ac_outlets": "4x 120V AC Outlets",
+        "dc_ports": "2x 12V DC Ports",
+        "usb_ports": "4x 3.0A USB Ports",
+        "weight": "55 lbs",
+        "dimensions": "22\" x 16\" x 28\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x longer runtime than traditional units",
+        "2.5x faster recharging",
+        "Built-in 120/12V DC Charger Maintainer",
+        "Retractable Handle for Portability",
+        "Integrated Volt Meter",
+        "Overload Protection / Low Voltage Indicator",
+        "Solar Panel Kit Included",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 1500 Watt Solar Generator combines innovative design with lithium battery technology, offering 2.5 times longer runtime and faster recharging. Compact at 55 lbs with 1,500 watts continuous power and 120 amp hours of capacity.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/Picture1-500x338.png",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panel Kit"
+      ],
+      "sku": "Lithium-1500"
+    },
+    {
+      "model": "Power X Lithium 1000 Watt Solar Generator (Mini)",
+      "price": "$1,000.00",
+      "wattage": "1,000W Continuous / 2,000W Peak",
+      "specifications": {
+        "continuous_power": "1,000 Watts",
+        "peak_power": "2,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "40 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120V AC",
+        "ac_outlets": "4x 120V Outlets",
+        "dc_ports": "2x 12V Ports, 1x 12V Onboard Charge",
+        "usb_ports": "4x 3.0A USB Ports",
+        "weight": "33 lbs",
+        "dimensions": "24\" x 15\" x 14\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x More Run Time than traditional units",
+        "2x Faster Recharge",
+        "Lithium Battery Technology",
+        "Built-in Volt Meter",
+        "Overload Protection",
+        "Low Voltage Indicator",
+        "Includes Solar Panel",
+        "Stackable (compatible with 750, 1000, 1500, 2000)",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X Lithium 1000 Watt Mini Solar Generator is ultra-portable at just 33 lbs while delivering 1,000 watts of continuous power. Features 40 amp hours of lithium battery capacity with stackable design for expandability.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/px-400-pic-new2-1-500x331.jpg",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator - Mini",
+      "included_accessories": [
+        "Solar Panel"
+      ],
+      "sku": "Lithium-1000-mini"
+    },
+    {
+      "model": "Power X Lithium 1000 Watt Solar Generator",
+      "price": "$1,995.00",
+      "wattage": "1,000W Continuous / 2,000W Peak",
+      "specifications": {
+        "continuous_power": "1,000 Watts",
+        "peak_power": "2,000 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "120 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120V AC",
+        "solar_charge_controller": "80 Amp",
+        "ac_outlets": "4x 120V Outlets",
+        "dc_ports": "2x 12V DC Ports",
+        "usb_ports": "4x 3.0A Quick Charge USB Ports",
+        "weight": "40 lbs",
+        "dimensions": "22\" x 16\" x 28\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x more runtime than traditional units",
+        "2.5x faster recharge",
+        "Built In 120/12 Volt DC Charger Maintainer",
+        "Built In Volt Meter",
+        "Retractable Handle",
+        "Overload Protection",
+        "Low Voltage Indicator",
+        "Solar Panel Kit Included",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 1000 Watt Solar Generator features innovative design with lithium batteries for 2.5x more runtime and faster recharging. With 120 amp hours of capacity and 1,000 watts continuous power in a portable 40 lb package.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/Picture1-500x338.png",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panel Kit"
+      ],
+      "sku": "Lithium-1000"
+    },
+    {
+      "model": "Power X Lithium 750 Watt Solar Generator (Mini)",
+      "price": "$945.00",
+      "wattage": "750W Continuous / 1,500W Peak",
+      "specifications": {
+        "continuous_power": "750 Watts",
+        "peak_power": "1,500 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "40 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120V AC",
+        "ac_outlets": "4x 120V Outlets",
+        "dc_ports": "2x 12V Ports, 1x 12V On Board Charger",
+        "usb_ports": "4x 3.0A USB Ports",
+        "weight": "33 lbs",
+        "dimensions": "24\" x 15\" x 14\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "Pure Sine Wave Inverter",
+        "8,000 Battery Life Cycles",
+        "Built-in Volt Meter",
+        "Overload Protection",
+        "Low Voltage Indicator",
+        "Includes Solar Panel",
+        "Compatible with Stackable Units (750, 1000, 1500, 2000)",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X Lithium 750 Watt Mini Solar Generator is compact and portable at 33 lbs, delivering 750 watts continuous power with 1,500 watts peak. Features 40 amp hours of lithium battery capacity with stackable design.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/px-400-pic-new2-1-500x331.jpg",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator - Mini",
+      "included_accessories": [
+        "Solar Panel"
+      ],
+      "sku": "Lithium-750-mini"
+    },
+    {
+      "model": "Power X Lithium 750 Watt Solar Generators",
+      "price": "$1,920.00",
+      "wattage": "750W Continuous / 1,500W Peak",
+      "specifications": {
+        "continuous_power": "750 Watts",
+        "peak_power": "1,500 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "120 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120V AC",
+        "ac_outlets": "4x 120V AC Outlets",
+        "dc_ports": "2x 12V DC Ports",
+        "usb_ports": "4x 3.0A USB Quick Charge Ports",
+        "weight": "55 lbs",
+        "dimensions": "22\" x 16\" x 28\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "2.5x longer runtime than traditional units",
+        "2.5x faster recharge speed",
+        "Built-in 120/12V DC charger/maintainer",
+        "Built-in voltage meter",
+        "Retractable handle for portability",
+        "Overload protection with low voltage indicator",
+        "Includes solar panel kit",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X-Lithium 750 Watt Solar Generator offers enhanced performance with lithium battery technology. Features 2.5x longer runtime and faster recharge with 120 amp hours of capacity and 750 watts continuous power.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/750Lithium2-500x546.jpg",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator",
+      "included_accessories": [
+        "Solar Panel Kit"
+      ],
+      "sku": "Lithium-750"
+    },
+    {
+      "model": "Power X Lithium 400 Watt Solar Generator (Mini)",
+      "price": "$750.00",
+      "wattage": "400W Continuous / 800W Peak",
+      "specifications": {
+        "continuous_power": "400 Watts",
+        "peak_power": "800 Watts",
+        "battery_type": "Lithium",
+        "battery_capacity": "40 Amp Hours",
+        "life_cycles": "8,000 cycles",
+        "output_voltage": "120V AC",
+        "ac_outlets": "4x 120V Outlets",
+        "dc_ports": "2x 12V Ports, 1x 12V On-Board Charger",
+        "usb_ports": "4x 3.0A Quick Charge USB Ports",
+        "weight": "33 lbs",
+        "dimensions": "24\" x 15\" x 14\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "Pure Sine Wave Technology",
+        "8,000 Life Cycles",
+        "2.5x longer runtime than standard units",
+        "2.5x faster recharging",
+        "Built-in Volt Meter",
+        "Overload Protection",
+        "Low Voltage Indicator",
+        "Solar Panel Included",
+        "Stackable Compatibility: 750, 1000, 1500, 2000 Models",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X Lithium 400 Watt Mini Solar Generator is the most compact option at 33 lbs, delivering 400 watts continuous power with 800 watts peak. Features 40 amp hours of lithium battery capacity with stackable design for system expandability.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/px-400-pic-new2-1-500x331.jpg",
+      "warranty": "1 Year",
+      "category": "Lithium Solar Generator - Mini",
+      "included_accessories": [
+        "Solar Panel"
+      ],
+      "sku": "Lithium-400-mini"
+    },
+    {
+      "model": "Power X 750 AGM Solar Generator",
+      "price": "$750.00",
+      "wattage": "750W Continuous / 1,500W Peak",
+      "specifications": {
+        "continuous_power": "750 Watts",
+        "peak_power": "1,500 Watts",
+        "battery_type": "AGM (Absorbent Glass Mat)",
+        "battery_capacity": "100 Amp Hours",
+        "output_voltage": "120V AC",
+        "ac_outlets": "4x 120V AC Outlets",
+        "dc_outlets": "2x 12V DC Outlets",
+        "dc_charger": "1x 12V Onboard Charger",
+        "usb_ports": "4x 3.0A Quick Charge USB Ports",
+        "weight": "75 lbs",
+        "dimensions": "24\" x 15\" x 14\"",
+        "inverter_type": "Pure Sine Wave"
+      },
+      "features": [
+        "AGM Battery Technology",
+        "Built-in Volt Meter",
+        "Overload Protection",
+        "Low Voltage Indicator",
+        "Stackable unit compatible with Power X 400",
+        "Includes Solar Panel Kit",
+        "Qualifies for 30% Federal Tax Credit"
+      ],
+      "description": "The Power X 750 AGM Solar Generator features traditional AGM battery technology for reliable performance. Delivers 750 watts continuous power with 100 amp hours of capacity in a compact design with full solar charging capabilities.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/750Lithium2.jpg",
+      "warranty": "1 Year",
+      "category": "AGM Solar Generator",
+      "included_accessories": [
+        "Solar Panel Kit"
+      ],
+      "sku": "AGM-750"
+    }
+  ],
+  "batteries": [
+    {
+      "model": "Power X Lithium X120",
+      "price": "$1,745.00",
+      "wattage": "36,000W Burst Capability",
+      "specifications": {
+        "capacity": "120 Amp Hours",
+        "voltage_range": "12V-15.5V",
+        "cycle_life": "20,000 cycles (~30 years)",
+        "battery_type": "Lithium",
+        "weight": "58 lbs",
+        "dimensions": "6\" x 19\" x 9.5\"",
+        "input_ports": "4 inputs on distribution block",
+        "burst_power": "36,000 Watts"
+      },
+      "features": [
+        "Customizable size (adjustable by amp hour, voltage, or physical dimensions)",
+        "20,000 cycle lifespan (~30 years)",
+        "4-input distribution block",
+        "36,000 watt burst capability",
+        "Voltage range 12V-15.5V",
+        "High-capacity energy storage"
+      ],
+      "description": "The Power X Lithium X120 is a high-capacity lithium battery designed for long-term energy storage with 20,000 cycle lifespan. Supports voltage between 12V and 15.5V with 36,000-watt burst power capability and customizable configuration options.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/battery5-500x269.jpg",
+      "warranty": "Standard Warranty",
+      "category": "Lithium Battery",
+      "sku": "Lithium-X120-amp"
+    },
+    {
+      "model": "Power X Lithium X90 amp",
+      "price": "$1,300.00",
+      "wattage": "N/A",
+      "specifications": {
+        "capacity": "90 Amp Hours",
+        "voltage_range": "12V",
+        "battery_type": "Lithium",
+        "weight": "39 lbs",
+        "dimensions": "6\" x 17\" x 9.5\""
+      },
+      "features": [
+        "90 amp hour capacity",
+        "Lightweight at 39 lbs",
+        "Compact dimensions",
+        "High-quality lithium technology"
+      ],
+      "description": "The Power X Lithium X90 amp battery provides 90 amp hours of reliable energy storage in a compact 39 lb package. Ideal for expanding existing solar generator systems or building custom power solutions.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2022/05/power-x-9o-amp-3-500x667.jpg",
+      "warranty": "Standard Warranty",
+      "category": "Lithium Battery",
+      "sku": "Lithium-X90-amp"
+    },
+    {
+      "model": "Power X Lithium X80",
+      "price": "$1,200.00",
+      "wattage": "24,000W Burst Capability",
+      "specifications": {
+        "capacity": "80 Amp Hours",
+        "voltage_range": "12V-15.5V",
+        "cycle_life": "25,000 cycles (~30 years)",
+        "battery_type": "Lithium",
+        "weight": "43 lbs (39 lbs net)",
+        "dimensions": "6\" x 17\" x 9.5\"",
+        "burst_power": "24,000 Watts"
+      },
+      "features": [
+        "Customizable in size, amp hour, or voltage",
+        "25,000 cycle life (~30 years)",
+        "24,000 watt burst capability",
+        "4-input distribution block included",
+        "Charges and operates at 12V to 15.5V"
+      ],
+      "description": "The Power X Lithium X80 battery features 80 amp hours of capacity with 25,000 cycle lifespan for approximately 30 years of use. Handles up to 24,000 watt burst power with customizable configuration options.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/battery2-500x479.jpg",
+      "warranty": "Standard Warranty",
+      "category": "Lithium Battery",
+      "sku": "Lithium-X80-amp"
+    },
+    {
+      "model": "Power X Lithium Flat Pack 45 AH",
+      "price": "$950.00",
+      "wattage": "N/A",
+      "specifications": {
+        "capacity": "45 Amp Hours",
+        "voltage_range": "12V",
+        "battery_type": "Lithium Flat Pack",
+        "weight": "19 lbs",
+        "dimensions": "8.5\" x 6.75\" x 8.5\""
+      },
+      "features": [
+        "Flat pack design",
+        "45 amp hour capacity",
+        "Ultra-lightweight at 19 lbs",
+        "Compact form factor",
+        "Easy installation"
+      ],
+      "description": "The Power X Lithium Flat Pack 45 AH battery features a space-efficient flat pack design with 45 amp hours of capacity. Ultra-lightweight at just 19 lbs, perfect for applications where weight and space are critical.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2022/05/Resized_20220602_101057-500x667.jpg",
+      "warranty": "Standard Warranty",
+      "category": "Lithium Battery - Flat Pack",
+      "sku": "Lithium-45-flat-pack"
+    },
+    {
+      "model": "Power X Lithium Flat Pack 40 AH",
+      "price": "$850.00",
+      "wattage": "N/A",
+      "specifications": {
+        "capacity": "40 Amp Hours",
+        "voltage_range": "12V",
+        "battery_type": "Lithium Flat Pack",
+        "weight": "19 lbs",
+        "dimensions": "8.5\" x 6.75\" x 8.5\""
+      },
+      "features": [
+        "Flat pack design",
+        "40 amp hour capacity",
+        "Ultra-lightweight at 19 lbs",
+        "Compact form factor",
+        "Easy installation"
+      ],
+      "description": "The Power X Lithium Flat Pack 40 AH battery offers 40 amp hours of capacity in a space-efficient flat pack design. Weighing just 19 lbs, it's ideal for weight-sensitive applications and tight spaces.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2022/05/Resized_20220602_101057-500x667.jpg",
+      "warranty": "Standard Warranty",
+      "category": "Lithium Battery - Flat Pack",
+      "sku": "Lithium-40-flat-pack"
+    },
+    {
+      "model": "Power X Lithium 45 AH Stock Location",
+      "price": "$950.00",
+      "wattage": "N/A",
+      "specifications": {
+        "capacity": "45 Amp Hours",
+        "voltage_range": "12V",
+        "battery_type": "Lithium",
+        "weight": "19 lbs",
+        "dimensions": "8.5\" x 6.75\" x 8.5\""
+      },
+      "features": [
+        "45 amp hour capacity",
+        "Lightweight at 19 lbs",
+        "Compact design",
+        "In-stock availability",
+        "High-quality lithium cells"
+      ],
+      "description": "The Power X Lithium 45 AH Stock Location battery provides 45 amp hours of reliable energy storage. Lightweight at 19 lbs with compact dimensions, ready to ship from stock location.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2022/05/power-x-4o-amp-1-500x667.jpeg",
+      "warranty": "Standard Warranty",
+      "category": "Lithium Battery",
+      "sku": "Lithium-X40-amp-1"
+    },
+    {
+      "model": "Power X Lithium 40 AH Stock Location",
+      "price": "$850.00",
+      "wattage": "N/A",
+      "specifications": {
+        "capacity": "40 Amp Hours",
+        "voltage_range": "12V",
+        "battery_type": "Lithium",
+        "weight": "19 lbs",
+        "dimensions": "8.5\" x 6.75\" x 8.5\""
+      },
+      "features": [
+        "40 amp hour capacity",
+        "Lightweight at 19 lbs",
+        "Compact design",
+        "In-stock availability",
+        "High-quality lithium cells"
+      ],
+      "description": "The Power X Lithium 40 AH Stock Location battery delivers 40 amp hours of energy storage in a lightweight 19 lb package. Compact and ready to ship from stock location for immediate availability.",
+      "image_url": "https://powerxgenerators.com/wp-content/uploads/2022/05/power-x-4o-amp-1-500x667.jpeg",
+      "warranty": "Standard Warranty",
+      "category": "Lithium Battery",
+      "sku": "Lithium-X40-amp"
+    }
+  ],
+  "metadata": {
+    "scrape_date": "2025-11-28",
+    "source": "powerxgenerators.com",
+    "total_generators": 16,
+    "total_batteries": 7,
+    "notes": [
+      "All lithium generators qualify for 30% Federal Tax Credit",
+      "Shipping costs not included - must contact for rates",
+      "Custom shipping selection required at checkout for some products",
+      "All lithium units feature 2.5x longer runtime and 2x faster recharge vs traditional units",
+      "Mini units (400W, 750W, 1000W) are stackable and compatible with each other"
+    ]
+  }
+}
