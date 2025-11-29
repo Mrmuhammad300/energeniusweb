@@ -35,6 +35,27 @@ export default function ProductsPage() {
       .catch(() => setLoading(false))
   }, [])
 
+  // Scroll to product if SKU is in URL hash
+  useEffect(() => {
+    if (!loading && products.length > 0) {
+      const hash = window.location.hash.slice(1) // Remove the # symbol
+      if (hash) {
+        // Wait a bit for the page to render
+        setTimeout(() => {
+          const element = document.getElementById(hash)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            // Add a highlight effect
+            element.classList.add('ring-4', 'ring-emerald-500', 'ring-offset-4')
+            setTimeout(() => {
+              element.classList.remove('ring-4', 'ring-emerald-500', 'ring-offset-4')
+            }, 3000)
+          }
+        }, 100)
+      }
+    }
+  }, [loading, products])
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -107,7 +128,7 @@ export default function ProductsPage() {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products?.map((product) => (
-            <Card key={product?.id} className="overflow-hidden hover:shadow-xl transition-all">
+            <Card key={product?.id} id={product?.sku} className="overflow-hidden hover:shadow-xl transition-all">
               <div className="relative aspect-square">
                 <Image
                   src={product?.imageUrl || ''}

@@ -371,7 +371,7 @@ export default function CalculatorsPage() {
                           <div className="space-y-4">
                             <div className="flex items-center justify-between">
                               <h3 className="text-lg font-semibold">
-                                {exceedsCapacity ? 'Our Largest Available Units' : 'Top 3 Recommended Products'}
+                                {exceedsCapacity ? 'Our Largest Available Units' : 'Recommended Products'}
                               </h3>
                               {exceedsCapacity && (
                                 <Badge variant="secondary" className="bg-amber-100 text-amber-700">
@@ -397,7 +397,7 @@ export default function CalculatorsPage() {
                                     </CardDescription>
                                   </CardHeader>
                                   <CardContent>
-                                    <Link href={`/products?sku=${product.sku}`}>
+                                    <Link href={`/products#${product.sku}`}>
                                       <Button variant="outline" className="w-full">
                                         View Details
                                       </Button>
