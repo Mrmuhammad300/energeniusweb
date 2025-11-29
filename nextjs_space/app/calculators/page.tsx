@@ -272,10 +272,10 @@ export default function CalculatorsPage() {
                         </p>
                       </div>
 
-                      {/* Check if capacity exceeds all available products */}
+                      {/* Check if capacity exceeds 80% of largest product */}
                       {(() => {
                         const maxProduct = products.length > 0 ? Math.max(...products.map(p => p.wattage)) : 0;
-                        const exceedsCapacity = recommendedWattage > maxProduct * 1.2;
+                        const exceedsCapacity = recommendedWattage > maxProduct * 0.8;
 
                         return exceedsCapacity ? (
                           // Custom Solution Message
@@ -285,10 +285,10 @@ export default function CalculatorsPage() {
                                 <AlertCircle className="h-8 w-8 text-amber-600 shrink-0" />
                                 <div>
                                   <CardTitle className="text-xl text-amber-900 dark:text-amber-100">
-                                    Custom Solution Required
+                                    Custom Solution Recommended
                                   </CardTitle>
                                   <CardDescription className="text-amber-800 dark:text-amber-200 mt-2">
-                                    Your power requirements exceed our standard product line. We can build a custom solution tailored to your specific needs.
+                                    Your power requirements are approaching or exceeding our standard product capacity. We recommend a custom solution tailored to your specific needs.
                                   </CardDescription>
                                 </div>
                               </div>
@@ -364,7 +364,7 @@ export default function CalculatorsPage() {
                       {/* Standard Product Recommendations */}
                       {recommendedProducts.length > 0 && (() => {
                         const maxProduct = products.length > 0 ? Math.max(...products.map(p => p.wattage)) : 0;
-                        const exceedsCapacity = recommendedWattage > maxProduct * 1.2;
+                        const exceedsCapacity = recommendedWattage > maxProduct * 0.8;
                         
                         return (
                           <div className="space-y-4">
@@ -381,7 +381,7 @@ export default function CalculatorsPage() {
                             
                             {exceedsCapacity && (
                               <p className="text-sm text-gray-600 dark:text-gray-400">
-                                While these are our most powerful standard units, we recommend a custom solution for your {recommendedWattage.toLocaleString()}W requirements.
+                                Your {recommendedWattage.toLocaleString()}W requirement is at or near the capacity limit of standard units. We recommend exploring custom solutions for optimal performance and reliability.
                               </p>
                             )}
 
