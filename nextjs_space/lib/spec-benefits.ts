@@ -16,6 +16,64 @@ export interface ProductBenefit {
 }
 
 /**
+ * Convert Amp Hours to Watt Hours based on system voltage
+ * @param ampHours - Battery capacity in Amp Hours
+ * @param watts - Generator wattage rating
+ * @returns Estimated capacity in Watt Hours
+ */
+export function convertAmpHoursToWattHours(ampHours: number, watts: number): number {
+  // Estimate battery voltage based on generator wattage
+  // Small units (< 2000W) typically use 12V battery banks
+  // Medium units (2000-10000W) typically use 24-48V banks
+  // Large units (> 10000W) typically use 48V banks
+  
+  let voltage = 12; // Default for small units
+  
+  if (watts >= 15000) {
+    voltage = 48;
+  } else if (watts >= 3000) {
+    voltage = 48;
+  } else if (watts >= 1500) {
+    voltage = 24;
+  }
+  
+  return ampHours * voltage;
+}
+
+/**
+ * Parse battery capacity string and convert to Watt Hours
+ * @param capacityStr - Battery capacity string (e.g., "120 Amp Hours", "1440Wh")
+ * @param watts - Generator wattage for voltage estimation
+ * @returns Capacity in Watt Hours
+ */
+export function parseCapacityToWattHours(capacityStr: string | null | undefined, watts: number): number {
+  if (!capacityStr) return watts * 0.8; // Fallback estimate
+  
+  // Check if already in Wh format
+  const whMatch = capacityStr.match(/(\d+)\s*W[hH]/i);
+  if (whMatch) {
+    return parseInt(whMatch[1]);
+  }
+  
+  // Parse Amp Hours
+  const ahMatch = capacityStr.match(/(\d+)\s*Amp\s*Hours?/i);
+  if (ahMatch) {
+    const ampHours = parseInt(ahMatch[1]);
+    return convertAmpHoursToWattHours(ampHours, watts);
+  }
+  
+  // If just a number, assume it's Ah and convert
+  const numMatch = capacityStr.match(/(\d+)/);
+  if (numMatch) {
+    const ampHours = parseInt(numMatch[1]);
+    return convertAmpHoursToWattHours(ampHours, watts);
+  }
+  
+  // Fallback: estimate based on wattage
+  return watts * 0.8;
+}
+
+/**
  * Get practical runtime examples based on wattage capacity
  * @param watts - Generator wattage capacity
  * @returns Array of appliance runtime examples

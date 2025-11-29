@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Battery, Zap, Shield, ArrowRight, Sparkles, Activity, TrendingUp } from 'lucide-react'
-import { getBatteryRuntimeExamples, getQuickBenefitTags, getBenefitHeadline } from '@/lib/spec-benefits'
+import { getBatteryRuntimeExamples, getQuickBenefitTags, getBenefitHeadline, parseCapacityToWattHours } from '@/lib/spec-benefits'
 
 interface Product {
   id: string
@@ -163,9 +163,8 @@ export default function ProductsPage() {
                   const benefitHeadline = getBenefitHeadline(watts);
                   const benefitTags = getQuickBenefitTags(watts);
                   
-                  // Parse battery capacity for runtime examples
-                  const capacityMatch = product?.batteryCapacity?.match(/(\d+)/);
-                  const wattHours = capacityMatch ? parseInt(capacityMatch[1]) : watts;
+                  // Parse battery capacity and convert to Watt Hours for accurate runtime examples
+                  const wattHours = parseCapacityToWattHours(product?.batteryCapacity, watts);
                   const runtimeExamples = getBatteryRuntimeExamples(wattHours);
 
                   return (
@@ -198,7 +197,7 @@ export default function ProductsPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Battery className="h-3 w-3 text-sky-600" />
-                          <span>{product?.batteryCapacity} {product?.batteryType}</span>
+                          <span>{wattHours.toLocaleString()}Wh {product?.batteryType}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Shield className="h-3 w-3 text-emerald-600" />
