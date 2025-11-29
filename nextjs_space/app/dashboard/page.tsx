@@ -1,597 +1,561 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Progress } from '@/components/ui/progress'
-import { Separator } from '@/components/ui/separator'
-import { useToast } from '@/hooks/use-toast'
-import {
-  Activity,
-  Battery,
-  Zap,
-  TrendingUp,
-  TrendingDown,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  Droplet,
-  Sun,
-  Wind,
-  Calendar,
-  DollarSign,
-  FileText,
-  Bell,
-  Settings,
-  Download,
-  Sparkles
-} from 'lucide-react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { initializeApp, getApps } from 'firebase/app';
+import { getAuth, signInAnonymously, onAuthStateChanged, User } from 'firebase/auth';
+import { getFirestore, doc, setDoc, getDoc, onSnapshot, Firestore } from 'firebase/firestore';
+import { DollarSign, Zap, BatteryCharging, Heart, BarChart, Settings, Calculator, BookOpen, CreditCard, Lock, Users, Activity } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
-// Sample data for demonstration
-const sampleData = {
-  systemStatus: {
-    health: 94,
-    batteryCharge: 87,
-    powerOutput: 2450,
-    runtime: '12h 34m',
-    temperature: 72,
-    lastUpdate: 'Just now'
-  },
-  recentAlerts: [
-    {
-      id: 1,
-      type: 'info',
-      title: 'Optimal charging time detected',
-      message: 'Weather forecast shows sunny conditions. Recommend charging between 10 AM - 2 PM.',
-      time: '2 hours ago',
-      icon: Sun
-    },
-    {
-      id: 2,
-      type: 'success',
-      title: 'System health check complete',
-      message: 'All systems operating normally. Battery health at 94%.',
-      time: '1 day ago',
-      icon: CheckCircle
-    },
-    {
-      id: 3,
-      type: 'warning',
-      title: 'Maintenance reminder',
-      message: 'Scheduled maintenance recommended in 30 days.',
-      time: '3 days ago',
-      icon: AlertTriangle
-    }
-  ],
-  energyUsage: {
-    today: 18.4,
-    week: 127.8,
-    month: 542.3,
-    trend: 'down',
-    savingsVsGrid: 47.32
-  },
-  costAnalysis: {
-    dailyCost: 0.00,
-    monthlySavings: 89.45,
-    yearlySavings: 1073.40,
-    gridComparison: {
-      energenius: 0,
-      grid: 127.30
-    }
-  },
-  predictiveInsights: [
-    {
-      title: 'Battery Optimization',
-      description: 'Your battery typically reaches full charge by 1 PM. Consider shifting heavy usage to afternoon hours for maximum efficiency.',
-      impact: 'high',
-      savings: '+$12/month'
-    },
-    {
-      title: 'Maintenance Forecast',
-      description: 'Based on current usage patterns, next maintenance check recommended in 30 days to maintain optimal performance.',
-      impact: 'medium',
-      savings: 'Prevents downtime'
-    },
-    {
-      title: 'Weather-Based Planning',
-      description: 'Cloudy conditions expected next week. Consider pre-charging to 100% before Monday.',
-      impact: 'low',
-      savings: 'Continuous power'
-    }
-  ],
-  documents: [
-    { name: 'User Manual - EnerGenius Guardian 5000', type: 'PDF', size: '2.4 MB' },
-    { name: 'Warranty Certificate', type: 'PDF', size: '185 KB' },
-    { name: 'Installation Guide', type: 'PDF', size: '1.8 MB' },
-    { name: 'Maintenance Schedule', type: 'PDF', size: '245 KB' }
-  ]
+// Brand Colors
+const COLORS = {
+  primaryGreen: '#006C4A',
+  primaryGreenLight: '#008C5A',
+  accentGold: '#F5B932',
+  wordmarkGreen: '#2B7F26',
+  textDark: '#222222',
+  backgroundSoftGray: '#F7F8FA',
+  accentTeal: '#1CA6A3'
+};
+
+// Firebase configuration from environment variables
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || '',
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || '',
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || '',
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || '',
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || '',
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || ''
+};
+
+const appId = 'energenius-app-default';
+
+// Initial data
+const initialGeneratorData = {
+  health: 98,
+  currentCharge: 75,
+  dailyUsageKWH: 8.5,
+  temperature: 35,
+  runtimeHours: 1250,
+};
+
+const initialSavingsData = {
+  currentRate: 0.15,
+  dailySolarProduction: 10,
+  potentialCreditPerMonth: 0,
+};
+
+// Helper for Firestore paths
+const getUserDocPath = (userId: string) => {
+  return `artifacts/${appId}/users/${userId}/appData/generatorMetrics`;
+};
+
+// Loading State Component
+const LoadingState = () => (
+  <div className="flex flex-col items-center justify-center h-full min-h-64 p-6 bg-white rounded-xl shadow-lg">
+    <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4" style={{ borderColor: COLORS.primaryGreen, borderTopColor: COLORS.accentGold }}></div>
+    <p className="mt-4 text-lg text-gray-700 font-semibold">Loading Dashboard...</p>
+    <p className="text-sm text-gray-500">Authenticating and retrieving generator data.</p>
+  </div>
+);
+
+// Savings Calculator Tool
+interface SavingsCalculatorProps {
+  userId: string;
+  db: Firestore;
+  data: typeof initialSavingsData;
+  onSave: (data: typeof initialSavingsData) => void;
 }
 
-export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState('overview')
-  const { toast } = useToast()
-  const { systemStatus, recentAlerts, energyUsage, costAnalysis, predictiveInsights, documents } = sampleData
+const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({ userId, db, data, onSave }) => {
+  const [rate, setRate] = useState(data.currentRate.toString());
+  const [production, setProduction] = useState(data.dailySolarProduction.toString());
+  const [calculatedSavings, setCalculatedSavings] = useState(0);
+  const { toast } = useToast();
 
-  const handleDemoFeatureClick = (featureName: string) => {
+  useEffect(() => {
+    const monthlyProduction = parseFloat(production) * 30.4;
+    const savings = monthlyProduction * parseFloat(rate);
+    setCalculatedSavings(savings);
+  }, [rate, production]);
+
+  const handleSave = () => {
+    onSave({
+      currentRate: parseFloat(rate),
+      dailySolarProduction: parseFloat(production),
+      potentialCreditPerMonth: calculatedSavings,
+    });
     toast({
-      title: 'Demo Feature',
-      description: `${featureName} is not yet implemented. This is a demo dashboard showing what the interface will look like.`,
-    })
-  }
+      title: 'Success!',
+      description: 'Savings data saved successfully.',
+    });
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Demo Banner */}
-      <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white py-3">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-sm font-medium flex items-center justify-center gap-2">
-            <Sparkles className="h-4 w-4" />
-            <span>This is a DEMO dashboard showing what Smart Connect will look like. Real-time data integration coming soon!</span>
-            <Sparkles className="h-4 w-4" />
+    <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+      <h2 className="text-2xl font-bold mb-4 flex items-center" style={{ color: COLORS.primaryGreen }}>
+        <Calculator size={20} className="mr-2" /> Energy Savings Estimator
+      </h2>
+      <p className="text-gray-600 mb-6">Estimate your potential savings and credit based on your local electricity rate and daily solar generation.</p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="rate" className="block text-sm font-medium text-gray-700 mb-1">Local Electric Rate ($/kWh)</Label>
+          <Input
+            id="rate"
+            type="number"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+            className="w-full"
+            step="0.01"
+            min="0"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="production" className="block text-sm font-medium text-gray-700 mb-1">Avg. Daily Solar Production (kWh)</Label>
+          <Input
+            id="production"
+            type="number"
+            value={production}
+            onChange={(e) => setProduction(e.target.value)}
+            className="w-full"
+            step="0.1"
+            min="0"
+          />
+        </div>
+      </div>
+
+      <div className="mt-8 p-4 rounded-lg flex flex-col sm:flex-row items-center justify-between" style={{ backgroundColor: COLORS.backgroundSoftGray, borderLeft: `4px solid ${COLORS.accentGold}` }}>
+        <div className="flex items-center">
+          <DollarSign size={28} style={{ color: COLORS.wordmarkGreen }} />
+          <div className="ml-3">
+            <p className="text-sm font-medium text-gray-500">Estimated Potential Monthly Savings</p>
+            <p className="text-3xl font-extrabold" style={{ color: COLORS.wordmarkGreen }}>
+              ${calculatedSavings.toFixed(2)}
+            </p>
+          </div>
+        </div>
+        <Button
+          onClick={handleSave}
+          className="mt-4 sm:mt-0"
+          style={{ backgroundColor: COLORS.primaryGreenLight }}
+        >
+          Save & Update Profile
+        </Button>
+      </div>
+      <p className="mt-4 text-xs text-gray-500">Calculation is an estimate and does not include taxes or utility fees.</p>
+    </div>
+  );
+};
+
+// Metrics Card
+interface MetricsCardProps {
+  icon: React.ElementType;
+  title: string;
+  value: number | string;
+  unit: string;
+  color: string;
+  barWidth?: number;
+}
+
+const MetricsCard: React.FC<MetricsCardProps> = ({ icon: Icon, title, value, unit, color, barWidth }) => {
+  return (
+    <div className="bg-white p-5 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
+      <div className="flex justify-between items-start">
+        <div className="p-3 rounded-full" style={{ backgroundColor: `${color}1A`, color }}>
+          <Icon size={24} />
+        </div>
+        <div className="text-right">
+          <p className="text-sm font-medium text-gray-500">{title}</p>
+          <p className="text-3xl font-extrabold" style={{ color: COLORS.textDark }}>
+            {value} <span className="text-xl font-semibold text-gray-500">{unit}</span>
           </p>
         </div>
       </div>
+      {barWidth !== undefined && (
+        <div className="mt-4">
+          <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div
+              className="h-2.5 rounded-full transition-all duration-300"
+              style={{ width: `${barWidth}%`, backgroundColor: color }}
+            ></div>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">{title} level</p>
+        </div>
+      )}
+    </div>
+  );
+};
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">EnerGenius Smart Dashboard</h1>
-              <p className="text-gray-600">Monitor and optimize your solar generator performance</p>
-            </div>
-            <div className="flex gap-3">
-              <Button variant="outline" className="gap-2" onClick={() => handleDemoFeatureClick('Alerts')}>
-                <Bell className="h-4 w-4" />
-                Alerts
-                <Badge variant="secondary">3</Badge>
-              </Button>
-              <Button variant="outline" className="gap-2" onClick={() => handleDemoFeatureClick('Settings')}>
-                <Settings className="h-4 w-4" />
-                Settings
-              </Button>
-            </div>
+// Integration Card
+interface IntegrationCardProps {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  color: string;
+}
+
+const IntegrationCard: React.FC<IntegrationCardProps> = ({ icon: Icon, title, description, color }) => (
+  <div className="bg-white p-5 rounded-xl shadow-lg border-t-4" style={{ borderColor: color }}>
+    <div className="flex items-center mb-3">
+      <Icon size={24} style={{ color }} className="mr-3" />
+      <h3 className="text-xl font-semibold" style={{ color: COLORS.textDark }}>{title}</h3>
+    </div>
+    <p className="text-gray-600 mb-4">{description}</p>
+    <button
+      className="text-sm font-medium transition duration-200 hover:underline"
+      style={{ color: color }}
+    >
+      Future Integration
+    </button>
+  </div>
+);
+
+// Main Application Component
+export default function DashboardPage() {
+  const [db, setDb] = useState<Firestore | null>(null);
+  const [auth, setAuth] = useState<any>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [isAuthReady, setIsAuthReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [generatorData, setGeneratorData] = useState(initialGeneratorData);
+  const [savingsData, setSavingsData] = useState(initialSavingsData);
+  const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const { toast } = useToast();
+
+  // Check if Firebase is properly configured
+  const isFirebaseConfigured = useMemo(() => {
+    return firebaseConfig.apiKey && firebaseConfig.projectId;
+  }, []);
+
+  // Firebase initialization and auth
+  useEffect(() => {
+    if (!isFirebaseConfigured) {
+      setError('Firebase is not configured. Please set up Firebase environment variables.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+      const firestore = getFirestore(app);
+      const authInstance = getAuth(app);
+      setDb(firestore);
+      setAuth(authInstance);
+
+      const unsubscribe = onAuthStateChanged(authInstance, async (user: User | null) => {
+        if (user) {
+          setUserId(user.uid);
+          const docRef = doc(firestore, getUserDocPath(user.uid));
+          const docSnap = await getDoc(docRef);
+
+          if (!docSnap.exists()) {
+            await setDoc(docRef, { generator: initialGeneratorData, savings: initialSavingsData });
+          }
+        } else {
+          await signInAnonymously(authInstance);
+        }
+        setIsAuthReady(true);
+      });
+
+      return () => unsubscribe();
+    } catch (e) {
+      console.error('Firebase initialization failed:', e);
+      setError('Failed to connect to cloud services. Please check Firebase configuration.');
+      setIsLoading(false);
+    }
+  }, [isFirebaseConfigured]);
+
+  // Firestore data listener
+  useEffect(() => {
+    if (!isAuthReady || !db || !userId) return;
+
+    const docRef = doc(db, getUserDocPath(userId));
+
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setGeneratorData(data.generator || initialGeneratorData);
+        setSavingsData(data.savings || initialSavingsData);
+      }
+      setIsLoading(false);
+    }, (err) => {
+      console.error('Firestore subscription error:', err);
+      setError('Error fetching real-time data.');
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [isAuthReady, db, userId]);
+
+  // Data handlers
+  const handleSaveSavings = useCallback(async (newSavingsData: typeof initialSavingsData) => {
+    if (!db || !userId) {
+      console.error('Cannot save data: Database not initialized or user not signed in.');
+      return;
+    }
+    try {
+      const docRef = doc(db, getUserDocPath(userId));
+      await setDoc(docRef, { savings: newSavingsData }, { merge: true });
+      setSavingsData(newSavingsData);
+    } catch (e) {
+      console.error('Error saving savings data:', e);
+      setError('Failed to save savings data.');
+    }
+  }, [db, userId]);
+
+  const menuItems = useMemo(() => ([
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart },
+    { id: 'calculator', label: 'Savings Tool', icon: Calculator },
+    { id: 'access', label: 'Share Access', icon: Users },
+    { id: 'documents', label: 'Documents & RAG', icon: BookOpen },
+    { id: 'billing', label: 'Billing & Integrations', icon: CreditCard },
+  ]), []);
+
+  if (!isAuthReady || isLoading) {
+    return (
+      <div className="min-h-screen p-4 flex items-center justify-center bg-gray-50">
+        <LoadingState />
+      </div>
+    );
+  }
+
+  // Determine content based on active tab
+  let content;
+  switch (activeTab) {
+    case 'calculator':
+      content = db && userId ? <SavingsCalculator userId={userId} db={db} data={savingsData} onSave={handleSaveSavings} /> : null;
+      break;
+    case 'access':
+      content = (
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+          <h2 className="text-2xl font-bold mb-4 flex items-center" style={{ color: COLORS.primaryGreen }}>
+            <Lock size={20} className="mr-2" /> User Access & Sharing
+          </h2>
+          <p className="text-gray-600 mb-4">This cloud application uses secure authentication to protect your generator's data. You can share access with other verified RRG accounts.</p>
+          <div className="p-4 rounded-lg" style={{ backgroundColor: COLORS.backgroundSoftGray }}>
+            <p className="text-sm font-semibold text-gray-700">Your unique User ID for sharing and support:</p>
+            <code className="block mt-2 p-2 text-xs break-all rounded bg-white" style={{ color: COLORS.textDark, border: `1px solid ${COLORS.accentGold}` }}>
+              {userId || 'N/A - Anonymous'}
+            </code>
+          </div>
+          <div className="mt-6 text-sm text-gray-500">
+            <p className="mb-2">**Authentication Status:** Successfully signed in to Firebase.</p>
+            <p>When sharing, the other user must also be signed in to access shared data based on security rules.</p>
           </div>
         </div>
+      );
+      break;
+    case 'documents':
+      content = (
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+          <h2 className="text-2xl font-bold mb-4 flex items-center" style={{ color: COLORS.primaryGreen }}>
+            <BookOpen size={20} className="mr-2" /> Document Retrieval (RAG System Placeholder)
+          </h2>
+          <p className="text-gray-600 mb-6">This section will house our **RAG (Retrieval-Augmented Generation) system**, allowing you to upload manuals, warranties, and other documents. The system will then use AI to search, summarize, and answer questions based on your specific files.</p>
+          <IntegrationCard
+            icon={Settings}
+            title="RAG File Uploader"
+            description="Upload generator manuals and warranty documents here. This system handles multiple file types (PDF, DOCX, TXT) for smart retrieval."
+            color={COLORS.accentTeal}
+          />
+        </div>
+      );
+      break;
+    case 'billing':
+      content = (
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+          <h2 className="text-2xl font-bold mb-4 flex items-center" style={{ color: COLORS.primaryGreen }}>
+            <CreditCard size={20} className="mr-2" /> Paid Services & Billing (Integration Placeholders)
+          </h2>
+          <p className="text-gray-600 mb-6">Future paid services, such as premium monitoring, extended warranties, or priority support, will be managed here through integrated financial and legal platforms.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <IntegrationCard
+              icon={DollarSign}
+              title="Electric Bill Payment Portal"
+              description="Pay your monthly electric bill or generator lease/financing installment directly here. Managed by RRG for eligible customers."
+              color={COLORS.wordmarkGreen}
+            />
+            <IntegrationCard
+              icon={CreditCard}
+              title="Stripe Payment Gateway"
+              description="For secure processing of subscription payments and service fees."
+              color={COLORS.primaryGreenLight}
+            />
+            <IntegrationCard
+              icon={Zap}
+              title="Plaid Financial Linking"
+              description="For setting up direct debit or verifying accounts for large purchase options."
+              color={COLORS.accentGold}
+            />
+            <IntegrationCard
+              icon={BookOpen}
+              title="DocuSign Contracts"
+              description="For digitally signing extended warranty agreements or service contracts."
+              color={COLORS.accentTeal}
+            />
+          </div>
+        </div>
+      );
+      break;
+    case 'dashboard':
+    default:
+      content = (
+        <>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: COLORS.primaryGreen }}>Live Generator Status Overview</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <MetricsCard
+              icon={Heart}
+              title="System Health"
+              value={generatorData.health}
+              unit="%"
+              color={generatorData.health > 90 ? COLORS.wordmarkGreen : COLORS.accentGold}
+              barWidth={generatorData.health}
+            />
+            <MetricsCard
+              icon={BatteryCharging}
+              title="Current Charge"
+              value={generatorData.currentCharge}
+              unit="%"
+              color={COLORS.primaryGreenLight}
+              barWidth={generatorData.currentCharge}
+            />
+            <MetricsCard
+              icon={Zap}
+              title="Daily Usage"
+              value={generatorData.dailyUsageKWH.toFixed(1)}
+              unit="kWh"
+              color={COLORS.accentGold}
+            />
+            <MetricsCard
+              icon={Settings}
+              title="Runtime Total"
+              value={generatorData.runtimeHours}
+              unit="hrs"
+              color={COLORS.accentTeal}
+            />
+          </div>
 
-        {/* System Status Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600 flex items-center gap-2">
-                <Activity className="h-4 w-4 text-emerald-500" />
-                System Health
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex items-end gap-2">
-                  <span className="text-3xl font-bold text-gray-900">{systemStatus.health}%</span>
-                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 mb-1">
-                    Excellent
-                  </Badge>
-                </div>
-                <Progress value={systemStatus.health} className="h-2" />
-                <p className="text-xs text-gray-500">Last checked: {systemStatus.lastUpdate}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+                <h3 className="text-xl font-semibold mb-3" style={{ color: COLORS.primaryGreen }}>Estimated Financials</h3>
+                <p className="text-gray-600 mb-4">Savings calculation based on your current settings in the **Savings Tool** tab.</p>
+                <MetricsCard
+                  icon={DollarSign}
+                  title="Potential Monthly Credit"
+                  value={savingsData.potentialCreditPerMonth.toFixed(2)}
+                  unit="$"
+                  color={COLORS.wordmarkGreen}
+                />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+              <h3 className="text-xl font-semibold mb-3" style={{ color: COLORS.primaryGreen }}>Important Alerts</h3>
+              {generatorData.health < 95 ? (
+                <div className="text-red-600 bg-red-50 p-3 rounded-lg border border-red-200">
+                  <p className="font-bold">⚠️ Warning: Health Decline</p>
+                  <p className="text-sm mt-1">System health is at {generatorData.health}%. Consider scheduling diagnostics soon.</p>
+                </div>
+              ) : (
+                <div className="text-green-600 bg-green-50 p-3 rounded-lg border border-green-200">
+                  <p className="font-bold">✅ System Nominal</p>
+                  <p className="text-sm mt-1">All generator metrics are within optimal range.</p>
+                </div>
+              )}
+            </div>
+          </div>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600 flex items-center gap-2">
-                <Battery className="h-4 w-4 text-blue-500" />
-                Battery Charge
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex items-end gap-2">
-                  <span className="text-3xl font-bold text-gray-900">{systemStatus.batteryCharge}%</span>
-                  <TrendingUp className="h-5 w-5 text-green-500 mb-1" />
-                </div>
-                <Progress value={systemStatus.batteryCharge} className="h-2" />
-                <p className="text-xs text-gray-500">Estimated runtime: {systemStatus.runtime}</p>
-              </div>
-            </CardContent>
-          </Card>
+          {!isFirebaseConfigured && (
+            <div className="mt-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-lg">
+              <h3 className="text-lg font-bold text-amber-800 mb-2">⚠️ Firebase Configuration Required</h3>
+              <p className="text-amber-700 text-sm mb-3">
+                To enable real-time monitoring, cloud sync, and advanced features, please configure Firebase:
+              </p>
+              <ol className="list-decimal list-inside text-sm text-amber-700 space-y-1 mb-3">
+                <li>Create a Firebase project at <a href="https://console.firebase.google.com" target="_blank" rel="noopener noreferrer" className="underline">console.firebase.google.com</a></li>
+                <li>Enable Authentication (Anonymous sign-in)</li>
+                <li>Enable Firestore Database</li>
+                <li>Copy your Firebase config and add to environment variables</li>
+              </ol>
+              <p className="text-xs text-amber-600">Current status: Using demo data only</p>
+            </div>
+          )}
+        </>
+      );
+  }
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600 flex items-center gap-2">
-                <Zap className="h-4 w-4 text-amber-500" />
-                Power Output
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex items-end gap-2">
-                  <span className="text-3xl font-bold text-gray-900">{systemStatus.powerOutput.toLocaleString()}</span>
-                  <span className="text-gray-500 text-sm mb-1">W</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-gray-600">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-amber-500 h-2 rounded-full" style={{ width: '49%' }}></div>
-                  </div>
-                  <span>49%</span>
-                </div>
-                <p className="text-xs text-gray-500">of 5000W capacity</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600 flex items-center gap-2">
-                <Droplet className="h-4 w-4 text-teal-500" />
-                System Temp
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex items-end gap-2">
-                  <span className="text-3xl font-bold text-gray-900">{systemStatus.temperature}°F</span>
-                  <Badge variant="secondary" className="bg-green-100 text-green-700 mb-1">
-                    Normal
-                  </Badge>
-                </div>
-                <Progress value={40} className="h-2" />
-                <p className="text-xs text-gray-500">Optimal range: 60-85°F</p>
-              </div>
-            </CardContent>
-          </Card>
+  return (
+    <div className="min-h-screen font-sans" style={{ backgroundColor: COLORS.backgroundSoftGray }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold" style={{ color: COLORS.primaryGreen }}>EnerGenius Dashboard</h1>
+          <p className="text-lg font-medium" style={{ color: COLORS.wordmarkGreen }}>"Power That Thinks Ahead"</p>
         </div>
 
-        {/* Main Content Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="insights">AI Insights</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-          </TabsList>
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Sidebar Navigation */}
+          <nav className="lg:w-1/4 bg-white p-4 rounded-xl shadow-lg h-fit lg:sticky lg:top-8">
+            <h3 className="text-sm font-semibold uppercase mb-4 tracking-wider" style={{ color: COLORS.primaryGreen }}>Navigation</h3>
+            <ul>
+              {menuItems.map((item) => (
+                <li key={item.id} className="mb-2">
+                  <button
+                    onClick={() => setActiveTab(item.id)}
+                    className={`flex items-center w-full p-3 rounded-lg transition duration-200 ${
+                      activeTab === item.id
+                        ? 'font-bold text-white shadow-md'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                    style={
+                      activeTab === item.id
+                        ? { backgroundColor: COLORS.primaryGreenLight }
+                        : {}
+                    }
+                  >
+                    <item.icon size={20} className="mr-3" />
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
 
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid lg:grid-cols-2 gap-6">
-              {/* Important Alerts */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Bell className="h-5 w-5 text-emerald-600" />
-                    Important Alerts
-                  </CardTitle>
-                  <CardDescription>Recent notifications and recommendations</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {recentAlerts.map((alert) => {
-                      const Icon = alert.icon
-                      const bgColor = alert.type === 'warning' ? 'bg-amber-50' : alert.type === 'success' ? 'bg-emerald-50' : 'bg-blue-50'
-                      const iconColor = alert.type === 'warning' ? 'text-amber-500' : alert.type === 'success' ? 'text-emerald-500' : 'text-blue-500'
-                      
-                      return (
-                        <div key={alert.id} className={`p-4 rounded-lg ${bgColor} border border-gray-200`}>
-                          <div className="flex gap-3">
-                            <Icon className={`h-5 w-5 ${iconColor} shrink-0 mt-0.5`} />
-                            <div className="flex-grow">
-                              <p className="font-medium text-gray-900 mb-1">{alert.title}</p>
-                              <p className="text-sm text-gray-600 mb-2">{alert.message}</p>
-                              <p className="text-xs text-gray-500">{alert.time}</p>
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Energy Usage Summary */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-emerald-600" />
-                    Energy Usage Summary
-                  </CardTitle>
-                  <CardDescription>Your consumption at a glance</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1">Today</p>
-                        <p className="text-2xl font-bold text-gray-900">{energyUsage.today}</p>
-                        <p className="text-xs text-gray-500">kWh</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1">This Week</p>
-                        <p className="text-2xl font-bold text-gray-900">{energyUsage.week}</p>
-                        <p className="text-xs text-gray-500">kWh</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1">This Month</p>
-                        <p className="text-2xl font-bold text-gray-900">{energyUsage.month}</p>
-                        <p className="text-xs text-gray-500">kWh</p>
-                      </div>
-                    </div>
-
-                    <Separator />
-
-                    <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-sm font-medium text-gray-700">Savings vs. Grid Power</p>
-                        <Badge className="bg-emerald-600">Active</Badge>
-                      </div>
-                      <p className="text-3xl font-bold text-emerald-600">${energyUsage.savingsVsGrid}</p>
-                      <p className="text-xs text-gray-600 mt-1">saved this month</p>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      {energyUsage.trend === 'down' ? (
-                        <TrendingDown className="h-4 w-4 text-green-500" />
-                      ) : (
-                        <TrendingUp className="h-4 w-4 text-red-500" />
-                      )}
-                      <span>
-                        Usage is {energyUsage.trend === 'down' ? 'decreasing' : 'increasing'} compared to last month
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="mt-8 pt-4 border-t border-gray-200">
+              <p className="text-xs text-gray-500 font-medium">User ID:</p>
+              <code className="block text-xs break-all" style={{ color: COLORS.primaryGreen }}>
+                {userId || 'Not signed in'}
+              </code>
             </div>
 
-            {/* Cost Analysis */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5 text-emerald-600" />
-                  Cost Analysis & Savings
-                </CardTitle>
-                <CardDescription>Your financial impact with EnerGenius</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div className="text-center p-6 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-2">Daily Cost</p>
-                    <p className="text-4xl font-bold text-gray-900">${costAnalysis.dailyCost.toFixed(2)}</p>
-                    <p className="text-xs text-emerald-600 mt-2 font-medium">100% Solar Powered</p>
-                  </div>
-                  <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-2">Monthly Savings</p>
-                    <p className="text-4xl font-bold text-blue-600">${costAnalysis.monthlySavings}</p>
-                    <p className="text-xs text-gray-600 mt-2">vs. grid electricity</p>
-                  </div>
-                  <div className="text-center p-6 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-2">Projected Yearly</p>
-                    <p className="text-4xl font-bold text-amber-600">${costAnalysis.yearlySavings.toLocaleString()}</p>
-                    <p className="text-xs text-gray-600 mt-2">estimated savings</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Analytics Tab */}
-          <TabsContent value="analytics" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Advanced Analytics</CardTitle>
-                <CardDescription>Detailed performance metrics and trends</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-8">
-                  {/* Placeholder for charts */}
-                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-12 border-2 border-dashed border-gray-300 text-center">
-                    <Activity className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600 font-medium mb-2">Interactive Charts Coming Soon</p>
-                    <p className="text-sm text-gray-500 max-w-md mx-auto">
-                      This section will feature detailed charts showing power generation, consumption patterns, battery cycles, and efficiency metrics over time.
-                    </p>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="p-6 bg-blue-50 rounded-lg">
-                      <h3 className="font-semibold text-gray-900 mb-2">Charging Efficiency</h3>
-                      <p className="text-3xl font-bold text-blue-600 mb-2">94.2%</p>
-                      <p className="text-sm text-gray-600">Average solar-to-battery conversion rate this month</p>
-                    </div>
-                    <div className="p-6 bg-emerald-50 rounded-lg">
-                      <h3 className="font-semibold text-gray-900 mb-2">Battery Cycles Used</h3>
-                      <p className="text-3xl font-bold text-emerald-600 mb-2">127 / 8000</p>
-                      <p className="text-sm text-gray-600">Remaining lifespan: 98.4%</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* AI Insights Tab */}
-          <TabsContent value="insights" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-purple-600" />
-                  AI-Powered Insights
-                  <Badge variant="secondary" className="bg-purple-100 text-purple-700">Pro Feature</Badge>
-                </CardTitle>
-                <CardDescription>
-                  Predictive recommendations to optimize your system performance
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {predictiveInsights.map((insight, idx) => {
-                    const impactColors = {
-                      high: 'border-emerald-500 bg-emerald-50',
-                      medium: 'border-blue-500 bg-blue-50',
-                      low: 'border-gray-400 bg-gray-50'
-                    }
-                    const impactBadges = {
-                      high: 'bg-emerald-100 text-emerald-700',
-                      medium: 'bg-blue-100 text-blue-700',
-                      low: 'bg-gray-100 text-gray-700'
-                    }
-
-                    return (
-                      <div
-                        key={idx}
-                        className={`p-6 rounded-lg border-l-4 ${impactColors[insight.impact as keyof typeof impactColors]}`}
-                      >
-                        <div className="flex items-start justify-between mb-3">
-                          <h3 className="font-semibold text-gray-900">{insight.title}</h3>
-                          <div className="flex gap-2">
-                            <Badge className={impactBadges[insight.impact as keyof typeof impactBadges]}>
-                              {insight.impact} impact
-                            </Badge>
-                            <Badge variant="outline" className="border-emerald-500 text-emerald-700">
-                              {insight.savings}
-                            </Badge>
-                          </div>
-                        </div>
-                        <p className="text-gray-600 text-sm">{insight.description}</p>
-                      </div>
-                    )
-                  })}
-                </div>
-
-                <div className="mt-8 p-6 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg border border-purple-200">
-                  <div className="flex items-start gap-4">
-                    <Sparkles className="h-6 w-6 text-purple-600 shrink-0 mt-1" />
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">Want More AI Insights?</h3>
-                      <p className="text-sm text-gray-600 mb-4">
-                        Upgrade to Pro or Business plan to unlock advanced predictive analytics, automated optimization, and personalized recommendations.
-                      </p>
-                      <Link href="/subscription">
-                        <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-                          Explore Plans
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Documents Tab */}
-          <TabsContent value="documents" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-emerald-600" />
-                  Documents & Resources
-                </CardTitle>
-                <CardDescription>
-                  Access your product manuals, warranties, and maintenance guides
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {documents.map((doc, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-emerald-500 transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-red-100 rounded flex items-center justify-center">
-                          <FileText className="h-5 w-5 text-red-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-900">{doc.name}</p>
-                          <p className="text-xs text-gray-500">{doc.type} • {doc.size}</p>
-                        </div>
-                      </div>
-                      <Button variant="outline" size="sm" className="gap-2">
-                        <Download className="h-4 w-4" />
-                        Download
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-6 p-6 bg-blue-50 rounded-lg border border-blue-200">
-                  <h3 className="font-semibold text-gray-900 mb-2">Need Help?</h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Access our comprehensive knowledge base with installation guides, troubleshooting tips, and FAQs.
-                  </p>
-                  <Link href="/education">
-                    <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-100">
-                      Visit Knowledge Base
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Settings Tab */}
-          <TabsContent value="settings" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Settings className="h-5 w-5 text-emerald-600" />
-                  Dashboard Settings
-                </CardTitle>
-                <CardDescription>Configure your monitoring preferences</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="bg-gray-50 rounded-lg p-8 text-center border-2 border-dashed border-gray-300">
-                    <Settings className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600 font-medium mb-2">Settings Panel Coming Soon</p>
-                    <p className="text-sm text-gray-500 max-w-md mx-auto">
-                      Customize alert preferences, notification settings, data refresh intervals, and more.
-                    </p>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="p-4 border border-gray-200 rounded-lg">
-                      <h4 className="font-medium text-gray-900 mb-2">Current Plan</h4>
-                      <Badge className="bg-emerald-600">Demo Mode</Badge>
-                      <p className="text-sm text-gray-600 mt-2">Activate Smart Connect to unlock full features</p>
-                    </div>
-                    <div className="p-4 border border-gray-200 rounded-lg">
-                      <h4 className="font-medium text-gray-900 mb-2">System Model</h4>
-                      <p className="text-sm text-gray-700 font-medium">EnerGenius Guardian 5000</p>
-                      <p className="text-sm text-gray-600 mt-1">Serial: EG-GRD-5000-2024-001</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-
-        {/* Bottom CTA */}
-        <Card className="mt-8 bg-gradient-to-br from-emerald-600 to-teal-600 text-white border-none">
-          <CardContent className="p-8 text-center">
-            <h2 className="text-2xl font-bold mb-2">Love What You See?</h2>
-            <p className="text-emerald-50 mb-6 max-w-2xl mx-auto">
-              This demo shows just a glimpse of Smart Connect capabilities. Activate your subscription to get real-time data, AI insights, and 24/7 monitoring.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/subscription">
-                <Button size="lg" className="bg-white text-emerald-600 hover:bg-gray-100">
-                  View Pricing Plans
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button size="lg" variant="outline" className="border-white text-white bg-transparent hover:bg-white hover:text-emerald-600">
-                  Contact Sales
+            <div className="mt-4">
+              <Link href="/" className="w-full">
+                <Button variant="outline" className="w-full">
+                  ← Back to Website
                 </Button>
               </Link>
             </div>
-          </CardContent>
-        </Card>
+          </nav>
+
+          {/* Main Content Pane */}
+          <main className="lg:w-3/4">
+            {error && (
+              <div className="p-4 mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-lg">
+                <p className="font-bold">System Error</p>
+                <p className="text-sm">{error}</p>
+              </div>
+            )}
+            {content}
+          </main>
+        </div>
       </div>
     </div>
-  )
+  );
 }
