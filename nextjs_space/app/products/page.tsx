@@ -7,12 +7,14 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Battery, Zap, Shield, ArrowRight, Sparkles, Activity, TrendingUp } from 'lucide-react'
+import { getBatteryRuntimeExamples, getQuickBenefitTags, getBenefitHeadline } from '@/lib/spec-benefits'
 
 interface Product {
   id: string
   model: string
   sku: string
   price: string
+  priceNumeric: number
   wattage: string
   batteryCapacity: string
   batteryType: string
@@ -152,22 +154,60 @@ export default function ProductsPage() {
               </div>
               <CardContent className="p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-1">{product?.model}</h3>
-                <p className="text-2xl font-bold text-emerald-600 mb-3">{product?.price}</p>
+                <p className="text-2xl font-bold text-emerald-600 mb-2">{product?.price}</p>
 
-                <div className="space-y-1 mb-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-emerald-600" />
-                    <span>{product?.wattage}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Battery className="h-4 w-4 text-sky-600" />
-                    <span>{product?.batteryCapacity} {product?.batteryType}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Shield className="h-4 w-4 text-emerald-600" />
-                    <span>{product?.warranty}</span>
-                  </div>
-                </div>
+                {(() => {
+                  // Parse wattage for benefit calculations
+                  const wattsMatch = product?.wattage?.match(/(\d+)/);
+                  const watts = wattsMatch ? parseInt(wattsMatch[1]) : 0;
+                  const benefitHeadline = getBenefitHeadline(watts);
+                  const benefitTags = getQuickBenefitTags(watts);
+                  
+                  // Parse battery capacity for runtime examples
+                  const capacityMatch = product?.batteryCapacity?.match(/(\d+)/);
+                  const wattHours = capacityMatch ? parseInt(capacityMatch[1]) : watts;
+                  const runtimeExamples = getBatteryRuntimeExamples(wattHours);
+
+                  return (
+                    <>
+                      {/* Benefit Headline */}
+                      <p className="text-xs font-semibold text-emerald-700 mb-3 uppercase tracking-wide">
+                        {benefitHeadline}
+                      </p>
+
+                      {/* Real-World Benefits - Prominent Display */}
+                      {runtimeExamples.length > 0 && (
+                        <div className="mb-4 p-3 bg-gradient-to-br from-emerald-50 to-sky-50 rounded-lg border border-emerald-200">
+                          <p className="text-xs font-semibold text-gray-700 mb-2">Real-World Power:</p>
+                          <div className="space-y-1.5">
+                            {runtimeExamples.slice(0, 3).map((example, idx) => (
+                              <div key={idx} className="text-xs text-gray-700 flex items-start gap-1.5">
+                                <span className="text-emerald-600 flex-shrink-0">✓</span>
+                                <span className="leading-tight">{example}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Technical Specs - Compact */}
+                      <div className="space-y-1 mb-4 text-xs text-gray-500">
+                        <div className="flex items-center gap-2">
+                          <Zap className="h-3 w-3 text-emerald-600" />
+                          <span>{product?.wattage} Capacity</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Battery className="h-3 w-3 text-sky-600" />
+                          <span>{product?.batteryCapacity} {product?.batteryType}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Shield className="h-3 w-3 text-emerald-600" />
+                          <span>{product?.warranty}</span>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })()}
 
                 <Link href={`/quote?product=${product?.sku}`}>
                   <Button className="w-full bg-gradient-to-r from-emerald-600 to-sky-600">

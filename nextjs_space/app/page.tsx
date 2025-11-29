@@ -37,6 +37,7 @@ const products = [
     range: '400W - 2000W',
     image: 'https://cdn11.bigcommerce.com/s-4qrfjy9oz3/images/stencil/1280x1280/products/178/4202/RevoPower_Scout__70203.1723676273.png?c=1',
     description: 'Perfect for camping, tailgating, and emergency backup',
+    benefits: ['📱 50+ phone charges', '💻 30+ hours laptop', '☕ Powers coffee maker'],
     tier: 'Portable',
   },
   {
@@ -44,6 +45,7 @@ const products = [
     range: '3000W - 8000W',
     image: 'https://naturesgenerator.com/cdn/shop/files/natures-generator-powerhouse-gold-system-262674_1200x1200_crop_center.jpg',
     description: 'Whole-home backup power for peace of mind',
+    benefits: ['❄️ 30+ hour fridge', '💡 Lights full home', '⚕️ Powers medical devices'],
     tier: 'Home',
   },
   {
@@ -51,6 +53,7 @@ const products = [
     range: '10KW - 15KW',
     image: 'https://www.solarelectricsupply.com/media/product-images/remote-industrial-solar/RD-Series/skid-mounted-emergency-portable-solar-system-x.jpg',
     description: 'Professional-grade power for businesses',
+    benefits: ['🏢 Powers office equipment', '❄️ Runs AC units', '🔧 Heavy tools ready'],
     tier: 'Professional',
   },
   {
@@ -58,6 +61,7 @@ const products = [
     range: '20KW - 30KW',
     image: 'https://temaroofingservices.com/wp-content/uploads/2023/02/Solar-panel-on-a-commercial-rooftop.jpg',
     description: 'Maximum capacity for commercial applications',
+    benefits: ['🏭 Full building backup', '❄️ Multiple AC units', '🏢 Industrial operations'],
     tier: 'Commercial',
   },
 ]
@@ -220,7 +224,22 @@ export default function HomePage() {
                     <CardContent className="p-6">
                       <h3 className="text-xl font-bold text-gray-900 mb-1">{product.name}</h3>
                       <p className="text-emerald-600 font-semibold mb-2">{product.range}</p>
-                      <p className="text-gray-600 text-sm">{product.description}</p>
+                      <p className="text-gray-600 text-sm mb-3">{product.description}</p>
+                      
+                      {/* Real-World Benefits */}
+                      {product.benefits && (
+                        <div className="mt-3 pt-3 border-t border-gray-200">
+                          <p className="text-xs font-semibold text-gray-500 mb-2">What You Can Power:</p>
+                          <div className="space-y-1">
+                            {product.benefits.map((benefit, idx) => (
+                              <div key={idx} className="text-xs text-gray-700 flex items-center gap-1.5">
+                                <span className="text-emerald-600">✓</span>
+                                <span>{benefit}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </Link>
