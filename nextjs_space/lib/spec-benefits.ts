@@ -18,23 +18,30 @@ export interface ProductBenefit {
 /**
  * Convert Amp Hours to Watt Hours based on system voltage
  * @param ampHours - Battery capacity in Amp Hours
- * @param watts - Generator wattage rating
+ * @param watts - Generator wattage rating (0 for battery-only products)
  * @returns Estimated capacity in Watt Hours
  */
 export function convertAmpHoursToWattHours(ampHours: number, watts: number): number {
-  // Estimate battery voltage based on generator wattage
-  // Small units (< 2000W) typically use 12V battery banks
-  // Medium units (2000-10000W) typically use 24-48V banks
-  // Large units (> 10000W) typically use 48V banks
+  // Estimate battery voltage based on both wattage AND amp-hour capacity
+  // High amp-hour batteries (80+ Ah) typically indicate higher voltage systems
   
   let voltage = 12; // Default for small units
   
+  // Large commercial units (15kW+)
   if (watts >= 15000) {
     voltage = 48;
-  } else if (watts >= 3000) {
+  }
+  // Medium-large units (3kW-15kW)
+  else if (watts >= 3000) {
     voltage = 48;
-  } else if (watts >= 1500) {
+  }
+  // Small-medium units with high capacity (1.5kW-3kW) OR high Ah batteries
+  else if (watts >= 1500 || ampHours >= 80) {
     voltage = 24;
+  }
+  // Portable units with standard capacity
+  else {
+    voltage = 12;
   }
   
   return ampHours * voltage;
@@ -43,20 +50,23 @@ export function convertAmpHoursToWattHours(ampHours: number, watts: number): num
 /**
  * Parse battery capacity string and convert to Watt Hours
  * @param capacityStr - Battery capacity string (e.g., "120 Amp Hours", "1440Wh")
- * @param watts - Generator wattage for voltage estimation
+ * @param watts - Generator wattage for voltage estimation (can be 0 for battery-only products)
  * @returns Capacity in Watt Hours
  */
 export function parseCapacityToWattHours(capacityStr: string | null | undefined, watts: number): number {
-  if (!capacityStr) return watts * 0.8; // Fallback estimate
-  
-  // Check if already in Wh format
-  const whMatch = capacityStr.match(/(\d+)\s*W[hH]/i);
-  if (whMatch) {
-    return parseInt(whMatch[1]);
+  if (!capacityStr || capacityStr === 'N/A') {
+    // For products with no capacity data, estimate based on wattage
+    return watts > 0 ? watts * 0.8 : 0;
   }
   
-  // Parse Amp Hours
-  const ahMatch = capacityStr.match(/(\d+)\s*Amp\s*Hours?/i);
+  // Check if already in Wh format
+  const whMatch = capacityStr.match(/(\d+,?\d*)\s*W[hH]/i);
+  if (whMatch) {
+    return parseInt(whMatch[1].replace(/,/g, ''));
+  }
+  
+  // Parse Amp Hours (e.g., "120 Amp Hours" or "120Ah")
+  const ahMatch = capacityStr.match(/(\d+)\s*(?:Amp\s*Hours?|Ah)/i);
   if (ahMatch) {
     const ampHours = parseInt(ahMatch[1]);
     return convertAmpHoursToWattHours(ampHours, watts);
@@ -69,8 +79,8 @@ export function parseCapacityToWattHours(capacityStr: string | null | undefined,
     return convertAmpHoursToWattHours(ampHours, watts);
   }
   
-  // Fallback: estimate based on wattage
-  return watts * 0.8;
+  // Fallback: estimate based on wattage if available
+  return watts > 0 ? watts * 0.8 : 0;
 }
 
 /**

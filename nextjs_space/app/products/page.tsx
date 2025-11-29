@@ -160,7 +160,8 @@ export default function ProductsPage() {
                   // Parse wattage for benefit calculations
                   const wattsMatch = product?.wattage?.match(/(\d+)/);
                   const watts = wattsMatch ? parseInt(wattsMatch[1]) : 0;
-                  const benefitHeadline = getBenefitHeadline(watts);
+                  const isBattery = product?.tier === 'Battery';
+                  const benefitHeadline = isBattery ? 'Expandable Energy Storage' : getBenefitHeadline(watts);
                   const benefitTags = getQuickBenefitTags(watts);
                   
                   // Parse battery capacity and convert to Watt Hours for accurate runtime examples
@@ -191,13 +192,15 @@ export default function ProductsPage() {
 
                       {/* Technical Specs - Compact */}
                       <div className="space-y-1 mb-4 text-xs text-gray-500">
-                        <div className="flex items-center gap-2">
-                          <Zap className="h-3 w-3 text-emerald-600" />
-                          <span>{product?.wattage} Capacity</span>
-                        </div>
+                        {!isBattery && (
+                          <div className="flex items-center gap-2">
+                            <Zap className="h-3 w-3 text-emerald-600" />
+                            <span>{product?.wattage}</span>
+                          </div>
+                        )}
                         <div className="flex items-center gap-2">
                           <Battery className="h-3 w-3 text-sky-600" />
-                          <span>{wattHours.toLocaleString()}Wh {product?.batteryType}</span>
+                          <span>{wattHours > 0 ? `${wattHours.toLocaleString()}Wh` : product?.batteryCapacity} {product?.batteryType}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Shield className="h-3 w-3 text-emerald-600" />
