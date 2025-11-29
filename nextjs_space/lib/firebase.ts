@@ -1,6 +1,7 @@
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
 import { getFirestore, Firestore } from 'firebase/firestore';
+import { getAnalytics, Analytics, isSupported } from 'firebase/analytics';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -17,6 +18,7 @@ const firebaseConfig = {
 let app: FirebaseApp;
 let auth: Auth;
 let db: Firestore;
+let analytics: Analytics | null = null;
 
 if (typeof window !== 'undefined') {
   // Only initialize on client side
@@ -28,6 +30,15 @@ if (typeof window !== 'undefined') {
   
   auth = getAuth(app);
   db = getFirestore(app);
+  
+  // Initialize Analytics only if supported (browser environment)
+  isSupported().then((supported) => {
+    if (supported) {
+      analytics = getAnalytics(app);
+    }
+  }).catch((error) => {
+    console.warn('Firebase Analytics not supported:', error);
+  });
 }
 
-export { app, auth, db, firebaseConfig };
+export { app, auth, db, analytics, firebaseConfig };
