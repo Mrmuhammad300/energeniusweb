@@ -49,6 +49,9 @@ export default function Header() {
           <Link href="/commercial" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
             Commercial
           </Link>
+          <Link href="/calculators" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
+            Calculators
+          </Link>
           <Link href="/education" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
             Education
           </Link>
@@ -105,6 +108,9 @@ export default function Header() {
                 </Link>
                 <Link href="/commercial" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
                   Commercial
+                </Link>
+                <Link href="/calculators" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                  Calculators
                 </Link>
                 <Link href="/education" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
                   Education

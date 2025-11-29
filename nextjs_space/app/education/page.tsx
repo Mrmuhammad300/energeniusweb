@@ -2,7 +2,9 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { BookOpen, Lightbulb, Settings, Battery } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { BookOpen, Lightbulb, Settings, Battery, Calculator } from 'lucide-react'
+import Link from 'next/link'
 
 const topics = [
   {
@@ -110,6 +112,31 @@ export default function EducationPage() {
                     <strong>Inverter:</strong> Converts stored DC power to AC for standard appliances
                   </li>
                 </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="mb-16">
+          <Card className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
+            <CardContent className="p-8 text-center">
+              <Calculator className="h-16 w-16 mx-auto mb-4" />
+              <h2 className="text-3xl font-bold mb-4">Need Help Sizing Your System?</h2>
+              <p className="text-emerald-50 mb-6 max-w-2xl mx-auto">
+                Use our free calculators to determine the perfect generator size for your home or business.
+                Calculate power needs, usage costs, and get personalized product recommendations.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link href="/calculators">
+                  <Button size="lg" variant="secondary" className="bg-white text-emerald-600 hover:bg-emerald-50">
+                    Try Our Calculators
+                  </Button>
+                </Link>
+                <Link href="/quote">
+                  <Button size="lg" variant="outline" className="border-white bg-transparent text-white hover:bg-white hover:text-emerald-600">
+                    Get Expert Quote
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
