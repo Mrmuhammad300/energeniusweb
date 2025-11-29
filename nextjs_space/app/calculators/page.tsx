@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Calculator, Home, Zap, DollarSign, TrendingUp, Battery } from 'lucide-react';
+import { Calculator, Home, Zap, DollarSign, TrendingUp, Battery, AlertCircle, Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
 
 interface Product {
@@ -110,7 +110,15 @@ export default function CalculatorsPage() {
       p => p.wattage >= targetWattage * 0.8 && p.wattage <= targetWattage * 1.5
     ).sort((a, b) => Math.abs(a.wattage - targetWattage) - Math.abs(b.wattage - targetWattage)).slice(0, 3);
     
-    setRecommendedProducts(suitable);
+    // If no suitable products found, get the top 3 highest wattage products
+    if (suitable.length === 0 && products.length > 0) {
+      const highestProducts = [...products]
+        .sort((a, b) => b.wattage - a.wattage)
+        .slice(0, 3);
+      setRecommendedProducts(highestProducts);
+    } else {
+      setRecommendedProducts(suitable);
+    }
   };
 
   // Power Calculator Logic
@@ -264,36 +272,150 @@ export default function CalculatorsPage() {
                         </p>
                       </div>
 
-                      {recommendedProducts.length > 0 && (
-                        <div className="space-y-4">
-                          <h3 className="text-lg font-semibold">Recommended Products</h3>
-                          <div className="grid md:grid-cols-3 gap-4">
-                            {recommendedProducts.map((product) => (
-                              <Card key={product.id} className="hover:shadow-lg transition-shadow">
-                                <CardHeader>
-                                  <Badge className="w-fit mb-2">{product.wattage}W</Badge>
-                                  <CardTitle className="text-base">{product.name}</CardTitle>
-                                  <CardDescription className="text-2xl font-bold text-emerald-600">
-                                    ${product.priceNumeric.toLocaleString()}
+                      {/* Check if capacity exceeds all available products */}
+                      {(() => {
+                        const maxProduct = products.length > 0 ? Math.max(...products.map(p => p.wattage)) : 0;
+                        const exceedsCapacity = recommendedWattage > maxProduct * 1.2;
+
+                        return exceedsCapacity ? (
+                          // Custom Solution Message
+                          <Card className="border-2 border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+                            <CardHeader>
+                              <div className="flex items-start gap-4">
+                                <AlertCircle className="h-8 w-8 text-amber-600 shrink-0" />
+                                <div>
+                                  <CardTitle className="text-xl text-amber-900 dark:text-amber-100">
+                                    Custom Solution Required
+                                  </CardTitle>
+                                  <CardDescription className="text-amber-800 dark:text-amber-200 mt-2">
+                                    Your power requirements exceed our standard product line. We can build a custom solution tailored to your specific needs.
                                   </CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                  <Link href={`/products?sku=${product.sku}`}>
-                                    <Button variant="outline" className="w-full">
-                                      View Details
-                                    </Button>
-                                  </Link>
-                                </CardContent>
-                              </Card>
-                            ))}
+                                </div>
+                              </div>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 space-y-3">
+                                <h4 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                  <Battery className="h-5 w-5 text-emerald-600" />
+                                  What You'll Get:
+                                </h4>
+                                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                                  <li className="flex items-start gap-2">
+                                    <span className="text-emerald-600 mt-0.5">✓</span>
+                                    <span><strong>Custom System Design</strong> - Engineered specifically for your {recommendedWattage.toLocaleString()}W+ requirements</span>
+                                  </li>
+                                  <li className="flex items-start gap-2">
+                                    <span className="text-emerald-600 mt-0.5">✓</span>
+                                    <span><strong>FREE Energy Audit</strong> - Professional assessment of your power needs and usage patterns</span>
+                                  </li>
+                                  <li className="flex items-start gap-2">
+                                    <span className="text-emerald-600 mt-0.5">✓</span>
+                                    <span><strong>Detailed Quote</strong> - Transparent pricing with no hidden costs</span>
+                                  </li>
+                                  <li className="flex items-start gap-2">
+                                    <span className="text-emerald-600 mt-0.5">✓</span>
+                                    <span><strong>Installation Planning</strong> - Complete setup guidance and support</span>
+                                  </li>
+                                  <li className="flex items-start gap-2">
+                                    <span className="text-emerald-600 mt-0.5">✓</span>
+                                    <span><strong>5-Year Warranty</strong> - Same industry-leading coverage on custom builds</span>
+                                  </li>
+                                </ul>
+                              </div>
+
+                              <div className="bg-emerald-600 text-white rounded-lg p-4">
+                                <p className="font-semibold mb-3 flex items-center gap-2">
+                                  <Phone className="h-5 w-5" />
+                                  Contact Our Custom Solutions Team:
+                                </p>
+                                <div className="space-y-2 text-sm">
+                                  <p className="flex items-center gap-2">
+                                    <Phone className="h-4 w-4" />
+                                    <span>Call: <a href="tel:1-800-ENERGEN" className="underline hover:text-emerald-100">(800) 363-7436</a></span>
+                                  </p>
+                                  <p className="flex items-center gap-2">
+                                    <Mail className="h-4 w-4" />
+                                    <span>Email: <a href="mailto:custom@energenius.com" className="underline hover:text-emerald-100">custom@energenius.com</a></span>
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="flex flex-col sm:flex-row gap-3">
+                                <Link href="/quote" className="flex-1">
+                                  <Button size="lg" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+                                    Request Custom Quote
+                                  </Button>
+                                </Link>
+                                <Link href="/contact" className="flex-1">
+                                  <Button size="lg" variant="outline" className="w-full border-emerald-600 text-emerald-600 hover:bg-emerald-50">
+                                    Schedule Energy Audit
+                                  </Button>
+                                </Link>
+                              </div>
+
+                              <p className="text-xs text-center text-gray-600 dark:text-gray-400">
+                                Our team typically responds within 4 business hours
+                              </p>
+                            </CardContent>
+                          </Card>
+                        ) : null;
+                      })()}
+
+                      {/* Standard Product Recommendations */}
+                      {recommendedProducts.length > 0 && (() => {
+                        const maxProduct = products.length > 0 ? Math.max(...products.map(p => p.wattage)) : 0;
+                        const exceedsCapacity = recommendedWattage > maxProduct * 1.2;
+                        
+                        return (
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <h3 className="text-lg font-semibold">
+                                {exceedsCapacity ? 'Our Largest Available Units' : 'Top 3 Recommended Products'}
+                              </h3>
+                              {exceedsCapacity && (
+                                <Badge variant="secondary" className="bg-amber-100 text-amber-700">
+                                  Below Your Needs
+                                </Badge>
+                              )}
+                            </div>
+                            
+                            {exceedsCapacity && (
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                                While these are our most powerful standard units, we recommend a custom solution for your {recommendedWattage.toLocaleString()}W requirements.
+                              </p>
+                            )}
+
+                            <div className="grid md:grid-cols-3 gap-4">
+                              {recommendedProducts.map((product) => (
+                                <Card key={product.id} className="hover:shadow-lg transition-shadow">
+                                  <CardHeader>
+                                    <Badge className="w-fit mb-2">{product.wattage.toLocaleString()}W</Badge>
+                                    <CardTitle className="text-base">{product.name}</CardTitle>
+                                    <CardDescription className="text-2xl font-bold text-emerald-600">
+                                      ${product.priceNumeric.toLocaleString()}
+                                    </CardDescription>
+                                  </CardHeader>
+                                  <CardContent>
+                                    <Link href={`/products?sku=${product.sku}`}>
+                                      <Button variant="outline" className="w-full">
+                                        View Details
+                                      </Button>
+                                    </Link>
+                                  </CardContent>
+                                </Card>
+                              ))}
+                            </div>
+                            
+                            {!exceedsCapacity && (
+                              <div className="text-center">
+                                <Link href="/quote">
+                                  <Button size="lg">Request Custom Quote</Button>
+                                </Link>
+                              </div>
+                            )}
                           </div>
-                          <div className="text-center">
-                            <Link href="/quote">
-                              <Button size="lg">Request Custom Quote</Button>
-                            </Link>
-                          </div>
-                        </div>
-                      )}
+                        );
+                      })()}
                     </div>
                   )}
                 </CardContent>
