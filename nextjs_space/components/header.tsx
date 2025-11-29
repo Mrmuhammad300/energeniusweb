@@ -49,6 +49,12 @@ export default function Header() {
           <Link href="/commercial" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
             Commercial
           </Link>
+          <Link href="/subscription" className="text-sm font-semibold leading-6 text-emerald-600 hover:text-emerald-700 transition-colors">
+            Smart Connect
+          </Link>
+          <Link href="/dashboard" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
+            Dashboard
+          </Link>
           <Link href="/calculators" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
             Calculators
           </Link>
@@ -108,6 +114,12 @@ export default function Header() {
                 </Link>
                 <Link href="/commercial" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
                   Commercial
+                </Link>
+                <Link href="/subscription" className="block rounded-lg px-3 py-2 text-base font-semibold text-emerald-600 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                  Smart Connect
+                </Link>
+                <Link href="/dashboard" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                  Dashboard
                 </Link>
                 <Link href="/calculators" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
                   Calculators

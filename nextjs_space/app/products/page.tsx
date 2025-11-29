@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Battery, Zap, Shield, ArrowRight } from 'lucide-react'
+import { Battery, Zap, Shield, ArrowRight, Sparkles, Activity, TrendingUp } from 'lucide-react'
 
 interface Product {
   id: string
@@ -53,6 +53,56 @@ export default function ProductsPage() {
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Professional-grade solar generators from 400W to 30,000W
           </p>
+        </div>
+
+        {/* Subscription Upsell Banner */}
+        <div className="mb-12">
+          <Card className="overflow-hidden border-2 border-emerald-500 bg-gradient-to-br from-emerald-50 via-teal-50 to-blue-50">
+            <CardContent className="p-8">
+              <div className="flex flex-col lg:flex-row items-center gap-6">
+                <div className="flex-shrink-0">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+                    <Sparkles className="h-10 w-10 text-white" />
+                  </div>
+                </div>
+                <div className="flex-grow text-center lg:text-left">
+                  <div className="flex items-center justify-center lg:justify-start gap-2 mb-2">
+                    <h2 className="text-2xl font-bold text-gray-900">Make Your Generator Smarter</h2>
+                    <Badge className="bg-emerald-600 text-white">New</Badge>
+                  </div>
+                  <p className="text-gray-700 mb-4">
+                    Add <span className="font-semibold text-emerald-700">EnerGenius Smart Connect</span> to any generator for real-time monitoring, predictive maintenance, and AI-powered cost optimization. Starting at just <span className="font-bold text-emerald-600">$9.99/month</span>.
+                  </p>
+                  <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <Activity className="h-4 w-4 text-emerald-600" />
+                      <span>24/7 Monitoring</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4 text-emerald-600" />
+                      <span>AI Insights</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-emerald-600" />
+                      <span>Predictive Maintenance</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex-shrink-0 flex flex-col gap-3">
+                  <Link href="/subscription">
+                    <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white w-full lg:w-auto">
+                      View Plans & Pricing
+                    </Button>
+                  </Link>
+                  <Link href="/dashboard">
+                    <Button size="lg" variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-50 w-full lg:w-auto">
+                      See Demo Dashboard
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

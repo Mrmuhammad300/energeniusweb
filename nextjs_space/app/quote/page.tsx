@@ -1,13 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
+import Link from 'next/link'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useToast } from '@/hooks/use-toast'
+import { Sparkles, Activity, TrendingUp, Shield, Check } from 'lucide-react'
 
 export default function QuotePage() {
   const [formData, setFormData] = useState({
@@ -207,6 +210,85 @@ export default function QuotePage() {
             </form>
           </CardContent>
         </Card>
+
+        {/* Subscription Upsell Section */}
+        <div className="mt-12">
+          <Card className="overflow-hidden border-2 border-emerald-500 bg-gradient-to-br from-emerald-600 via-teal-600 to-blue-600 text-white">
+            <CardContent className="p-8">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur mb-4">
+                  <Sparkles className="h-8 w-8 text-white" />
+                </div>
+                <h2 className="text-3xl font-bold mb-3">Bundle & Save with Smart Connect</h2>
+                <p className="text-emerald-50 max-w-2xl mx-auto text-lg">
+                  Add intelligent monitoring to your new generator and save on your first year subscription
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
+                <div className="bg-white/10 backdrop-blur rounded-lg p-6 text-center">
+                  <Activity className="h-8 w-8 text-white mx-auto mb-3" />
+                  <h3 className="font-semibold text-lg mb-2">Real-Time Monitoring</h3>
+                  <p className="text-emerald-50 text-sm">Track battery health, power output, and system status 24/7</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-lg p-6 text-center">
+                  <TrendingUp className="h-8 w-8 text-white mx-auto mb-3" />
+                  <h3 className="font-semibold text-lg mb-2">AI Cost Optimization</h3>
+                  <p className="text-emerald-50 text-sm">Smart recommendations to maximize your energy savings</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur rounded-lg p-6 text-center">
+                  <Shield className="h-8 w-8 text-white mx-auto mb-3" />
+                  <h3 className="font-semibold text-lg mb-2">Predictive Maintenance</h3>
+                  <p className="text-emerald-50 text-sm">Catch issues before they become expensive problems</p>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg p-6 mb-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Bundle Offer</p>
+                    <h3 className="text-2xl font-bold text-gray-900">First 3 Months Free</h3>
+                    <p className="text-sm text-gray-600">When you add Smart Connect to your purchase</p>
+                  </div>
+                  <Badge className="bg-amber-500 hover:bg-amber-600 text-white text-lg px-4 py-2">
+                    Save $60
+                  </Badge>
+                </div>
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <Check className="h-4 w-4 text-emerald-600" />
+                    <span>No commitment - cancel anytime after trial</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <Check className="h-4 w-4 text-emerald-600" />
+                    <span>Works with any EnerGenius generator model</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <Check className="h-4 w-4 text-emerald-600" />
+                    <span>Easy setup - activated upon delivery</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/subscription">
+                  <Button size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 w-full sm:w-auto">
+                    View Plans & Pricing
+                  </Button>
+                </Link>
+                <Link href="/dashboard">
+                  <Button size="lg" variant="outline" className="border-white text-white bg-transparent hover:bg-white hover:text-emerald-600 w-full sm:w-auto">
+                    See Demo Dashboard
+                  </Button>
+                </Link>
+              </div>
+
+              <p className="text-center text-emerald-50 text-sm mt-6">
+                * Bundle offer applies to Pro and Business plans only. Can be mentioned in your quote request above.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )
