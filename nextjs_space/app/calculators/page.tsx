@@ -17,7 +17,8 @@ interface Product {
   name: string;
   sku: string;
   priceNumeric: number;
-  wattage: number;
+  wattage: string;
+  wattageNumeric: number;
   batteryCapacity?: number;
 }
 
@@ -48,7 +49,7 @@ export default function CalculatorsPage() {
       try {
         const res = await fetch('/api/products');
         const data = await res.json();
-        setProducts(data.filter((p: Product) => p.wattage && p.wattage > 0));
+        setProducts(data.filter((p: Product) => p.wattageNumeric && p.wattageNumeric > 0));
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -107,13 +108,13 @@ export default function CalculatorsPage() {
     
     // Find suitable products (within 80%-150% of target)
     const suitable = products.filter(
-      p => p.wattage >= targetWattage * 0.8 && p.wattage <= targetWattage * 1.5
-    ).sort((a, b) => Math.abs(a.wattage - targetWattage) - Math.abs(b.wattage - targetWattage)).slice(0, 3);
+      p => p.wattageNumeric >= targetWattage * 0.8 && p.wattageNumeric <= targetWattage * 1.5
+    ).sort((a, b) => Math.abs(a.wattageNumeric - targetWattage) - Math.abs(b.wattageNumeric - targetWattage)).slice(0, 3);
     
     // If no suitable products found, get the top 3 highest wattage products
     if (suitable.length === 0 && products.length > 0) {
       const highestProducts = [...products]
-        .sort((a, b) => b.wattage - a.wattage)
+        .sort((a, b) => b.wattageNumeric - a.wattageNumeric)
         .slice(0, 3);
       setRecommendedProducts(highestProducts);
     } else {
@@ -274,7 +275,7 @@ export default function CalculatorsPage() {
 
                       {/* Check if capacity exceeds 80% of largest product */}
                       {(() => {
-                        const maxProduct = products.length > 0 ? Math.max(...products.map(p => p.wattage)) : 0;
+                        const maxProduct = products.length > 0 ? Math.max(...products.map(p => p.wattageNumeric)) : 0;
                         const exceedsCapacity = recommendedWattage > maxProduct * 0.8;
 
                         return exceedsCapacity ? (
@@ -363,7 +364,7 @@ export default function CalculatorsPage() {
 
                       {/* Standard Product Recommendations */}
                       {recommendedProducts.length > 0 && (() => {
-                        const maxProduct = products.length > 0 ? Math.max(...products.map(p => p.wattage)) : 0;
+                        const maxProduct = products.length > 0 ? Math.max(...products.map(p => p.wattageNumeric)) : 0;
                         const exceedsCapacity = recommendedWattage > maxProduct * 0.8;
                         
                         return (
@@ -389,7 +390,7 @@ export default function CalculatorsPage() {
                               {recommendedProducts.map((product) => (
                                 <Card key={product.id} className="hover:shadow-lg transition-shadow">
                                   <CardHeader>
-                                    <Badge className="w-fit mb-2">{product.wattage.toLocaleString()}W</Badge>
+                                    <Badge className="w-fit mb-2">{product.wattageNumeric.toLocaleString()}W</Badge>
                                     <CardTitle className="text-base">{product.name}</CardTitle>
                                     <CardDescription className="text-2xl font-bold text-emerald-600">
                                       ${product.priceNumeric.toLocaleString()}
