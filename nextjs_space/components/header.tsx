@@ -11,9 +11,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8">
-        <div className="flex lg:flex-1">
-          <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-3">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-x-4 p-4 lg:px-8">
+        <div className="flex lg:flex-1 lg:mr-6">
+          <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-2.5 shrink-0">
             <Image
               src="/energenius-badge.png"
               alt="EnerGenius Logo"
@@ -22,7 +22,7 @@ export default function Header() {
               className="object-contain"
               priority
             />
-            <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent">
+            <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent whitespace-nowrap">
               EnerGenius
             </span>
           </Link>
@@ -41,39 +41,39 @@ export default function Header() {
           </button>
         </div>
         
-        <div className="hidden lg:flex lg:gap-x-8">
-          <Link href="/products" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
+        <div className="hidden lg:flex lg:gap-x-3 xl:gap-x-6">
+          <Link href="/products" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Products
           </Link>
-          <Link href="/residential" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
+          <Link href="/residential" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Residential
           </Link>
-          <Link href="/commercial" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
+          <Link href="/commercial" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Commercial
           </Link>
-          <Link href="/subscription" className="text-sm font-semibold leading-6 text-emerald-600 hover:text-emerald-700 transition-colors">
+          <Link href="/subscription" className="text-xs xl:text-sm font-semibold leading-6 text-emerald-600 hover:text-emerald-700 transition-colors whitespace-nowrap">
             Smart Connect
           </Link>
-          <Link href="/dashboard" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
+          <Link href="/dashboard" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Dashboard
           </Link>
-          <Link href="/calculators" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
+          <Link href="/calculators" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Calculators
           </Link>
-          <Link href="/education" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
+          <Link href="/education" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Education
           </Link>
-          <Link href="/about" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
+          <Link href="/about" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             About
           </Link>
-          <Link href="/contact" className="text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors">
+          <Link href="/contact" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Contact
           </Link>
         </div>
         
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4 lg:ml-4">
           <Link href="/quote">
-            <Button className="bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700">
+            <Button className="bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 whitespace-nowrap">
               Request Quote
             </Button>
           </Link>
