@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -83,6 +84,28 @@ function whiteLabel(model: string): string {
 
 async function main() {
   console.log('🌟 Starting EnerGenius database seeding...');
+  
+  // Create admin user if not exists
+  console.log('👤 Creating admin user...');
+  const adminEmail = 'admin@energenius.com';
+  const existingAdmin = await prisma.user.findUnique({
+    where: { email: adminEmail },
+  });
+  
+  if (!existingAdmin) {
+    const hashedPassword = await bcrypt.hash('admin123', 10);
+    await prisma.user.create({
+      data: {
+        name: 'Admin User',
+        email: adminEmail,
+        password: hashedPassword,
+        role: 'admin',
+      },
+    });
+    console.log(`   ✅ Admin user created: ${adminEmail} / admin123`);
+  } else {
+    console.log('   ℹ️  Admin user already exists');
+  }
   
   // Read the products JSON file
   const productsPath = path.join(process.cwd(), 'public', 'powerx_products.json');

@@ -57,6 +57,7 @@ model QuoteRequest {
   message       String?  @db.Text
   status        String   @default("new") // new, contacted, quoted, closed
   interestedProducts String[] // Array of product SKUs
+  invoices      Invoice[] // Related invoices
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -91,4 +92,124 @@ model NewsletterSubscriber {
 
   @@index([email])
   @@index([status])
+}
+
+// Authentication Models
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String
+  role          String    @default("admin") // admin, manager, staff
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  invoices      Invoice[] // Invoices created by this user
+
+  @@index([email])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Invoice Management Models
+model Invoice {
+  id              String        @id @default(cuid())
+  invoiceNumber   String        @unique
+  quoteRequestId  String?       // Optional link to quote request
+  quoteRequest    QuoteRequest? @relation(fields: [quoteRequestId], references: [id])
+  
+  // Customer Information
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  customerAddress String?       @db.Text
+  
+  // Invoice Details
+  status          String        @default("draft") // draft, sent, paid, cancelled
+  subtotal        Float
+  taxRate         Float         @default(0)
+  taxAmount       Float         @default(0)
+  totalAmount     Float
+  
+  // Payment Tracking
+  depositAmount   Float?
+  depositPaid     Boolean       @default(false)
+  depositPaidAt   DateTime?
+  balancePaid     Boolean       @default(false)
+  balancePaidAt   DateTime?
+  paymentMethod   String?       // ACH, wire_transfer, credit_card, check
+  paymentNotes    String?       @db.Text
+  
+  // Dates
+  invoiceDate     DateTime      @default(now())
+  dueDate         DateTime?
+  
+  // Notes
+  notes           String?       @db.Text
+  internalNotes   String?       @db.Text
+  
+  // Relations
+  items           InvoiceItem[]
+  createdBy       User          @relation(fields: [createdById], references: [id])
+  createdById     String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([status])
+  @@index([invoiceNumber])
+  @@index([customerEmail])
+  @@index([createdAt])
+}
+
+model InvoiceItem {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  productSku  String?  // Link to product if applicable
+  description String   @db.Text
+  quantity    Int      @default(1)
+  unitPrice   Float
+  totalPrice  Float
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([invoiceId])
 }
