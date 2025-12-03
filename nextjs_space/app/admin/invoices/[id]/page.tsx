@@ -27,10 +27,22 @@ import {
   FileText,
   ArrowLeft,
   CheckCircle,
+  Edit,
+  Trash2,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface InvoiceItem {
   id: string;
@@ -80,6 +92,7 @@ export default function InvoiceDetailPage() {
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [paymentData, setPaymentData] = useState({
     depositPaid: false,
     balancePaid: false,
@@ -161,6 +174,34 @@ export default function InvoiceDetailPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!invoiceId) return;
+
+    try {
+      const response = await fetch(`/api/admin/invoices?id=${invoiceId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Invoice deleted successfully',
+        });
+        router.push('/admin/invoices');
+      } else {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete');
+      }
+    } catch (error: any) {
+      console.error('Failed to delete invoice:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to delete invoice',
+        variant: 'destructive',
+      });
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'draft':
@@ -208,9 +249,26 @@ export default function InvoiceDetailPage() {
             <p className="text-gray-600 mt-1">Invoice Details</p>
           </div>
         </div>
-        <Badge className={getStatusColor(invoice.status)} variant="secondary">
-          {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
-        </Badge>
+        <div className="flex items-center gap-3">
+          <Badge className={getStatusColor(invoice.status)} variant="secondary">
+            {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
+          </Badge>
+          <Link href={`/admin/invoices/${invoice.id}/edit`}>
+            <Button variant="outline" size="sm" className="gap-2">
+              <Edit className="h-4 w-4" />
+              Edit
+            </Button>
+          </Link>
+          <Button
+            onClick={() => setDeleteDialogOpen(true)}
+            variant="outline"
+            size="sm"
+            className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+          >
+            <Trash2 className="h-4 w-4" />
+            Delete
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -501,6 +559,28 @@ export default function InvoiceDetailPage() {
           </Card>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete invoice &quot;{invoice.invoiceNumber}&quot; for {invoice.customerName}.
+              This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

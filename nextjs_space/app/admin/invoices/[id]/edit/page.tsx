@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,22 +20,42 @@ import Link from 'next/link';
 
 interface InvoiceItem {
   id: string;
-  productSku: string;
+  productSku: string | null;
   description: string;
   quantity: number;
   unitPrice: number;
   totalPrice: number;
 }
 
-function NewInvoiceForm() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const quoteId = searchParams?.get('quoteId');
+interface Invoice {
+  id: string;
+  invoiceNumber: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  customerAddress: string | null;
+  status: string;
+  subtotal: number;
+  taxRate: number;
+  taxAmount: number;
+  totalAmount: number;
+  depositAmount: number | null;
+  invoiceDate: string;
+  dueDate: string | null;
+  notes: string | null;
+  internalNotes: string | null;
+  items: InvoiceItem[];
+}
 
-  const [loading, setLoading] = useState(false);
-  const [loadingQuote, setLoadingQuote] = useState(false);
+export default function EditInvoicePage() {
+  const params = useParams();
+  const router = useRouter();
+  const invoiceId = params?.id as string;
+
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+  const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [formData, setFormData] = useState({
-    quoteRequestId: quoteId || '',
     customerName: '',
     customerEmail: '',
     customerPhone: '',
@@ -43,51 +63,50 @@ function NewInvoiceForm() {
     status: 'draft',
     taxRate: 0.0,
     depositAmount: 0,
-    invoiceDate: new Date().toISOString().split('T')[0],
+    invoiceDate: '',
     dueDate: '',
     notes: '',
     internalNotes: '',
   });
-
-  const [items, setItems] = useState<InvoiceItem[]>([
-    {
-      id: '1',
-      productSku: '',
-      description: '',
-      quantity: 1,
-      unitPrice: 0,
-      totalPrice: 0,
-    },
-  ]);
+  const [items, setItems] = useState<InvoiceItem[]>([]);
 
   useEffect(() => {
-    if (quoteId) {
-      loadQuoteData(quoteId);
+    if (invoiceId) {
+      fetchInvoice();
     }
-  }, [quoteId]);
+  }, [invoiceId]);
 
-  const loadQuoteData = async (id: string) => {
+  const fetchInvoice = async () => {
     try {
-      setLoadingQuote(true);
-      const response = await fetch(`/api/admin/quotes?status=all`);
+      setLoading(true);
+      const response = await fetch(`/api/admin/invoices/${invoiceId}`);
       if (response.ok) {
-        const quotes = await response.json();
-        const quote = quotes.find((q: any) => q.id === id);
-        if (quote) {
-          setFormData((prev) => ({
-            ...prev,
-            quoteRequestId: quote.id,
-            customerName: quote.name,
-            customerEmail: quote.email,
-            customerPhone: quote.phone,
-            customerAddress: quote.location || '',
-          }));
-        }
+        const data = await response.json();
+        setInvoice(data);
+        setFormData({
+          customerName: data.customerName,
+          customerEmail: data.customerEmail,
+          customerPhone: data.customerPhone,
+          customerAddress: data.customerAddress || '',
+          status: data.status,
+          taxRate: data.taxRate,
+          depositAmount: data.depositAmount || 0,
+          invoiceDate: data.invoiceDate.split('T')[0],
+          dueDate: data.dueDate ? data.dueDate.split('T')[0] : '',
+          notes: data.notes || '',
+          internalNotes: data.internalNotes || '',
+        });
+        setItems(data.items);
       }
     } catch (error) {
-      console.error('Failed to load quote:', error);
+      console.error('Failed to fetch invoice:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load invoice',
+        variant: 'destructive',
+      });
     } finally {
-      setLoadingQuote(false);
+      setLoading(false);
     }
   };
 
@@ -96,7 +115,7 @@ function NewInvoiceForm() {
       ...items,
       {
         id: Date.now().toString(),
-        productSku: '',
+        productSku: null,
         description: '',
         quantity: 1,
         unitPrice: 0,
@@ -140,7 +159,7 @@ function NewInvoiceForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setUpdating(true);
 
     try {
       // Validate
@@ -150,7 +169,7 @@ function NewInvoiceForm() {
           description: 'Please fill in all required customer fields',
           variant: 'destructive',
         });
-        setLoading(false);
+        setUpdating(false);
         return;
       }
 
@@ -160,47 +179,68 @@ function NewInvoiceForm() {
           description: 'Please fill in all line items with valid prices',
           variant: 'destructive',
         });
-        setLoading(false);
+        setUpdating(false);
         return;
       }
 
-      const response = await fetch('/api/admin/invoices', {
-        method: 'POST',
+      // Calculate totals
+      const subtotal = calculateSubtotal();
+      const taxAmount = calculateTax();
+      const totalAmount = calculateTotal();
+
+      // For edit, we need to delete old items and create new ones
+      const response = await fetch(`/api/admin/invoices/${invoiceId}`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          subtotal,
+          taxAmount,
+          totalAmount,
           items,
         }),
       });
 
       if (response.ok) {
-        const invoice = await response.json();
         toast({
           title: 'Success',
-          description: 'Invoice created successfully',
+          description: 'Invoice updated successfully',
         });
-        router.push(`/admin/invoices/${invoice.id}`);
+        router.push(`/admin/invoices/${invoiceId}`);
       } else {
-        throw new Error('Failed to create invoice');
+        throw new Error('Failed to update invoice');
       }
     } catch (error) {
-      console.error('Failed to create invoice:', error);
+      console.error('Failed to update invoice:', error);
       toast({
         title: 'Error',
-        description: 'Failed to create invoice',
+        description: 'Failed to update invoice',
         variant: 'destructive',
       });
     } finally {
-      setLoading(false);
+      setUpdating(false);
     }
   };
 
-  if (loadingQuote) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-green-600 border-t-transparent"></div>
-          <p className="text-gray-600">Loading quote data...</p>
+          <p className="text-gray-600">Loading invoice...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!invoice) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <p className="text-gray-600">Invoice not found</p>
+          <Link href="/admin/invoices" className="mt-4">
+            <Button variant="outline">Back to Invoices</Button>
+          </Link>
         </div>
       </div>
     );
@@ -210,31 +250,31 @@ function NewInvoiceForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/admin/invoices">
+          <Link href={`/admin/invoices/${invoiceId}`}>
             <Button type="button" variant="ghost" size="sm" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Create New Invoice</h1>
-            <p className="text-gray-600 mt-1">Fill in the details to generate an invoice</p>
+            <h1 className="text-3xl font-bold text-gray-900">Edit Invoice</h1>
+            <p className="text-gray-600 mt-1">{invoice.invoiceNumber}</p>
           </div>
         </div>
         <Button
           type="submit"
-          disabled={loading}
+          disabled={updating}
           className="bg-green-600 hover:bg-green-700 text-white"
         >
-          {loading ? (
+          {updating ? (
             <span className="flex items-center gap-2">
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-              Creating...
+              Updating...
             </span>
           ) : (
             <span className="flex items-center gap-2">
               <Save className="h-4 w-4" />
-              Create Invoice
+              Update Invoice
             </span>
           )}
         </Button>
@@ -252,9 +292,7 @@ function NewInvoiceForm() {
               <Input
                 id="customerName"
                 value={formData.customerName}
-                onChange={(e) =>
-                  setFormData({ ...formData, customerName: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
                 required
               />
             </div>
@@ -264,9 +302,7 @@ function NewInvoiceForm() {
                 id="customerEmail"
                 type="email"
                 value={formData.customerEmail}
-                onChange={(e) =>
-                  setFormData({ ...formData, customerEmail: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, customerEmail: e.target.value })}
                 required
               />
             </div>
@@ -275,9 +311,7 @@ function NewInvoiceForm() {
               <Input
                 id="customerPhone"
                 value={formData.customerPhone}
-                onChange={(e) =>
-                  setFormData({ ...formData, customerPhone: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
                 required
               />
             </div>
@@ -286,56 +320,7 @@ function NewInvoiceForm() {
               <Input
                 id="customerAddress"
                 value={formData.customerAddress}
-                onChange={(e) =>
-                  setFormData({ ...formData, customerAddress: e.target.value })
-                }
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Invoice Details */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Invoice Details</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
-              <Select
-                value={formData.status}
-                onValueChange={(value) => setFormData({ ...formData, status: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="sent">Sent</SelectItem>
-                  <SelectItem value="paid">Paid</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="invoiceDate">Invoice Date</Label>
-              <Input
-                id="invoiceDate"
-                type="date"
-                value={formData.invoiceDate}
-                onChange={(e) =>
-                  setFormData({ ...formData, invoiceDate: e.target.value })
-                }
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="dueDate">Due Date</Label>
-              <Input
-                id="dueDate"
-                type="date"
-                value={formData.dueDate}
-                onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, customerAddress: e.target.value })}
               />
             </div>
           </div>
@@ -347,8 +332,8 @@ function NewInvoiceForm() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Line Items</CardTitle>
-            <Button type="button" onClick={addItem} variant="outline" size="sm">
-              <Plus className="h-4 w-4 mr-2" />
+            <Button type="button" onClick={addItem} variant="outline" size="sm" className="gap-2">
+              <Plus className="h-4 w-4" />
               Add Item
             </Button>
           </div>
@@ -357,85 +342,115 @@ function NewInvoiceForm() {
           {items.map((item, index) => (
             <div key={item.id} className="border rounded-lg p-4 space-y-3">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">
-                  Item {index + 1}
-                </span>
+                <span className="font-medium text-sm text-gray-700">Item #{index + 1}</span>
                 {items.length > 1 && (
                   <Button
                     type="button"
                     onClick={() => removeItem(item.id)}
                     variant="ghost"
                     size="sm"
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    className="text-red-600 hover:text-red-700"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 )}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-                <div className="space-y-2">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+                <div className="md:col-span-3">
                   <Label htmlFor={`sku-${item.id}`}>SKU</Label>
                   <Input
                     id={`sku-${item.id}`}
-                    value={item.productSku}
+                    value={item.productSku || ''}
                     onChange={(e) => updateItem(item.id, 'productSku', e.target.value)}
                     placeholder="Optional"
                   />
                 </div>
-                <div className="space-y-2 md:col-span-2">
+                <div className="md:col-span-4">
                   <Label htmlFor={`desc-${item.id}`}>Description *</Label>
                   <Input
                     id={`desc-${item.id}`}
                     value={item.description}
                     onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                    placeholder="Item description"
                     required
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`qty-${item.id}`}>Quantity</Label>
+                <div className="md:col-span-2">
+                  <Label htmlFor={`qty-${item.id}`}>Quantity *</Label>
                   <Input
                     id={`qty-${item.id}`}
                     type="number"
                     min="1"
                     value={item.quantity}
-                    onChange={(e) =>
-                      updateItem(item.id, 'quantity', parseInt(e.target.value) || 1)
-                    }
+                    onChange={(e) => updateItem(item.id, 'quantity', parseInt(e.target.value) || 0)}
+                    required
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`price-${item.id}`}>Unit Price</Label>
+                <div className="md:col-span-2">
+                  <Label htmlFor={`price-${item.id}`}>Unit Price *</Label>
                   <Input
                     id={`price-${item.id}`}
                     type="number"
                     min="0"
                     step="0.01"
                     value={item.unitPrice}
-                    onChange={(e) =>
-                      updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)
-                    }
+                    onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
+                    required
                   />
                 </div>
-              </div>
-              <div className="text-right">
-                <span className="text-sm text-gray-600">Total: </span>
-                <span className="text-lg font-semibold text-gray-900">
-                  ${item.totalPrice.toFixed(2)}
-                </span>
+                <div className="md:col-span-1 flex items-end">
+                  <div className="w-full p-2 bg-gray-50 rounded text-right font-semibold">
+                    ${item.totalPrice.toFixed(2)}
+                  </div>
+                </div>
               </div>
             </div>
           ))}
         </CardContent>
       </Card>
 
-      {/* Totals */}
+      {/* Invoice Settings */}
       <Card>
         <CardHeader>
-          <CardTitle>Totals</CardTitle>
+          <CardTitle>Invoice Settings</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="status">Status</Label>
+              <Select
+                value={formData.status}
+                onValueChange={(value) => setFormData({ ...formData, status: value })}
+              >
+                <SelectTrigger id="status">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="draft">Draft</SelectItem>
+                  <SelectItem value="sent">Sent</SelectItem>
+                  <SelectItem value="paid">Paid</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="invoiceDate">Invoice Date *</Label>
+              <Input
+                id="invoiceDate"
+                type="date"
+                value={formData.invoiceDate}
+                onChange={(e) => setFormData({ ...formData, invoiceDate: e.target.value })}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="dueDate">Due Date</Label>
+              <Input
+                id="dueDate"
+                type="date"
+                value={formData.dueDate}
+                onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="taxRate">Tax Rate (%)</Label>
               <Input
@@ -445,12 +460,7 @@ function NewInvoiceForm() {
                 max="100"
                 step="0.01"
                 value={formData.taxRate * 100}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    taxRate: parseFloat(e.target.value) / 100 || 0,
-                  })
-                }
+                onChange={(e) => setFormData({ ...formData, taxRate: parseFloat(e.target.value) / 100 || 0 })}
               />
             </div>
             <div className="space-y-2">
@@ -461,70 +471,55 @@ function NewInvoiceForm() {
                 min="0"
                 step="0.01"
                 value={formData.depositAmount}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    depositAmount: parseFloat(e.target.value) || 0,
-                  })
-                }
+                onChange={(e) => setFormData({ ...formData, depositAmount: parseFloat(e.target.value) || 0 })}
               />
             </div>
           </div>
-          <div className="border-t pt-4 space-y-2">
-            <div className="flex justify-between text-gray-700">
-              <span>Subtotal:</span>
-              <span className="font-medium">${calculateSubtotal().toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between text-gray-700">
-              <span>Tax ({(formData.taxRate * 100).toFixed(2)}%):</span>
-              <span className="font-medium">${calculateTax().toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t">
-              <span>Total:</span>
-              <span>${calculateTotal().toFixed(2)}</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* Notes */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Notes</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="notes">Customer Notes</Label>
             <Textarea
               id="notes"
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              placeholder="Notes visible to customer"
               rows={3}
+              placeholder="Notes visible to customer"
             />
           </div>
+
           <div className="space-y-2">
             <Label htmlFor="internalNotes">Internal Notes</Label>
             <Textarea
               id="internalNotes"
               value={formData.internalNotes}
-              onChange={(e) =>
-                setFormData({ ...formData, internalNotes: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, internalNotes: e.target.value })}
+              rows={2}
               placeholder="Internal notes (not visible to customer)"
-              rows={3}
             />
           </div>
         </CardContent>
       </Card>
-    </form>
-  );
-}
 
-export default function NewInvoicePage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <NewInvoiceForm />
-    </Suspense>
+      {/* Totals */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Invoice Total</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex justify-between text-gray-600">
+            <span>Subtotal:</span>
+            <span className="font-semibold">${calculateSubtotal().toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-gray-600">
+            <span>Tax ({(formData.taxRate * 100).toFixed(2)}%):</span>
+            <span className="font-semibold">${calculateTax().toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-xl font-bold text-gray-900 pt-3 border-t">
+            <span>Total:</span>
+            <span>${calculateTotal().toFixed(2)}</span>
+          </div>
+        </CardContent>
+      </Card>
+    </form>
   );
 }

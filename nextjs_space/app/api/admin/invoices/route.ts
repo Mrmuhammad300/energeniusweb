@@ -119,3 +119,52 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Invoice ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const invoice = await prisma.invoice.findUnique({
+      where: { id },
+    });
+
+    if (!invoice) {
+      return NextResponse.json(
+        { error: 'Invoice not found' },
+        { status: 404 }
+      );
+    }
+
+    // Delete invoice items first (cascading delete)
+    await prisma.invoiceItem.deleteMany({
+      where: { invoiceId: id },
+    });
+
+    // Delete invoice
+    await prisma.invoice.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ message: 'Invoice deleted successfully' });
+  } catch (error) {
+    console.error('Failed to delete invoice:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete invoice' },
+      { status: 500 }
+    );
+  }
+}

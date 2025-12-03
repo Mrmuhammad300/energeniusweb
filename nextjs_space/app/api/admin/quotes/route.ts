@@ -50,18 +50,29 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id, status } = await request.json();
+    const data = await request.json();
+    const { id, ...updateData } = data;
 
-    if (!id || !status) {
+    if (!id) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Quote ID is required' },
         { status: 400 }
       );
     }
 
+    // Only update fields that are provided
+    const fieldsToUpdate: any = {};
+    const allowedFields = ['name', 'email', 'phone', 'location', 'projectType', 'powerNeeds', 'timeline', 'message', 'status'];
+    
+    for (const field of allowedFields) {
+      if (updateData[field] !== undefined) {
+        fieldsToUpdate[field] = updateData[field];
+      }
+    }
+
     const quote = await prisma.quoteRequest.update({
       where: { id },
-      data: { status },
+      data: fieldsToUpdate,
     });
 
     return NextResponse.json(quote);
@@ -69,6 +80,58 @@ export async function PATCH(request: NextRequest) {
     console.error('Failed to update quote:', error);
     return NextResponse.json(
       { error: 'Failed to update quote' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Quote ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Check if there are any invoices linked to this quote
+    const quote = await prisma.quoteRequest.findUnique({
+      where: { id },
+      include: { invoices: true },
+    });
+
+    if (!quote) {
+      return NextResponse.json(
+        { error: 'Quote not found' },
+        { status: 404 }
+      );
+    }
+
+    if (quote.invoices && quote.invoices.length > 0) {
+      return NextResponse.json(
+        { error: 'Cannot delete quote with linked invoices. Delete invoices first.' },
+        { status: 400 }
+      );
+    }
+
+    await prisma.quoteRequest.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ message: 'Quote deleted successfully' });
+  } catch (error) {
+    console.error('Failed to delete quote:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete quote' },
       { status: 500 }
     );
   }

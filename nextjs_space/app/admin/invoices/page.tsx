@@ -11,9 +11,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Receipt, Plus, DollarSign, Calendar } from 'lucide-react';
+import { Receipt, Plus, DollarSign, Calendar, Trash2, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { toast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface Invoice {
   id: string;
@@ -31,9 +43,12 @@ interface Invoice {
 }
 
 export default function InvoicesPage() {
+  const router = useRouter();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState('all');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [invoiceToDelete, setInvoiceToDelete] = useState<Invoice | null>(null);
 
   useEffect(() => {
     fetchInvoices();
@@ -75,6 +90,43 @@ export default function InvoicesPage() {
     return 'Unpaid';
   };
 
+  const openDeleteDialog = (e: React.MouseEvent, invoice: Invoice) => {
+    e.preventDefault(); // Prevent navigation
+    e.stopPropagation();
+    setInvoiceToDelete(invoice);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!invoiceToDelete) return;
+
+    try {
+      const response = await fetch(`/api/admin/invoices?id=${invoiceToDelete.id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Invoice deleted successfully',
+        });
+        fetchInvoices();
+        setDeleteDialogOpen(false);
+        setInvoiceToDelete(null);
+      } else {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete');
+      }
+    } catch (error: any) {
+      console.error('Failed to delete invoice:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to delete invoice',
+        variant: 'destructive',
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -89,9 +141,20 @@ export default function InvoicesPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Invoices</h1>
-          <p className="text-gray-600 mt-1">Manage customer invoices and payments</p>
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push('/admin/dashboard')}
+            className="gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Dashboard
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Invoices</h1>
+            <p className="text-gray-600 mt-1">Manage customer invoices and payments</p>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <Select value={filterStatus} onValueChange={setFilterStatus}>
@@ -131,11 +194,11 @@ export default function InvoicesPage() {
       ) : (
         <div className="grid gap-6">
           {invoices.map((invoice) => (
-            <Link key={invoice.id} href={`/admin/invoices/${invoice.id}`}>
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
+            <Card key={invoice.id} className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <Link href={`/admin/invoices/${invoice.id}`} className="flex-1 cursor-pointer">
+                    <div>
                       <div className="flex items-center gap-3 mb-3">
                         <h3 className="text-lg font-semibold text-gray-900">
                           {invoice.invoiceNumber}
@@ -186,13 +249,44 @@ export default function InvoicesPage() {
                         )}
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+                  </Link>
+                  <Button
+                    onClick={(e) => openDeleteDialog(e, invoice)}
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 ml-4"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Delete
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete invoice &quot;{invoiceToDelete?.invoiceNumber}&quot; for {invoiceToDelete?.customerName}.
+              This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
