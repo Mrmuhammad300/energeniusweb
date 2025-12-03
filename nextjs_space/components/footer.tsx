@@ -145,8 +145,8 @@ export default function Footer() {
         <div className="mt-8 pt-8 border-t border-gray-800">
           <div className="flex items-center justify-center gap-2 text-sm text-gray-400 mb-4">
             <MapPin className="h-4 w-4 text-emerald-400" />
-            <span className="font-semibold">Service Areas:</span>
-            <span>Ohio | Texas | Arizona | New Mexico | Midwest Region</span>
+            <span className="font-semibold">Nationwide Service:</span>
+            <span>All 50 US States | Fast Shipping Everywhere</span>
           </div>
         </div>
 

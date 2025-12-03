@@ -174,7 +174,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Service Areas</h3>
                     <p className="text-gray-600 text-sm">
-                      Ohio, Texas, Arizona, New Mexico, and Midwest Region
+                      Nationwide service across all 50 US states with fast shipping
                     </p>
                   </div>
                 </div>

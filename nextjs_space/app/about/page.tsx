@@ -55,8 +55,8 @@ export default function AboutPage() {
             you receive your equipment quickly and in perfect condition.
           </p>
           <p className="text-lg text-gray-700 mb-4">
-            Serving homeowners and businesses across Ohio, Texas, Arizona, New Mexico, and the Midwest region,
-            we provide complete energy solutions from portable 400W units to commercial-grade 30,000W systems.
+            Serving homeowners and businesses nationwide across all 50 US states, we provide complete energy 
+            solutions from portable 400W units to commercial-grade 30,000W systems with fast shipping to your location.
           </p>
         </div>
       </section>

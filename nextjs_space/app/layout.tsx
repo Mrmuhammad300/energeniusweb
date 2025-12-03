@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'EnerGenius - Premium Solar Generator Solutions',
-  description: 'Professional-grade solar generators from 400W to 30,000W. Honest pricing, superior support, and industry-leading 5-year warranty. Serving OH, TX, AZ, NM, and Midwest states.',
+  description: 'Professional-grade solar generators from 400W to 30,000W. Honest pricing, superior support, and industry-leading 5-year warranty. Nationwide service across all 50 US states.',
   keywords: ['solar generator', 'backup power', 'emergency generator', 'off-grid power', 'portable solar', 'home backup', 'commercial solar'],
   icons: {
     icon: '/favicon.svg',
