@@ -16,6 +16,9 @@ import {
   Menu,
   X,
   Zap,
+  ShoppingCart,
+  UserCog,
+  FileType,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { signOut } from 'next-auth/react';
@@ -31,8 +34,12 @@ const navItems: NavItem[] = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/quotes', label: 'Quote Requests', icon: FileText },
   { href: '/admin/invoices', label: 'Invoices', icon: Receipt },
+  { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
+  { href: '/admin/customers', label: 'Customers', icon: Users },
+  { href: '/admin/team', label: 'Team', icon: UserCog },
   { href: '/admin/contacts', label: 'Contacts', icon: MessageSquare },
   { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
+  { href: '/admin/email-templates', label: 'Email Templates', icon: FileType },
 ];
 
 export default function AdminLayout({

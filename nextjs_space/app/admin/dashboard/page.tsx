@@ -11,6 +11,10 @@ import {
   TrendingUp,
   DollarSign,
   Clock,
+  ShoppingCart,
+  Users,
+  UserCog,
+  Package,
 } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
@@ -21,6 +25,9 @@ interface DashboardData {
     contacts: number;
     newsletter: number;
     invoices: number;
+    orders: number;
+    customers: number;
+    teamMembers: number;
   };
   recentQuotes: Array<{
     id: string;
@@ -30,6 +37,15 @@ interface DashboardData {
     status: string;
     createdAt: string;
   }>;
+  recentOrders: Array<{
+    id: string;
+    orderNumber: string;
+    customerName: string;
+    status: string;
+    fulfillmentStatus: string;
+    totalAmount: number;
+    orderDate: string;
+  }>;
   quotesByStatus: Array<{
     status: string;
     _count: { status: number };
@@ -38,9 +54,16 @@ interface DashboardData {
     status: string;
     _count: { status: number };
   }>;
+  ordersByStatus: Array<{
+    status: string;
+    _count: { status: number };
+  }>;
   invoiceStats: {
     totalAmount: number;
     depositAmount: number;
+  };
+  orderStats: {
+    totalAmount: number;
   };
 }
 
@@ -105,67 +128,129 @@ export default function AdminDashboardPage() {
         <p className="text-gray-600 mt-1">Your sales back office at a glance</p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-900">
-              Quote Requests
-            </CardTitle>
-            <FileText className="h-5 w-5 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-blue-900">
-              {data?.counts.quotes || 0}
-            </div>
-            <p className="text-xs text-blue-700 mt-1">Total requests</p>
-          </CardContent>
-        </Card>
+      {/* Stats Cards - Sales & Marketing */}
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Sales & Marketing</h2>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-900">
+                Quote Requests
+              </CardTitle>
+              <FileText className="h-5 w-5 text-blue-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-blue-900">
+                {data?.counts.quotes || 0}
+              </div>
+              <p className="text-xs text-blue-700 mt-1">Total requests</p>
+            </CardContent>
+          </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-green-900">
-              Invoices
-            </CardTitle>
-            <Receipt className="h-5 w-5 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-green-900">
-              {data?.counts.invoices || 0}
-            </div>
-            <p className="text-xs text-green-700 mt-1">Total invoices</p>
-          </CardContent>
-        </Card>
+          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-green-900">
+                Invoices
+              </CardTitle>
+              <Receipt className="h-5 w-5 text-green-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-green-900">
+                {data?.counts.invoices || 0}
+              </div>
+              <p className="text-xs text-green-700 mt-1">Total invoices</p>
+            </CardContent>
+          </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-purple-900">
-              Contact Messages
-            </CardTitle>
-            <MessageSquare className="h-5 w-5 text-purple-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-purple-900">
-              {data?.counts.contacts || 0}
-            </div>
-            <p className="text-xs text-purple-700 mt-1">Total messages</p>
-          </CardContent>
-        </Card>
+          <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-purple-900">
+                Contact Messages
+              </CardTitle>
+              <MessageSquare className="h-5 w-5 text-purple-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-purple-900">
+                {data?.counts.contacts || 0}
+              </div>
+              <p className="text-xs text-purple-700 mt-1">Total messages</p>
+            </CardContent>
+          </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-orange-900">
-              Newsletter Subs
-            </CardTitle>
-            <Mail className="h-5 w-5 text-orange-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-orange-900">
-              {data?.counts.newsletter || 0}
-            </div>
-            <p className="text-xs text-orange-700 mt-1">Active subscribers</p>
-          </CardContent>
-        </Card>
+          <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-orange-900">
+                Newsletter Subs
+              </CardTitle>
+              <Mail className="h-5 w-5 text-orange-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-orange-900">
+                {data?.counts.newsletter || 0}
+              </div>
+              <p className="text-xs text-orange-700 mt-1">Active subscribers</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Phase 2 Stats - Operations */}
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Operations & Team</h2>
+        <div className="grid gap-6 md:grid-cols-3">
+          <Link href="/admin/orders">
+            <Card className="bg-gradient-to-br from-cyan-50 to-cyan-100 border-cyan-200 hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-cyan-900">
+                  Orders
+                </CardTitle>
+                <ShoppingCart className="h-5 w-5 text-cyan-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-cyan-900">
+                  {data?.counts.orders || 0}
+                </div>
+                <p className="text-xs text-cyan-700 mt-1">
+                  ${(data?.orderStats?.totalAmount || 0).toFixed(0)} total
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/admin/customers">
+            <Card className="bg-gradient-to-br from-teal-50 to-teal-100 border-teal-200 hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-teal-900">
+                  Customers
+                </CardTitle>
+                <Users className="h-5 w-5 text-teal-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-teal-900">
+                  {data?.counts.customers || 0}
+                </div>
+                <p className="text-xs text-teal-700 mt-1">Active customer base</p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/admin/team">
+            <Card className="bg-gradient-to-br from-indigo-50 to-indigo-100 border-indigo-200 hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-indigo-900">
+                  Team Members
+                </CardTitle>
+                <UserCog className="h-5 w-5 text-indigo-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-indigo-900">
+                  {data?.counts.teamMembers || 0}
+                </div>
+                <p className="text-xs text-indigo-700 mt-1">Active team</p>
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
       </div>
 
       {/* Revenue Stats */}

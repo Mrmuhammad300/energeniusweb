@@ -14,12 +14,15 @@ export async function GET(request: NextRequest) {
     }
 
     // Get counts
-    const [quotesCount, contactsCount, newsletterCount, invoicesCount] =
+    const [quotesCount, contactsCount, newsletterCount, invoicesCount, ordersCount, customersCount, teamMembersCount] =
       await Promise.all([
         prisma.quoteRequest.count(),
         prisma.contactSubmission.count(),
         prisma.newsletterSubscriber.count({ where: { status: 'active' } }),
         prisma.invoice.count(),
+        prisma.order.count(),
+        prisma.customer.count(),
+        prisma.teamMember.count({ where: { status: 'active' } }),
       ]);
 
     // Get recent quotes
@@ -59,19 +62,55 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    // Get recent orders (Phase 2)
+    const recentOrders = await prisma.order.findMany({
+      take: 5,
+      orderBy: { orderDate: 'desc' },
+      select: {
+        id: true,
+        orderNumber: true,
+        customerName: true,
+        status: true,
+        fulfillmentStatus: true,
+        totalAmount: true,
+        orderDate: true,
+      },
+    });
+
+    // Get orders by status (Phase 2)
+    const ordersByStatus = await prisma.order.groupBy({
+      by: ['status'],
+      _count: { status: true },
+    });
+
+    // Calculate total order amounts (Phase 2)
+    const orderStats = await prisma.order.aggregate({
+      _sum: {
+        totalAmount: true,
+      },
+    });
+
     return NextResponse.json({
       counts: {
         quotes: quotesCount,
         contacts: contactsCount,
         newsletter: newsletterCount,
         invoices: invoicesCount,
+        orders: ordersCount,
+        customers: customersCount,
+        teamMembers: teamMembersCount,
       },
       recentQuotes,
+      recentOrders,
       quotesByStatus,
       invoicesByStatus,
+      ordersByStatus,
       invoiceStats: {
         totalAmount: invoiceStats._sum.totalAmount || 0,
         depositAmount: invoiceStats._sum.depositAmount || 0,
+      },
+      orderStats: {
+        totalAmount: orderStats._sum.totalAmount || 0,
       },
     });
   } catch (error) {

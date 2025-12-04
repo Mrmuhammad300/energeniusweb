@@ -101,13 +101,14 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   password      String
-  role          String    @default("admin") // admin, manager, staff
+  role          String    @default("admin") // admin, staff
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
   invoices      Invoice[] // Invoices created by this user
+  teamMember    TeamMember? // Link to team member profile
 
   @@index([email])
 }
@@ -212,4 +213,239 @@ model InvoiceItem {
   updatedAt   DateTime @updatedAt
 
   @@index([invoiceId])
+}
+
+// Phase 2: Customer Management
+model Customer {
+  id              String   @id @default(cuid())
+  
+  // Basic Information
+  firstName       String
+  lastName        String
+  email           String   @unique
+  phone           String
+  company         String?
+  
+  // Billing Address
+  billingAddress  String?  @db.Text
+  billingCity     String?
+  billingState    String?
+  billingZip      String?
+  billingCountry  String?  @default("USA")
+  
+  // Shipping Address (can be different from billing)
+  shippingAddress String?  @db.Text
+  shippingCity    String?
+  shippingState   String?
+  shippingZip     String?
+  shippingCountry String?  @default("USA")
+  
+  // Customer Type & Status
+  customerType    String   @default("residential") // residential, commercial
+  status          String   @default("active") // active, inactive, prospect
+  
+  // Tax & Business Information
+  taxExempt       Boolean  @default(false)
+  taxId           String?  // EIN or Tax ID if applicable
+  businessLicense String?  // Document URL if uploaded
+  
+  // Notes
+  notes           String?  @db.Text
+  
+  // Relations
+  orders          Order[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([customerType])
+}
+
+// Phase 2: Team Member Management
+model TeamMember {
+  id            String   @id @default(cuid())
+  
+  // Basic Information
+  firstName     String
+  lastName      String
+  email         String   @unique
+  phone         String?
+  
+  // Role & Permissions
+  role          String   @default("staff") // admin, staff
+  department    String?  // sales, support, fulfillment
+  
+  // Status
+  status        String   @default("active") // active, inactive, pending
+  
+  // User Association (links to User model for login)
+  userId        String?  @unique
+  user          User?    @relation(fields: [userId], references: [id])
+  
+  // Employment Details
+  hireDate      DateTime?
+  terminationDate DateTime?
+  
+  // Notes
+  notes         String?  @db.Text
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([email])
+  @@index([role])
+  @@index([status])
+}
+
+// Phase 2: Order Management
+model Order {
+  id              String   @id @default(cuid())
+  orderNumber     String   @unique
+  
+  // Customer Link
+  customerId      String?
+  customer        Customer? @relation(fields: [customerId], references: [id])
+  
+  // Invoice Link (orders are created from paid invoices)
+  invoiceId       String?  @unique
+  invoiceNumber   String?
+  
+  // Order Status Workflow
+  status          String   @default("pending") // pending, processing, shipped, delivered, completed, cancelled
+  
+  // Customer Information (snapshot at time of order)
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  
+  // Shipping Address
+  shippingAddress String   @db.Text
+  shippingCity    String
+  shippingState   String
+  shippingZip     String
+  shippingCountry String   @default("USA")
+  
+  // Billing Address
+  billingAddress  String   @db.Text
+  billingCity     String
+  billingState    String
+  billingZip      String
+  billingCountry  String   @default("USA")
+  
+  // Order Totals
+  subtotal        Float
+  taxAmount       Float
+  totalAmount     Float
+  
+  // Fulfillment
+  fulfillmentStatus String @default("pending") // pending, processing, shipped, delivered
+  
+  // Dates
+  orderDate       DateTime @default(now())
+  expectedDelivery DateTime?
+  
+  // Notes
+  customerNotes   String?  @db.Text
+  internalNotes   String?  @db.Text
+  
+  // Relations
+  items           OrderItem[]
+  shipments       Shipment[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([status])
+  @@index([orderNumber])
+  @@index([customerId])
+  @@index([invoiceId])
+  @@index([fulfillmentStatus])
+  @@index([orderDate])
+}
+
+// Phase 2: Order Items
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  // Product Information (snapshot at time of order)
+  productSku  String
+  productName String
+  description String   @db.Text
+  quantity    Int      @default(1)
+  unitPrice   Float
+  totalPrice  Float
+  
+  // Fulfillment Status per item
+  status      String   @default("pending") // pending, processing, shipped, delivered
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([orderId])
+  @@index([productSku])
+}
+
+// Phase 2: Shipment Tracking
+model Shipment {
+  id                String   @id @default(cuid())
+  orderId           String
+  order             Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  // Carrier Information
+  carrier           String   // UPS, FedEx, USPS, etc.
+  trackingNumber    String
+  trackingUrl       String?
+  
+  // Shipment Status
+  status            String   @default("pending") // pending, in_transit, delivered, returned
+  
+  // Dates
+  shippedDate       DateTime?
+  estimatedDelivery DateTime?
+  actualDelivery    DateTime?
+  
+  // Package Information
+  weight            String?
+  dimensions        String?
+  packageCount      Int      @default(1)
+  
+  // Notes
+  notes             String?  @db.Text
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([orderId])
+  @@index([trackingNumber])
+  @@index([status])
+}
+
+// Phase 2: Email Templates
+model EmailTemplate {
+  id          String   @id @default(cuid())
+  
+  // Template Information
+  name        String   @unique // e.g., "powerx_order_notification", "customer_order_confirmation"
+  category    String   // supplier, customer, internal
+  subject     String
+  body        String   @db.Text
+  
+  // Template Variables (JSON string of available variables)
+  variables   String?  @db.Text // JSON: ["orderNumber", "customerName", "items", etc.]
+  
+  // Status
+  isActive    Boolean  @default(true)
+  
+  // Notes
+  description String?  @db.Text
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([name])
 }
