@@ -55,19 +55,20 @@ function whiteLabel(model: string): string {
     .trim();
   
   // Map to EnerGenius product tiers based on wattage
-  if (energeniusModel.includes('400')) return 'EnerGenius Scout 400';
-  if (energeniusModel.includes('750') && energeniusModel.includes('Mini')) return 'EnerGenius Scout 750';
-  if (energeniusModel.includes('1000') && energeniusModel.includes('Mini')) return 'EnerGenius Scout 1000';
-  if (energeniusModel.includes('1500')) return 'EnerGenius Nomad 1500';
-  if (energeniusModel.includes('2000')) return 'EnerGenius Nomad 2000';
-  if (energeniusModel.includes('3000')) return 'EnerGenius Guardian 3000';
-  if (energeniusModel.includes('5000')) return 'EnerGenius Guardian 5000';
-  if (energeniusModel.includes('8000')) return 'EnerGenius Guardian 8000';
+  // Check larger wattages first to avoid substring matching issues
+  if (energeniusModel.includes('30000') || energeniusModel.includes('30K')) return 'EnerGenius Guardian 30K';
+  if (energeniusModel.includes('25000') || energeniusModel.includes('25K')) return 'EnerGenius Guardian 25K';
+  if (energeniusModel.includes('20000') || energeniusModel.includes('20K')) return 'EnerGenius Nomad 20K';
+  if (energeniusModel.includes('15000') || energeniusModel.includes('15K')) return 'EnerGenius Nomad 15K';
   if (energeniusModel.includes('10000') || energeniusModel.includes('10K')) return 'EnerGenius Titan 10K';
-  if (energeniusModel.includes('15000') || energeniusModel.includes('15K')) return 'EnerGenius Titan 15K';
-  if (energeniusModel.includes('20000') || energeniusModel.includes('20K')) return 'EnerGenius Apex 20K';
-  if (energeniusModel.includes('25000') || energeniusModel.includes('25K')) return 'EnerGenius Apex 25K';
-  if (energeniusModel.includes('30000') || energeniusModel.includes('30K')) return 'EnerGenius Apex 30K';
+  if (energeniusModel.includes('8000')) return 'EnerGenius Guardian 8000';
+  if (energeniusModel.includes('5000')) return 'EnerGenius Guardian 5000';
+  if (energeniusModel.includes('3000')) return 'EnerGenius Guardian 3000';
+  if (energeniusModel.includes('2000')) return 'EnerGenius Nomad 2000';
+  if (energeniusModel.includes('1500')) return 'EnerGenius Nomad 1500';
+  if (energeniusModel.includes('1000') && energeniusModel.includes('Mini')) return 'EnerGenius Scout 1000';
+  if (energeniusModel.includes('750') && energeniusModel.includes('Mini')) return 'EnerGenius Scout 750';
+  if (energeniusModel.includes('400')) return 'EnerGenius Scout 400';
   if (energeniusModel.includes('750') && !energeniusModel.includes('Mini')) return 'EnerGenius Scout 750 Pro';
   if (energeniusModel.includes('1000') && !energeniusModel.includes('Mini')) return 'EnerGenius Scout 1000 Pro';
   
