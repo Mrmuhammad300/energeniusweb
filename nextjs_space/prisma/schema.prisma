@@ -187,6 +187,7 @@ model Invoice {
   
   // Relations
   items           InvoiceItem[]
+  payments        Payment[]     // Stripe payment records
   createdBy       User          @relation(fields: [createdById], references: [id])
   createdById     String
   createdAt       DateTime      @default(now())
@@ -213,6 +214,50 @@ model InvoiceItem {
   updatedAt   DateTime @updatedAt
 
   @@index([invoiceId])
+}
+
+// Phase 3: Payment Management (Stripe Integration)
+model Payment {
+  id                    String   @id @default(cuid())
+  invoiceId             String
+  invoice               Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  // Stripe Information
+  stripePaymentIntentId String?  @unique // Stripe Payment Intent ID
+  stripeCheckoutSessionId String? @unique // Stripe Checkout Session ID
+  
+  // Payment Details
+  amount                Float    // Amount in USD
+  currency              String   @default("usd")
+  status                String   @default("pending") // pending, processing, succeeded, failed, cancelled
+  paymentType           String   // deposit, balance, full_payment
+  
+  // Payment Method Information
+  paymentMethod         String?  // card, ach, wire_transfer
+  last4                 String?  // Last 4 digits of card/account
+  brand                 String?  // visa, mastercard, amex, etc.
+  
+  // Metadata
+  customerEmail         String
+  customerName          String
+  description           String?  @db.Text
+  
+  // Dates
+  paidAt                DateTime?
+  failedAt              DateTime?
+  
+  // Stripe Metadata (JSON string)
+  stripeMetadata        String?  @db.Text
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([invoiceId])
+  @@index([status])
+  @@index([stripePaymentIntentId])
+  @@index([stripeCheckoutSessionId])
+  @@index([customerEmail])
+  @@index([createdAt])
 }
 
 // Phase 2: Customer Management

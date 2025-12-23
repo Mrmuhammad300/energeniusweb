@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,7 @@ import {
   CheckCircle,
   Edit,
   Trash2,
+  CreditCard,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
@@ -87,12 +88,14 @@ interface Invoice {
 export default function InvoiceDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const invoiceId = params?.id as string;
 
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [processingPayment, setProcessingPayment] = useState(false);
   const [paymentData, setPaymentData] = useState({
     depositPaid: false,
     balancePaid: false,
@@ -105,6 +108,30 @@ export default function InvoiceDetailPage() {
       fetchInvoice();
     }
   }, [invoiceId]);
+
+  useEffect(() => {
+    // Handle payment success/cancel from Stripe redirect
+    const paymentSuccess = searchParams?.get('payment_success');
+    const paymentCancelled = searchParams?.get('payment_cancelled');
+
+    if (paymentSuccess === 'true') {
+      toast({
+        title: 'Payment Successful',
+        description: 'Payment has been processed successfully',
+      });
+      // Clean URL
+      window.history.replaceState({}, '', `/admin/invoices/${invoiceId}`);
+      fetchInvoice();
+    } else if (paymentCancelled === 'true') {
+      toast({
+        title: 'Payment Cancelled',
+        description: 'Payment was cancelled',
+        variant: 'destructive',
+      });
+      // Clean URL
+      window.history.replaceState({}, '', `/admin/invoices/${invoiceId}`);
+    }
+  }, [searchParams, invoiceId]);
 
   const fetchInvoice = async () => {
     try {
@@ -171,6 +198,39 @@ export default function InvoiceDetailPage() {
       });
     } finally {
       setUpdating(false);
+    }
+  };
+
+  const handleStripePayment = async (paymentType: 'deposit' | 'balance' | 'full_payment') => {
+    try {
+      setProcessingPayment(true);
+
+      const response = await fetch('/api/payment/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoiceId,
+          paymentType,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to create checkout session');
+      }
+
+      const { url } = await response.json();
+      
+      // Redirect to Stripe Checkout
+      window.location.href = url;
+    } catch (error: any) {
+      console.error('Failed to initiate payment:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to initiate payment',
+        variant: 'destructive',
+      });
+      setProcessingPayment(false);
     }
   };
 
@@ -447,6 +507,78 @@ export default function InvoiceDetailPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              {/* Stripe Payment Buttons */}
+              {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
+                <div className="space-y-3 pb-4 border-b border-gray-200">
+                  <p className="text-sm font-medium text-gray-700">Pay with Stripe</p>
+                  
+                  {/* Full Payment Button */}
+                  {!invoice.depositPaid && !invoice.balancePaid && (
+                    <Button
+                      onClick={() => handleStripePayment('full_payment')}
+                      disabled={processingPayment}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      {processingPayment ? (
+                        <span className="flex items-center gap-2">
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                          Processing...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <CreditCard className="h-4 w-4" />
+                          Pay Full Amount (${invoice.totalAmount.toFixed(2)})
+                        </span>
+                      )}
+                    </Button>
+                  )}
+
+                  {/* Deposit Payment Button */}
+                  {invoice.depositAmount && invoice.depositAmount > 0 && !invoice.depositPaid && (
+                    <Button
+                      onClick={() => handleStripePayment('deposit')}
+                      disabled={processingPayment}
+                      className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      {processingPayment ? (
+                        <span className="flex items-center gap-2">
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                          Processing...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <CreditCard className="h-4 w-4" />
+                          Pay Deposit (${invoice.depositAmount.toFixed(2)})
+                        </span>
+                      )}
+                    </Button>
+                  )}
+
+                  {/* Balance Payment Button */}
+                  {invoice.depositPaid && !invoice.balancePaid && (
+                    <Button
+                      onClick={() => handleStripePayment('balance')}
+                      disabled={processingPayment}
+                      className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      {processingPayment ? (
+                        <span className="flex items-center gap-2">
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                          Processing...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <CreditCard className="h-4 w-4" />
+                          Pay Balance ($
+                          {(invoice.totalAmount - (invoice.depositAmount || 0)).toFixed(2)})
+                        </span>
+                      )}
+                    </Button>
+                  )}
+                </div>
+              )}
+
+              {/* Payment Status Display */}
               {invoice.depositAmount && invoice.depositAmount > 0 && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -544,7 +676,7 @@ export default function InvoiceDetailPage() {
               <Button
                 onClick={updatePaymentStatus}
                 disabled={updating}
-                className="w-full bg-green-600 hover:bg-green-700 text-white"
+                className="w-full bg-gray-600 hover:bg-gray-700 text-white"
               >
                 {updating ? (
                   <span className="flex items-center gap-2">
@@ -552,7 +684,7 @@ export default function InvoiceDetailPage() {
                     Updating...
                   </span>
                 ) : (
-                  'Update Payment Status'
+                  'Update Payment Status (Manual)'
                 )}
               </Button>
             </CardContent>
