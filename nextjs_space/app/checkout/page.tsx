@@ -487,7 +487,7 @@ export default function CheckoutPage() {
 
                 <Button
                   onClick={handleSubmit}
-                  disabled={processing || !termsAccepted || (checkoutData.servicePackage && !allPrerequisitesChecked)}
+                  disabled={processing || !termsAccepted || (!!checkoutData.servicePackage && !allPrerequisitesChecked)}
                   className="w-full bg-gradient-to-r from-emerald-600 to-sky-600 hover:from-emerald-700 hover:to-sky-700 text-white"
                   size="lg"
                 >

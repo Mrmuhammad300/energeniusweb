@@ -211,12 +211,19 @@ export default function ProductsPage() {
                   );
                 })()}
 
-                <Link href={`/quote?product=${product?.sku}`}>
-                  <Button className="w-full bg-gradient-to-r from-emerald-600 to-sky-600">
-                    Request Quote
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+                <div className="space-y-2">
+                  <Link href={`/products/${product?.id}`}>
+                    <Button className="w-full bg-gradient-to-r from-emerald-600 to-sky-600">
+                      View Details & Purchase
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href={`/quote?product=${product?.sku}`}>
+                    <Button variant="outline" className="w-full text-sm">
+                      Request Custom Quote
+                    </Button>
+                  </Link>
+                </div>
               </CardContent>
             </Card>
           ))}
