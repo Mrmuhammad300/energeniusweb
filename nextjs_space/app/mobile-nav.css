@@ -1,46 +1,91 @@
-/* Custom CSS for Mobile Navigation Visibility */
+/* Custom CSS for Mobile Navigation - Fixed for Responsive Layout */
 
-/* Force Mobile Menu to Top Layer */
-header, .navbar, .mobile-menu, #mobile-dropdown, .hamburger-menu {
-  z-index: 999999 !important;
-  position: relative !important;
-}
+/* ======================================
+   MOBILE HEADER VISIBILITY FIXES
+   ====================================== */
 
-.hamburger-menu {
+/* Ensure header is always visible and on top */
+.mobile-header {
   display: block !important;
+  visibility: visible !important;
+  position: sticky !important;
+  z-index: 9999 !important;
 }
 
-/* Ensure Menu Background is Solid (not transparent) */
-.navbar-collapse, .mobile-menu-container, .dropdown-menu, .mobile-nav-container {
-  background-color: #ffffff !important;
-  opacity: 1 !important;
-}
-
-/* Fix Dropdown Gap causing 'Close on Hover' */
-.dropdown-menu {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-
-@media (max-width: 768px) {
-  .mobile-nav-container {
-    display: flex !important;
+/* Force hamburger menu visibility on mobile */
+@media (max-width: 1023px) {
+  .hamburger-menu {
+    display: inline-flex !important;
     visibility: visible !important;
+    opacity: 1 !important;
   }
-}
-
-/* Force Calculator Button Visibility on Mobile */
-@media (max-width: 1024px) {
-  /* Ensure mobile action buttons container is visible */
-  header nav > div:last-of-type {
+  
+  /* Ensure mobile actions container is visible */
+  .mobile-actions {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
   }
   
-  /* Ensure calculator button is visible */
-  header nav a[href="/calculators"] {
+  /* Force all buttons in mobile actions to be visible */
+  .mobile-actions a,
+  .mobile-actions button {
     display: inline-flex !important;
     visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ======================================
+   MOBILE MENU PANEL STYLES
+   ====================================== */
+
+/* Ensure mobile nav container is properly layered */
+.mobile-nav-container {
+  position: fixed !important;
+  z-index: 10000 !important;
+  background-color: transparent;
+}
+
+/* Solid background for menu panel */
+.mobile-nav-container > div:last-child {
+  background-color: #ffffff !important;
+}
+
+/* Fix dropdown gap to prevent accidental closes */
+.dropdown-menu {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* ======================================
+   PREVENT TEXT OVERLAP WITH HERO
+   ====================================== */
+
+/* Ensure header doesn't overlap with page content */
+body {
+  padding-top: 0 !important;
+}
+
+/* Add minimal spacing below header on mobile to prevent overlap */
+@media (max-width: 1023px) {
+  header + * {
+    margin-top: 0 !important;
+  }
+}
+
+/* ======================================
+   TOUCH OPTIMIZATIONS
+   ====================================== */
+
+/* Ensure all interactive elements are touch-friendly */
+@media (max-width: 1023px) {
+  button,
+  a[role="button"],
+  .touch-manipulation {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 }

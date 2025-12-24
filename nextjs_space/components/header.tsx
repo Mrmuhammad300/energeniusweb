@@ -49,13 +49,13 @@ export default function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-x-4 p-4 lg:px-8">
+    <header className="mobile-header sticky top-0 z-[9999] w-full border-b bg-white shadow-sm">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-x-2 px-3 py-3 lg:gap-x-4 lg:px-8 lg:py-4">
         {/* Mobile Hamburger - Left Side */}
-        <div className="flex lg:hidden">
+        <div className="flex items-center lg:hidden shrink-0">
           <button
             type="button"
-            className="hamburger-menu -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 hover:bg-gray-100 transition-colors touch-manipulation"
+            className="hamburger-menu inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors touch-manipulation"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open navigation menu"
             aria-expanded={mobileMenuOpen}
@@ -67,40 +67,40 @@ export default function Header() {
 
         {/* Logo - Center on Mobile, Left on Desktop */}
         <div className="flex flex-1 justify-center lg:justify-start lg:mr-6">
-          <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-2.5 shrink-0">
+          <Link href="/" className="flex items-center space-x-2 shrink-0">
             <Image
               src="/energenius-badge.png"
               alt="EnerGenius Logo"
-              width={40}
-              height={40}
-              className="object-contain"
+              width={36}
+              height={36}
+              className="object-contain w-9 h-9"
               priority
             />
-            <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent whitespace-nowrap">
+            <span className="text-lg lg:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent whitespace-nowrap">
               EnerGenius
             </span>
           </Link>
         </div>
         
         {/* Mobile Action Buttons - Right Side */}
-        <div className="flex items-center gap-2 lg:hidden shrink-0">
+        <div className="mobile-actions flex items-center gap-1.5 lg:hidden shrink-0">
           {/* Calculator Button */}
-          <Link href="/calculators">
+          <Link href="/calculators" className="inline-flex">
             <Button 
               size="sm" 
               variant="outline"
-              className="border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation px-2.5 py-2 h-10 min-w-[40px]"
+              className="border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100 transition-colors touch-manipulation px-2 py-2 h-9 w-9 min-w-[36px]"
               aria-label="Solar Calculator"
               title="Solar Calculator"
             >
-              <Calculator className="h-5 w-5" />
+              <Calculator className="h-4 w-4" />
             </Button>
           </Link>
           {/* Quote Button */}
-          <Link href="/quote">
+          <Link href="/quote" className="inline-flex">
             <Button 
               size="sm" 
-              className="bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 active:from-emerald-800 active:to-sky-800 touch-manipulation text-xs px-3 py-2 h-10 whitespace-nowrap"
+              className="bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 active:from-emerald-800 active:to-sky-800 transition-all touch-manipulation text-xs font-semibold px-2.5 py-2 h-9 whitespace-nowrap"
             >
               Quote
             </Button>
