@@ -129,96 +129,102 @@ export default function Header() {
         </div>
       </nav>
       
-      {/* Mobile Menu - Slides from LEFT */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-40">
-          {/* Backdrop overlay */}
-          <div 
-            className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
-            onClick={() => {
+      {/* Mobile Menu - Slides from LEFT with Animation */}
+      <div className={`lg:hidden fixed inset-0 z-50 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        {/* Backdrop overlay */}
+        <div 
+          className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+          onClick={() => {
+            setMobileMenuOpen(false)
+            setMobileDropdownOpen(false)
+          }}
+          aria-hidden="true"
+        />
+        
+        {/* Mobile menu panel - Slides FROM LEFT */}
+        <div className={`absolute inset-y-0 left-0 w-full max-w-xs bg-white shadow-2xl overflow-y-auto transition-transform duration-300 ease-out ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+          <div className="flex items-center justify-between px-5 py-5 border-b border-gray-200">
+            <Link href="/" className="flex items-center space-x-2.5" onClick={() => {
               setMobileMenuOpen(false)
               setMobileDropdownOpen(false)
-            }}
-            aria-hidden="true"
-          />
-          {/* Mobile menu panel - FROM LEFT */}
-          <div className="absolute inset-y-0 left-0 w-full max-w-xs bg-white shadow-2xl overflow-y-auto">
-            <div className="flex items-center justify-between px-5 py-5 border-b border-gray-200">
-              <Link href="/" className="flex items-center space-x-2.5" onClick={() => {
+            }}>
+              <Image
+                src="/energenius-badge.png"
+                alt="EnerGenius Logo"
+                width={32}
+                height={32}
+                className="object-contain"
+              />
+              <span className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent">
+                EnerGenius
+              </span>
+            </Link>
+            <button
+              type="button"
+              className="rounded-md p-2 text-gray-700 hover:bg-gray-100 transition-colors touch-manipulation active:bg-gray-200"
+              onClick={() => {
                 setMobileMenuOpen(false)
                 setMobileDropdownOpen(false)
-              }}>
-                <Image
-                  src="/energenius-badge.png"
-                  alt="EnerGenius Logo"
-                  width={32}
-                  height={32}
-                  className="object-contain"
-                />
-                <span className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent">
-                  EnerGenius
-                </span>
-              </Link>
-              <button
-                type="button"
-                className="rounded-md p-2 text-gray-700 hover:bg-gray-100 transition-colors touch-manipulation active:bg-gray-200"
-                onClick={() => {
-                  setMobileMenuOpen(false)
-                  setMobileDropdownOpen(false)
-                }}
-                aria-label="Close navigation menu"
-              >
-                <span className="sr-only">Close menu</span>
-                <X className="h-5 w-5" aria-hidden="true" />
-              </button>
-            </div>
+              }}
+              aria-label="Close navigation menu"
+            >
+              <span className="sr-only">Close menu</span>
+              <X className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
             
-            <div className="py-4">
+            <div className="py-4 px-2">
               <div className="space-y-1">
                 {/* Products & Services Section with Dropdown */}
-                <div className="mb-1">
+                <div className="mb-2">
                   <button
                     onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
-                    className="flex items-center justify-between w-full px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50 active:bg-gray-100 touch-manipulation transition-colors rounded-lg"
+                    className="flex items-center justify-between w-full px-4 py-3.5 text-sm font-semibold text-gray-900 bg-white hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-all duration-200 rounded-lg border border-gray-200"
                     aria-expanded={mobileDropdownOpen}
                     aria-controls="mobile-products-dropdown"
                   >
-                    <span>Products & Services</span>
+                    <span className="flex items-center gap-2">
+                      Products & Services
+                    </span>
                     <ChevronDown 
-                      className={`h-4 w-4 transition-transform duration-200 ${mobileDropdownOpen ? 'rotate-180' : ''}`} 
+                      className={`h-5 w-5 text-emerald-600 transition-transform duration-200 ${mobileDropdownOpen ? 'rotate-180' : ''}`} 
                       aria-hidden="true"
                     />
                   </button>
                   
-                  {/* Dropdown Items */}
-                  {mobileDropdownOpen && (
-                    <div className="mt-1 ml-4 space-y-1 border-l-2 border-emerald-500 pl-3">
+                  {/* Dropdown Items - Animated */}
+                  <div 
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      mobileDropdownOpen ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <div className="ml-2 space-y-1 border-l-2 border-emerald-500 pl-3 py-1">
                       {productLinks.map((link) => (
                         <Link
                           key={link.href}
                           href={link.href}
-                          className="block px-3 py-2.5 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors rounded-lg"
+                          className="block px-4 py-3 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors rounded-lg border border-transparent hover:border-emerald-200"
                           onClick={() => {
                             setMobileMenuOpen(false)
                             setMobileDropdownOpen(false)
                           }}
                         >
-                          <div className="font-medium text-sm text-gray-900">
+                          <div className="font-semibold text-sm text-gray-900">
                             {link.label}
                           </div>
-                          <div className="text-xs text-gray-500 mt-0.5">
+                          <div className="text-xs text-gray-600 mt-0.5">
                             {link.description}
                           </div>
                         </Link>
                       ))}
                     </div>
-                  )}
+                  </div>
                 </div>
 
                 {/* Main Navigation Links */}
                 <Link 
                   href="/dashboard" 
-                  className="block px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50 active:bg-gray-100 touch-manipulation transition-colors rounded-lg" 
+                  className="block px-4 py-3.5 text-sm font-semibold text-gray-900 bg-white hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors rounded-lg border border-gray-200" 
                   onClick={() => {
                     setMobileMenuOpen(false)
                     setMobileDropdownOpen(false)
@@ -228,7 +234,7 @@ export default function Header() {
                 </Link>
                 <Link 
                   href="/calculators" 
-                  className="block px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50 active:bg-gray-100 touch-manipulation transition-colors rounded-lg" 
+                  className="block px-4 py-3.5 text-sm font-semibold text-gray-900 bg-white hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors rounded-lg border border-gray-200" 
                   onClick={() => {
                     setMobileMenuOpen(false)
                     setMobileDropdownOpen(false)
@@ -238,7 +244,7 @@ export default function Header() {
                 </Link>
                 <Link 
                   href="/pricing" 
-                  className="block px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50 active:bg-gray-100 touch-manipulation transition-colors rounded-lg" 
+                  className="block px-4 py-3.5 text-sm font-semibold text-gray-900 bg-white hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors rounded-lg border border-gray-200" 
                   onClick={() => {
                     setMobileMenuOpen(false)
                     setMobileDropdownOpen(false)
@@ -248,7 +254,7 @@ export default function Header() {
                 </Link>
                 <Link 
                   href="/education" 
-                  className="block px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50 active:bg-gray-100 touch-manipulation transition-colors rounded-lg" 
+                  className="block px-4 py-3.5 text-sm font-semibold text-gray-900 bg-white hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors rounded-lg border border-gray-200" 
                   onClick={() => {
                     setMobileMenuOpen(false)
                     setMobileDropdownOpen(false)
@@ -258,7 +264,7 @@ export default function Header() {
                 </Link>
                 <Link 
                   href="/about" 
-                  className="block px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50 active:bg-gray-100 touch-manipulation transition-colors rounded-lg" 
+                  className="block px-4 py-3.5 text-sm font-semibold text-gray-900 bg-white hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors rounded-lg border border-gray-200" 
                   onClick={() => {
                     setMobileMenuOpen(false)
                     setMobileDropdownOpen(false)
@@ -268,7 +274,7 @@ export default function Header() {
                 </Link>
                 <Link 
                   href="/contact" 
-                  className="block px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50 active:bg-gray-100 touch-manipulation transition-colors rounded-lg" 
+                  className="block px-4 py-3.5 text-sm font-semibold text-gray-900 bg-white hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors rounded-lg border border-gray-200" 
                   onClick={() => {
                     setMobileMenuOpen(false)
                     setMobileDropdownOpen(false)
@@ -290,9 +296,8 @@ export default function Header() {
                 </div>
               </div>
             </div>
-          </div>
         </div>
-      )}
+      </div>
     </header>
   )
 }
