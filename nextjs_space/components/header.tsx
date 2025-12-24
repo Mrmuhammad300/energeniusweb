@@ -82,10 +82,16 @@ export default function Header() {
       
       {mobileMenuOpen && (
         <div className="lg:hidden">
-          <div className="fixed inset-0 z-50" />
-          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm">
+          {/* Backdrop overlay */}
+          <div 
+            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm" 
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+          {/* Mobile menu panel */}
+          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 shadow-xl">
             <div className="flex items-center justify-between">
-              <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-3">
+              <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-3" onClick={() => setMobileMenuOpen(false)}>
                 <Image
                   src="/energenius-badge.png"
                   alt="EnerGenius Logo"
@@ -99,7 +105,7 @@ export default function Header() {
               </Link>
               <button
                 type="button"
-                className="-m-2.5 rounded-md p-2.5 text-gray-700 hover:bg-gray-100 transition-colors"
+                className="-m-2.5 rounded-md p-2.5 text-gray-700 hover:bg-gray-100 transition-colors touch-manipulation active:bg-gray-200"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close navigation menu"
               >
@@ -108,37 +114,73 @@ export default function Header() {
               </button>
             </div>
             <div className="mt-6 flow-root">
-              <div className="space-y-2 py-6">
-                <Link href="/products" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+              <div className="space-y-1 py-6">
+                <Link 
+                  href="/products" 
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   Products
                 </Link>
-                <Link href="/residential" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                <Link 
+                  href="/residential" 
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   Residential
                 </Link>
-                <Link href="/commercial" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                <Link 
+                  href="/commercial" 
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   Commercial
                 </Link>
-                <Link href="/subscription" className="block rounded-lg px-3 py-2 text-base font-semibold text-emerald-600 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                <Link 
+                  href="/subscription" 
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-emerald-600 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   Smart Connect
                 </Link>
-                <Link href="/dashboard" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                <Link 
+                  href="/dashboard" 
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   Dashboard
                 </Link>
-                <Link href="/calculators" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                <Link 
+                  href="/calculators" 
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   Calculators
                 </Link>
-                <Link href="/education" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                <Link 
+                  href="/education" 
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   Education
                 </Link>
-                <Link href="/about" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                <Link 
+                  href="/about" 
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   About
                 </Link>
-                <Link href="/contact" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-emerald-50" onClick={() => setMobileMenuOpen(false)}>
+                <Link 
+                  href="/contact" 
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   Contact
                 </Link>
                 <div className="pt-4">
                   <Link href="/quote" onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full bg-gradient-to-r from-emerald-600 to-sky-600 text-white">
+                    <Button className="w-full bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 active:from-emerald-800 active:to-sky-800 touch-manipulation py-3 text-base">
                       Request Quote
                     </Button>
                   </Link>
