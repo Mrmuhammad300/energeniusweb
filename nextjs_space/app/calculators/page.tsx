@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Calculator, Home, Zap, DollarSign, TrendingUp, Battery, AlertCircle, Mail, Phone } from 'lucide-react';
+import { Calculator, Home, Zap, DollarSign, TrendingUp, Battery, AlertCircle, Mail, Phone, Plus, Minus } from 'lucide-react';
 import Link from 'next/link';
 
 interface Product {
@@ -22,15 +22,55 @@ interface Product {
   batteryCapacity?: number;
 }
 
+interface Device {
+  name: string;
+  watts: number;
+  quantity: number;
+}
+
+// Calculator Configuration (matches specification)
+const CALCULATOR_CONFIG = {
+  precision: {
+    rounding: 'ceil' as const,
+    decimal_places: 2,
+    safety_buffer_percentage: 20,
+  },
+  baseline_assumptions: {
+    watts_per_sq_ft: 3.5,
+    watts_per_acre: 152460, // 43,560 sqft × 3.5 W/sqft
+    startup_surge_multiplier: 1.25,
+  },
+  device_library: {
+    refrigerator: 800,
+    freezer: 700,
+    hvac_1_ton: 3500,
+    well_pump: 1000,
+    lighting_standard_room: 300,
+    server_rack_small: 2000,
+    security_system: 250,
+    medical_equipment_basic: 1500,
+  },
+  thresholds: {
+    minimum_watts: 750,
+    maximum_standard_watts: 50000,
+    complex_project_trigger: 50000,
+  },
+};
+
 export default function CalculatorsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   
-  // Sizing Calculator States
-  const [houseSize, setHouseSize] = useState<string>('');
-  const [acres, setAcres] = useState<string>('');
-  const [usageType, setUsageType] = useState<string>('essential');
+  // Sizing Calculator States - Updated for new specification
+  const [calculationMethod, setCalculationMethod] = useState<'sqft' | 'acreage' | 'devices'>('sqft');
+  const [squareFootage, setSquareFootage] = useState<string>('');
+  const [acreage, setAcreage] = useState<string>('');
+  const [devices, setDevices] = useState<Device[]>([]);
+  const [customDeviceName, setCustomDeviceName] = useState<string>('');
+  const [customDeviceWatts, setCustomDeviceWatts] = useState<string>('');
   const [recommendedWattage, setRecommendedWattage] = useState<number>(0);
+  const [calculatedLoad, setCalculatedLoad] = useState<number>(0);
   const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);
+  const [showCalculationBreakdown, setShowCalculationBreakdown] = useState<boolean>(false);
   
   // Power Calculator States
   const [powerKw, setPowerKw] = useState<string>('');
@@ -57,69 +97,120 @@ export default function CalculatorsPage() {
     fetchProducts();
   }, []);
 
-  // Sizing Calculator Logic
-  const calculateSizing = () => {
-    let targetWattage = 0;
+  // Device Management Functions
+  const addDevice = (deviceType: keyof typeof CALCULATOR_CONFIG.device_library) => {
+    const watts = CALCULATOR_CONFIG.device_library[deviceType];
+    const existingDevice = devices.find(d => d.name === deviceType);
     
-    if (houseSize) {
-      const sqft = parseFloat(houseSize);
-      // Base calculation: average home uses 30 kWh/day = 1250W continuous
-      // Scale by square footage (typical home is 2000 sqft)
-      const baseWatts = (sqft / 2000) * 1250;
-      
-      switch (usageType) {
-        case 'essential':
-          // Essential only: 30-40% of total (refrigerator, lights, phones)
-          targetWattage = baseWatts * 0.35;
-          break;
-        case 'partial':
-          // Partial: 50-70% (essentials + some appliances)
-          targetWattage = baseWatts * 0.60;
-          break;
-        case 'whole':
-          // Whole home: 100% + surge capacity
-          targetWattage = baseWatts * 1.25;
-          break;
-        default:
-          targetWattage = baseWatts * 0.35;
-      }
-    } else if (acres) {
-      const acreage = parseFloat(acres);
-      // Commercial/agricultural: 500-1000W per acre for basic operations
-      // Scale up for full operations
-      const baseWatts = acreage * 750;
-      
-      switch (usageType) {
-        case 'essential':
-          targetWattage = baseWatts * 0.5;
-          break;
-        case 'partial':
-          targetWattage = baseWatts * 0.75;
-          break;
-        case 'whole':
-          targetWattage = baseWatts * 1.5;
-          break;
-        default:
-          targetWattage = baseWatts * 0.5;
-      }
+    if (existingDevice) {
+      setDevices(devices.map(d => 
+        d.name === deviceType ? { ...d, quantity: d.quantity + 1 } : d
+      ));
+    } else {
+      setDevices([...devices, { name: deviceType, watts, quantity: 1 }]);
+    }
+  };
+
+  const addCustomDevice = () => {
+    if (!customDeviceName || !customDeviceWatts) return;
+    
+    const watts = parseFloat(customDeviceWatts);
+    if (isNaN(watts) || watts <= 0) return;
+    
+    setDevices([...devices, { 
+      name: customDeviceName, 
+      watts, 
+      quantity: 1 
+    }]);
+    
+    setCustomDeviceName('');
+    setCustomDeviceWatts('');
+  };
+
+  const updateDeviceQuantity = (index: number, change: number) => {
+    const newDevices = [...devices];
+    newDevices[index].quantity = Math.max(0, newDevices[index].quantity + change);
+    
+    if (newDevices[index].quantity === 0) {
+      newDevices.splice(index, 1);
     }
     
-    setRecommendedWattage(Math.round(targetWattage));
+    setDevices(newDevices);
+  };
+
+  const removeDevice = (index: number) => {
+    const newDevices = devices.filter((_, i) => i !== index);
+    setDevices(newDevices);
+  };
+
+  // Sizing Calculator Logic - Matches Specification
+  const calculateSizing = () => {
+    let baseLoad = 0;
     
-    // Find suitable products (within 80%-150% of target)
-    const suitable = products.filter(
-      p => p.wattageNumeric >= targetWattage * 0.8 && p.wattageNumeric <= targetWattage * 1.5
-    ).sort((a, b) => Math.abs(a.wattageNumeric - targetWattage) - Math.abs(b.wattageNumeric - targetWattage)).slice(0, 3);
+    // Step 1: Calculate base load based on method
+    switch (calculationMethod) {
+      case 'sqft':
+        if (squareFootage) {
+          const sqft = parseFloat(squareFootage);
+          if (sqft >= 100 && sqft <= 500000) {
+            baseLoad = sqft * CALCULATOR_CONFIG.baseline_assumptions.watts_per_sq_ft;
+          }
+        }
+        break;
+        
+      case 'acreage':
+        if (acreage) {
+          const acres = parseFloat(acreage);
+          if (acres >= 0.01 && acres <= 1000) {
+            // Convert acreage to square footage, then calculate
+            const sqft = acres * 43560;
+            baseLoad = sqft * CALCULATOR_CONFIG.baseline_assumptions.watts_per_sq_ft;
+          }
+        }
+        break;
+        
+      case 'devices':
+        // Sum up all device wattages × quantities
+        baseLoad = devices.reduce((sum, device) => 
+          sum + (device.watts * device.quantity), 0
+        );
+        break;
+    }
     
-    // If no suitable products found, get the top 3 highest wattage products
-    if (suitable.length === 0 && products.length > 0) {
-      const highestProducts = [...products]
+    // Step 2: Apply startup surge multiplier
+    const withSurge = baseLoad * CALCULATOR_CONFIG.baseline_assumptions.startup_surge_multiplier;
+    
+    // Step 3: Apply safety buffer
+    const withBuffer = withSurge * (1 + (CALCULATOR_CONFIG.precision.safety_buffer_percentage / 100));
+    
+    // Step 4: Round up to nearest whole watt
+    const finalWattage = Math.ceil(withBuffer);
+    
+    setCalculatedLoad(Math.ceil(baseLoad)); // Store base load for display
+    setRecommendedWattage(finalWattage);
+    
+    // Step 5: Find matching generator (smallest that exceeds load)
+    const validProducts = products.filter(p => 
+      p.wattageNumeric >= CALCULATOR_CONFIG.thresholds.minimum_watts
+    );
+    
+    // Find products that can handle the load
+    const suitable = validProducts
+      .filter(p => p.wattageNumeric >= finalWattage)
+      .sort((a, b) => a.wattageNumeric - b.wattageNumeric) // Smallest first
+      .slice(0, 3);
+    
+    // If no products can handle it, show the largest products
+    if (suitable.length === 0 && validProducts.length > 0) {
+      const largest = [...validProducts]
         .sort((a, b) => b.wattageNumeric - a.wattageNumeric)
         .slice(0, 3);
-      setRecommendedProducts(highestProducts);
+      setRecommendedProducts(largest);
     } else {
       setRecommendedProducts(suitable);
     }
+    
+    setShowCalculationBreakdown(true);
   };
 
   // Power Calculator Logic
@@ -192,91 +283,257 @@ export default function CalculatorsPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Input Method Selection */}
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="houseSize">House Size (Square Feet)</Label>
-                      <Input
-                        id="houseSize"
-                        type="number"
-                        placeholder="e.g., 2000"
-                        value={houseSize}
-                        onChange={(e) => {
-                          setHouseSize(e.target.value);
-                          setAcres('');
-                        }}
-                      />
-                      <p className="text-xs text-gray-500">For residential properties</p>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="acres">Plot Size (Acres)</Label>
-                      <Input
-                        id="acres"
-                        type="number"
-                        placeholder="e.g., 5"
-                        value={acres}
-                        onChange={(e) => {
-                          setAcres(e.target.value);
-                          setHouseSize('');
-                        }}
-                      />
-                      <p className="text-xs text-gray-500">For commercial/agricultural properties</p>
+                  {/* Calculation Method Selection */}
+                  <div className="space-y-3">
+                    <Label>Choose Calculation Method</Label>
+                    <div className="grid grid-cols-3 gap-3">
+                      <Button
+                        type="button"
+                        variant={calculationMethod === 'sqft' ? 'default' : 'outline'}
+                        onClick={() => setCalculationMethod('sqft')}
+                        className="flex flex-col h-auto py-3"
+                      >
+                        <Home className="h-5 w-5 mb-1" />
+                        <span className="text-xs">Square Feet</span>
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={calculationMethod === 'acreage' ? 'default' : 'outline'}
+                        onClick={() => setCalculationMethod('acreage')}
+                        className="flex flex-col h-auto py-3"
+                      >
+                        <TrendingUp className="h-5 w-5 mb-1" />
+                        <span className="text-xs">Acreage</span>
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={calculationMethod === 'devices' ? 'default' : 'outline'}
+                        onClick={() => setCalculationMethod('devices')}
+                        className="flex flex-col h-auto py-3"
+                      >
+                        <Zap className="h-5 w-5 mb-1" />
+                        <span className="text-xs">Devices</span>
+                      </Button>
                     </div>
                   </div>
 
                   <Separator />
 
-                  {/* Usage Type Selection */}
-                  <div className="space-y-2">
-                    <Label htmlFor="usageType">Power Coverage Level</Label>
-                    <Select value={usageType} onValueChange={setUsageType}>
-                      <SelectTrigger id="usageType">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="essential">
-                          Essential Only (Lights, Refrigerator, Phones)
-                        </SelectItem>
-                        <SelectItem value="partial">
-                          Partial Home (Essentials + Some Appliances)
-                        </SelectItem>
-                        <SelectItem value="whole">
-                          Whole Home/Business (All Systems)
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  {/* Square Footage Input */}
+                  {calculationMethod === 'sqft' && (
+                    <div className="space-y-2">
+                      <Label htmlFor="squareFootage">Property Size (Square Feet)</Label>
+                      <Input
+                        id="squareFootage"
+                        type="number"
+                        placeholder="e.g., 2000"
+                        value={squareFootage}
+                        onChange={(e) => setSquareFootage(e.target.value)}
+                        min={100}
+                        max={500000}
+                      />
+                      <p className="text-xs text-gray-500">
+                        Using {CALCULATOR_CONFIG.baseline_assumptions.watts_per_sq_ft} W/sqft baseline
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Acreage Input */}
+                  {calculationMethod === 'acreage' && (
+                    <div className="space-y-2">
+                      <Label htmlFor="acreage">Property Size (Acres)</Label>
+                      <Input
+                        id="acreage"
+                        type="number"
+                        placeholder="e.g., 5"
+                        value={acreage}
+                        onChange={(e) => setAcreage(e.target.value)}
+                        min={0.01}
+                        max={1000}
+                        step={0.01}
+                      />
+                      <p className="text-xs text-gray-500">
+                        1 acre = 43,560 sqft × {CALCULATOR_CONFIG.baseline_assumptions.watts_per_sq_ft} W/sqft = {CALCULATOR_CONFIG.baseline_assumptions.watts_per_acre.toLocaleString()}W
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Devices Input */}
+                  {calculationMethod === 'devices' && (
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="mb-3 block">Add Devices from Library</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                          {Object.entries(CALCULATOR_CONFIG.device_library).map(([key, watts]) => (
+                            <Button
+                              key={key}
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => addDevice(key as keyof typeof CALCULATOR_CONFIG.device_library)}
+                              className="justify-start text-xs h-auto py-2"
+                            >
+                              <Plus className="h-3 w-3 mr-1" />
+                              {key.replace(/_/g, ' ')} ({watts}W)
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Custom Device */}
+                      <div className="space-y-2">
+                        <Label>Add Custom Device</Label>
+                        <div className="flex gap-2">
+                          <Input
+                            placeholder="Device name"
+                            value={customDeviceName}
+                            onChange={(e) => setCustomDeviceName(e.target.value)}
+                            className="flex-1"
+                          />
+                          <Input
+                            type="number"
+                            placeholder="Watts"
+                            value={customDeviceWatts}
+                            onChange={(e) => setCustomDeviceWatts(e.target.value)}
+                            className="w-24"
+                          />
+                          <Button
+                            type="button"
+                            onClick={addCustomDevice}
+                            size="sm"
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Selected Devices */}
+                      {devices.length > 0 && (
+                        <div className="space-y-2">
+                          <Label>Selected Devices ({devices.length})</Label>
+                          <div className="border rounded-lg divide-y max-h-64 overflow-y-auto">
+                            {devices.map((device, index) => (
+                              <div key={index} className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-800">
+                                <div className="flex-1">
+                                  <p className="text-sm font-medium capitalize">{device.name.replace(/_/g, ' ')}</p>
+                                  <p className="text-xs text-gray-500">{device.watts}W × {device.quantity} = {device.watts * device.quantity}W</p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => updateDeviceQuantity(index, -1)}
+                                    className="h-7 w-7 p-0"
+                                  >
+                                    <Minus className="h-3 w-3" />
+                                  </Button>
+                                  <span className="text-sm w-6 text-center">{device.quantity}</span>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => updateDeviceQuantity(index, 1)}
+                                    className="h-7 w-7 p-0"
+                                  >
+                                    <Plus className="h-3 w-3" />
+                                  </Button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-3">
+                            <p className="text-sm font-medium text-emerald-900 dark:text-emerald-100">
+                              Total Device Load: {devices.reduce((sum, d) => sum + (d.watts * d.quantity), 0).toLocaleString()}W
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {/* Calculate Button */}
                   <Button 
                     onClick={calculateSizing} 
                     className="w-full"
-                    disabled={!houseSize && !acres}
+                    disabled={
+                      (calculationMethod === 'sqft' && !squareFootage) ||
+                      (calculationMethod === 'acreage' && !acreage) ||
+                      (calculationMethod === 'devices' && devices.length === 0)
+                    }
                   >
+                    <Calculator className="h-4 w-4 mr-2" />
                     Calculate Recommended Size
                   </Button>
 
                   {/* Results */}
                   {recommendedWattage > 0 && (
                     <div className="space-y-6 pt-6 border-t">
+                      {/* Calculation Breakdown */}
+                      {showCalculationBreakdown && (
+                        <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800">
+                          <CardHeader className="pb-3">
+                            <CardTitle className="text-lg flex items-center gap-2">
+                              <Calculator className="h-5 w-5 text-blue-600" />
+                              Calculation Breakdown
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="space-y-3">
+                            <div className="grid grid-cols-2 gap-3 text-sm">
+                              <div className="bg-white/60 dark:bg-gray-800/60 rounded p-3">
+                                <p className="text-xs text-gray-600 dark:text-gray-400">Base Load</p>
+                                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                                  {calculatedLoad.toLocaleString()}W
+                                </p>
+                              </div>
+                              <div className="bg-white/60 dark:bg-gray-800/60 rounded p-3">
+                                <p className="text-xs text-gray-600 dark:text-gray-400">+ Surge (×{CALCULATOR_CONFIG.baseline_assumptions.startup_surge_multiplier})</p>
+                                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                                  {Math.ceil(calculatedLoad * CALCULATOR_CONFIG.baseline_assumptions.startup_surge_multiplier).toLocaleString()}W
+                                </p>
+                              </div>
+                              <div className="bg-white/60 dark:bg-gray-800/60 rounded p-3">
+                                <p className="text-xs text-gray-600 dark:text-gray-400">+ Safety Buffer ({CALCULATOR_CONFIG.precision.safety_buffer_percentage}%)</p>
+                                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                                  {Math.ceil(calculatedLoad * CALCULATOR_CONFIG.baseline_assumptions.startup_surge_multiplier * 1.2).toLocaleString()}W
+                                </p>
+                              </div>
+                              <div className="bg-emerald-100 dark:bg-emerald-900/40 rounded p-3 border-2 border-emerald-400 dark:border-emerald-700">
+                                <p className="text-xs text-emerald-700 dark:text-emerald-300 font-medium">Final Requirement</p>
+                                <p className="text-xl font-bold text-emerald-700 dark:text-emerald-300">
+                                  {recommendedWattage.toLocaleString()}W
+                                </p>
+                              </div>
+                            </div>
+                            <div className="text-xs text-gray-600 dark:text-gray-400 bg-white/40 dark:bg-gray-800/40 rounded p-2">
+                              <p className="font-medium mb-1">Formula Applied:</p>
+                              <p className="font-mono">
+                                Base Load × {CALCULATOR_CONFIG.baseline_assumptions.startup_surge_multiplier} (surge) × 1.{CALCULATOR_CONFIG.precision.safety_buffer_percentage} (buffer) = Required Watts
+                              </p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
+
+                      {/* Main Result Display */}
                       <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-6">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Recommended Wattage</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">Generator Capacity Required</p>
                             <p className="text-3xl font-bold text-emerald-600">{recommendedWattage.toLocaleString()}W</p>
                           </div>
                           <Battery className="h-12 w-12 text-emerald-600" />
                         </div>
                         <p className="text-sm text-gray-600 dark:text-gray-400 mt-3">
-                          Based on your {houseSize ? `${houseSize} sqft property` : `${acres} acre property`} with {usageType} coverage
+                          {calculationMethod === 'sqft' && `Based on ${squareFootage} sqft property`}
+                          {calculationMethod === 'acreage' && `Based on ${acreage} acre property`}
+                          {calculationMethod === 'devices' && `Based on ${devices.length} selected device${devices.length !== 1 ? 's' : ''}`}
                         </p>
                       </div>
 
-                      {/* Check if capacity exceeds 80% of largest product */}
+                      {/* Check if capacity exceeds complex project threshold */}
                       {(() => {
-                        const maxProduct = products.length > 0 ? Math.max(...products.map(p => p.wattageNumeric)) : 0;
-                        const exceedsCapacity = recommendedWattage > maxProduct * 0.8;
+                        const exceedsCapacity = recommendedWattage > CALCULATOR_CONFIG.thresholds.complex_project_trigger;
 
                         return exceedsCapacity ? (
                           // Custom Solution Message
@@ -286,10 +543,10 @@ export default function CalculatorsPage() {
                                 <AlertCircle className="h-8 w-8 text-amber-600 shrink-0" />
                                 <div>
                                   <CardTitle className="text-xl text-amber-900 dark:text-amber-100">
-                                    Custom Solution Recommended
+                                    Custom-Engineered Solution Required
                                   </CardTitle>
                                   <CardDescription className="text-amber-800 dark:text-amber-200 mt-2">
-                                    Your power requirements are approaching or exceeding our standard product capacity. We recommend a custom solution tailored to your specific needs.
+                                    Your power needs exceed standard generator offerings ({CALCULATOR_CONFIG.thresholds.complex_project_trigger.toLocaleString()}W+). A custom-engineered solution is required to meet your {recommendedWattage.toLocaleString()}W requirements.
                                   </CardDescription>
                                 </div>
                               </div>
@@ -343,12 +600,12 @@ export default function CalculatorsPage() {
 
                               <div className="flex flex-col sm:flex-row gap-3">
                                 <Link href="/quote" className="flex-1">
-                                  <Button size="lg" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
-                                    Request Custom Quote
+                                  <Button size="lg" className="w-full bg-amber-600 hover:bg-amber-700 text-white">
+                                    Request Engineering Assessment
                                   </Button>
                                 </Link>
                                 <Link href="/contact" className="flex-1">
-                                  <Button size="lg" variant="outline" className="w-full border-emerald-600 text-emerald-600 hover:bg-emerald-50">
+                                  <Button size="lg" variant="outline" className="w-full border-amber-600 text-amber-600 hover:bg-amber-50">
                                     Schedule Energy Audit
                                   </Button>
                                 </Link>
@@ -364,8 +621,7 @@ export default function CalculatorsPage() {
 
                       {/* Standard Product Recommendations */}
                       {recommendedProducts.length > 0 && (() => {
-                        const maxProduct = products.length > 0 ? Math.max(...products.map(p => p.wattageNumeric)) : 0;
-                        const exceedsCapacity = recommendedWattage > maxProduct * 0.8;
+                        const exceedsCapacity = recommendedWattage > CALCULATOR_CONFIG.thresholds.complex_project_trigger;
                         
                         return (
                           <div className="space-y-4">

@@ -1,0 +1,121 @@
+{
+  "calculator_config": {
+    "version": "1.0.0",
+    "precision": {
+      "rounding": "ceil",
+      "decimal_places": 2,
+      "safety_buffer_percentage": 20
+    },
+    "supported_inputs": {
+      "square_footage": {
+        "enabled": true,
+        "min": 100,
+        "max": 500000,
+        "unit": "sq_ft"
+      },
+      "acreage": {
+        "enabled": true,
+        "min": 0.01,
+        "max": 1000,
+        "unit": "acres",
+        "conversion_factor_sq_ft": 43560
+      },
+      "devices_and_utilities": {
+        "enabled": true,
+        "allow_custom_wattage": true
+      }
+    }
+  },
+
+  "load_calculation": {
+    "baseline_assumptions": {
+      "watts_per_sq_ft": 3.5,
+      "watts_per_acre": 152460,
+      "startup_surge_multiplier": 1.25
+    },
+    "device_library": {
+      "refrigerator": 800,
+      "freezer": 700,
+      "hvac_1_ton": 3500,
+      "well_pump": 1000,
+      "lighting_standard_room": 300,
+      "server_rack_small": 2000,
+      "security_system": 250,
+      "medical_equipment_basic": 1500,
+      "custom_device": "user_defined"
+    }
+  },
+
+  "generator_catalog": {
+    "minimum_supported_watts": 750,
+    "maximum_standard_watts": 50000,
+    "products": [
+      {
+        "model": "GEN-750",
+        "rated_watts": 750,
+        "recommended_use": "small electronics, emergency backup"
+      },
+      {
+        "model": "GEN-2000",
+        "rated_watts": 2000,
+        "recommended_use": "tiny homes, RVs, small offices"
+      },
+      {
+        "model": "GEN-5000",
+        "rated_watts": 5000,
+        "recommended_use": "residential backup, small businesses"
+      },
+      {
+        "model": "GEN-10000",
+        "rated_watts": 10000,
+        "recommended_use": "large homes, commercial loads"
+      },
+      {
+        "model": "GEN-25000",
+        "rated_watts": 25000,
+        "recommended_use": "industrial, agriculture, multi-building"
+      },
+      {
+        "model": "GEN-50000",
+        "rated_watts": 50000,
+        "recommended_use": "critical infrastructure, large facilities"
+      }
+    ]
+  },
+
+  "matching_logic": {
+    "calculation_steps": [
+      "convert acreage to square footage if provided",
+      "calculate base load using square footage and/or devices",
+      "apply startup surge multiplier",
+      "apply safety buffer percentage",
+      "round up to nearest whole watt"
+    ],
+    "selection_rule": {
+      "match_smallest_generator_that_exceeds_load": true
+    }
+  },
+
+  "complex_project_threshold": {
+    "trigger_conditions": {
+      "required_watts_greater_than": 50000,
+      "multi_site": true,
+      "industrial_or_custom_use": true
+    },
+    "routing_action": {
+      "category": "complex_project",
+      "message": "Your power needs exceed standard generator offerings. A custom-engineered solution is required.",
+      "cta": "Request Engineering Assessment"
+    }
+  },
+
+  "output_response": {
+    "return_fields": [
+      "total_calculated_watts",
+      "recommended_generator_model",
+      "coverage_explanation",
+      "complex_project_flag"
+    ],
+    "coverage_explanation_template": "Based on your inputs, we calculated a total load of {{watts}}W (including surge and safety buffer). The {{model}} generator meets or exceeds this requirement."
+  }
+}
