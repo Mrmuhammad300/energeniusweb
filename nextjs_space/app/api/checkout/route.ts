@@ -22,9 +22,8 @@ interface CheckoutRequestBody {
   servicePackage: {
     id: string;
     name: string;
-    oneTimePrice: number;
-    subscriptionPrice: number | null;
-    subscriptionPeriod: string | null;
+    price: number;
+    priceMonthly: number | null;
     prerequisites: string[];
   } | null;
   prerequisitesAcknowledged: { [key: string]: boolean };
@@ -79,7 +78,7 @@ export async function POST(request: NextRequest) {
     
     // Calculate totals
     const productTotal = body.product.priceNumeric;
-    const serviceTotal = body.servicePackage?.oneTimePrice || 0;
+    const serviceTotal = body.servicePackage?.price || 0;
     const subtotal = productTotal + serviceTotal;
     const taxAmount = 0; // Tax calculation to be implemented based on state
     const totalAmount = subtotal + taxAmount;
@@ -190,12 +189,12 @@ export async function POST(request: NextRequest) {
             customerEmail: body.email,
             customerPhone: body.phone,
             customerAddress: fullAddress,
-            purchasePrice: body.servicePackage.oneTimePrice,
-            subscriptionMonthly: body.servicePackage.subscriptionPrice,
+            purchasePrice: body.servicePackage.price,
+            subscriptionMonthly: body.servicePackage.priceMonthly,
             status: 'pending',
             paymentStatus: 'unpaid',
             acknowledgedTerms,
-            subscriptionActive: body.servicePackage.subscriptionPrice ? false : false,
+            subscriptionActive: body.servicePackage.priceMonthly ? false : false,
           },
         });
       } catch (error) {

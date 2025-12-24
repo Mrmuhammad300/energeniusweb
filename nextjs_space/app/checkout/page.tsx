@@ -25,9 +25,8 @@ interface Product {
 interface ServicePackage {
   id: string;
   name: string;
-  oneTimePrice: number;
-  subscriptionPrice: number | null;
-  subscriptionPeriod: string | null;
+  price: number;
+  priceMonthly: number | null;
   prerequisites: string[];
   exclusions: string[];
   deliverables: string[];
@@ -215,7 +214,7 @@ export default function CheckoutPage() {
   }
 
   const totalPrice = checkoutData.product.priceNumeric + 
-    (checkoutData.servicePackage?.oneTimePrice || 0);
+    (checkoutData.servicePackage?.price || 0);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -458,9 +457,9 @@ export default function CheckoutPage() {
                       <div className="flex items-start justify-between mb-2">
                         <div>
                           <p className="font-medium text-sm">{checkoutData.servicePackage.name}</p>
-                          {checkoutData.servicePackage.subscriptionPrice && (
+                          {checkoutData.servicePackage.priceMonthly && (
                             <Badge variant="outline" className="mt-1">
-                              +${checkoutData.servicePackage.subscriptionPrice}/{checkoutData.servicePackage.subscriptionPeriod}
+                              +${checkoutData.servicePackage.priceMonthly}/month
                             </Badge>
                           )}
                         </div>
@@ -468,7 +467,7 @@ export default function CheckoutPage() {
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Installation:</span>
                         <span className="font-medium text-emerald-600">
-                          +${checkoutData.servicePackage.oneTimePrice.toLocaleString()}
+                          +${checkoutData.servicePackage.price.toLocaleString()}
                         </span>
                       </div>
                     </div>

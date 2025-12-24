@@ -21,7 +21,7 @@ interface Product {
   priceNumeric: number;
   imageUrl: string;
   tier: string;
-  application: string;
+  application: string[];
   warranty: string;
 }
 
@@ -30,14 +30,13 @@ interface ServicePackage {
   name: string;
   slug: string;
   description: string;
-  oneTimePrice: number;
-  subscriptionPrice: number | null;
-  subscriptionPeriod: string | null;
+  price: number;
+  priceMonthly: number | null;
   deliverables: string[];
   exclusions: string[];
   prerequisites: string[];
   warrantyInfo: string;
-  timeline: string;
+  estimatedTimeline: string;
   category: string;
   isPopular: boolean;
 }
@@ -66,7 +65,10 @@ export default function ProductDetailPage() {
         setProduct(currentProduct);
         
         // Determine category based on product application
-        const category = currentProduct.application?.toLowerCase().includes('commercial') 
+        const applicationArray = Array.isArray(currentProduct.application) 
+          ? currentProduct.application 
+          : [currentProduct.application];
+        const category = applicationArray.some((app: string) => app?.toLowerCase().includes('commercial'))
           ? 'commercial' 
           : 'residential';
         
@@ -125,7 +127,7 @@ export default function ProductDetailPage() {
   }
 
   const totalPrice = selectedPackage 
-    ? product.priceNumeric + (servicePackages.find(pkg => pkg.id === selectedPackage)?.oneTimePrice || 0)
+    ? product.priceNumeric + (servicePackages.find(pkg => pkg.id === selectedPackage)?.price || 0)
     : product.priceNumeric;
 
   return (
@@ -258,19 +260,17 @@ export default function ProductDetailPage() {
                         <SelectValue placeholder="Choose an installation package..." />
                       </SelectTrigger>
                       <SelectContent>
-                        {servicePackages.map((pkg) => (
-                          <SelectItem key={pkg.id} value={pkg.id}>
-                            <div className="flex items-center justify-between w-full">
-                              <span className="font-medium">{pkg.name}</span>
-                              {pkg.isPopular && (
-                                <Badge variant="default" className="ml-2">Most Popular</Badge>
-                              )}
-                              <span className="text-emerald-600 ml-2">
-                                +${pkg.oneTimePrice.toLocaleString()}
-                              </span>
-                            </div>
-                          </SelectItem>
-                        ))}
+                        {servicePackages.length === 0 ? (
+                          <div className="px-4 py-6 text-center text-gray-500 text-sm">
+                            No installation packages available
+                          </div>
+                        ) : (
+                          servicePackages.map((pkg) => (
+                            <SelectItem key={pkg.id} value={pkg.id}>
+                              {pkg.name} - ${pkg.price.toLocaleString()}{pkg.isPopular ? ' ⭐ Most Popular' : ''}
+                            </SelectItem>
+                          ))
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
@@ -302,7 +302,7 @@ export default function ProductDetailPage() {
                                     <Clock className="h-3 w-3 mr-1 text-emerald-600" />
                                     Timeline
                                   </p>
-                                  <p className="font-medium">{pkg.timeline}</p>
+                                  <p className="font-medium">{pkg.estimatedTimeline}</p>
                                 </div>
                               </div>
 
@@ -320,10 +320,10 @@ export default function ProductDetailPage() {
                                 </div>
                               )}
 
-                              {pkg.subscriptionPrice && (
+                              {pkg.priceMonthly && (
                                 <div className="pt-2 border-t border-emerald-300">
                                   <p className="text-sm text-gray-700">
-                                    Plus ${pkg.subscriptionPrice}/{pkg.subscriptionPeriod} subscription
+                                    Plus ${pkg.priceMonthly}/month subscription
                                   </p>
                                 </div>
                               )}
@@ -345,7 +345,7 @@ export default function ProductDetailPage() {
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Installation:</span>
                         <span className="font-medium text-emerald-600">
-                          +${(servicePackages.find(pkg => pkg.id === selectedPackage)?.oneTimePrice || 0).toLocaleString()}
+                          +${(servicePackages.find(pkg => pkg.id === selectedPackage)?.price || 0).toLocaleString()}
                         </span>
                       </div>
                     )}
