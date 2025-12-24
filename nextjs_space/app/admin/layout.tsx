@@ -19,6 +19,7 @@ import {
   ShoppingCart,
   UserCog,
   FileType,
+  BarChart3,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { signOut } from 'next-auth/react';
@@ -32,6 +33,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/analytics', label: 'Sales Analytics', icon: BarChart3 },
   { href: '/admin/quotes', label: 'Quote Requests', icon: FileText },
   { href: '/admin/invoices', label: 'Invoices', icon: Receipt },
   { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },

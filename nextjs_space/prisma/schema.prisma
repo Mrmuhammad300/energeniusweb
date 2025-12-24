@@ -55,15 +55,26 @@ model QuoteRequest {
   powerNeeds    String   @db.Text
   timeline      String
   message       String?  @db.Text
-  status        String   @default("new") // new, contacted, quoted, closed
+  status        String   @default("new") // new, contacted, quoted, closed, won, lost
   interestedProducts String[] // Array of product SKUs
   invoices      Invoice[] // Related invoices
+  
+  // Analytics Fields
+  leadSource    String?  // website, referral, phone, email, social_media
+  estimatedValue Float?  // Estimated quote value
+  closedDate    DateTime? // Date when quote was closed (won or lost)
+  lostReason    String?  // Reason if lost (price, competitor, timing, etc.)
+  assignedTo    String?  // Team member assigned to this quote
+  followUpDate  DateTime? // Next follow-up date
+  
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   @@index([status])
   @@index([projectType])
   @@index([createdAt])
+  @@index([leadSource])
+  @@index([assignedTo])
 }
 
 model ContactSubmission {
@@ -177,9 +188,17 @@ model Invoice {
   paymentMethod   String?       // ACH, wire_transfer, credit_card, check
   paymentNotes    String?       @db.Text
   
+  // Sales Analytics Fields
+  commissionRate  Float?        @default(0.15) // Default 15%
+  commissionAmount Float?       // Calculated commission
+  assignedSalesRep String?      // Sales rep who closed the deal
+  leadSource      String?       // Where the lead came from
+  salesCycle      Int?          // Days from quote to close
+  
   // Dates
   invoiceDate     DateTime      @default(now())
   dueDate         DateTime?
+  paidDate        DateTime?     // Date when invoice was fully paid
   
   // Notes
   notes           String?       @db.Text
@@ -197,6 +216,9 @@ model Invoice {
   @@index([invoiceNumber])
   @@index([customerEmail])
   @@index([createdAt])
+  @@index([assignedSalesRep])
+  @@index([leadSource])
+  @@index([paidDate])
 }
 
 model InvoiceItem {
