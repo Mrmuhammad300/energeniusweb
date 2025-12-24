@@ -20,6 +20,7 @@ import {
   UserCog,
   FileType,
   BarChart3,
+  Settings,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { signOut } from 'next-auth/react';
@@ -42,6 +43,7 @@ const navItems: NavItem[] = [
   { href: '/admin/contacts', label: 'Contacts', icon: MessageSquare },
   { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
   { href: '/admin/email-templates', label: 'Email Templates', icon: FileType },
+  { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function AdminLayout({

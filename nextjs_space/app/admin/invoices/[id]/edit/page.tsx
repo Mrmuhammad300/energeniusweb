@@ -27,6 +27,13 @@ interface InvoiceItem {
   totalPrice: number;
 }
 
+interface Product {
+  id: string;
+  sku: string;
+  name: string;
+  priceNumeric: number;
+}
+
 interface Invoice {
   id: string;
   invoiceNumber: string;
@@ -55,6 +62,7 @@ export default function EditInvoicePage() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [invoice, setInvoice] = useState<Invoice | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
   const [formData, setFormData] = useState({
     customerName: '',
     customerEmail: '',
@@ -74,7 +82,20 @@ export default function EditInvoicePage() {
     if (invoiceId) {
       fetchInvoice();
     }
+    loadProducts();
   }, [invoiceId]);
+
+  const loadProducts = async () => {
+    try {
+      const response = await fetch('/api/products');
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data);
+      }
+    } catch (error) {
+      console.error('Failed to load products:', error);
+    }
+  };
 
   const fetchInvoice = async () => {
     try {
@@ -143,6 +164,26 @@ export default function EditInvoicePage() {
         return item;
       })
     );
+  };
+
+  const handleProductSelect = (itemId: string, productId: string) => {
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      setItems(
+        items.map((item) => {
+          if (item.id === itemId) {
+            return {
+              ...item,
+              productSku: product.sku,
+              description: product.name,
+              unitPrice: product.priceNumeric,
+              totalPrice: item.quantity * product.priceNumeric,
+            };
+          }
+          return item;
+        })
+      );
+    }
   };
 
   const calculateSubtotal = () => {
@@ -355,6 +396,29 @@ export default function EditInvoicePage() {
                   </Button>
                 )}
               </div>
+
+              {/* Quick Fill from Product Dropdown */}
+              <div className="space-y-2 mb-3 bg-blue-50 p-3 rounded-md">
+                <Label htmlFor={`product-${item.id}`} className="text-blue-900 font-medium">
+                  🚀 Quick Fill from Product Catalog
+                </Label>
+                <Select onValueChange={(value) => handleProductSelect(item.id, value)}>
+                  <SelectTrigger id={`product-${item.id}`} className="bg-white">
+                    <SelectValue placeholder="Select a product to auto-fill..." />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    {products.map((product) => (
+                      <SelectItem key={product.id} value={product.id}>
+                        {product.name} - ${product.priceNumeric.toFixed(2)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-blue-700">
+                  Select a product to automatically fill SKU, description, and price
+                </p>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
                 <div className="md:col-span-3">
                   <Label htmlFor={`sku-${item.id}`}>SKU</Label>
