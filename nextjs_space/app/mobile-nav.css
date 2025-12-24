@@ -1,9 +1,25 @@
 /* Custom CSS for Mobile Navigation Visibility */
 
+/* Force Mobile Menu to Top Layer */
+header, .navbar, .mobile-menu, #mobile-dropdown, .hamburger-menu {
+  z-index: 999999 !important;
+  position: relative !important;
+}
+
 .hamburger-menu {
   display: block !important;
-  z-index: 9999 !important;
-  position: relative !important;
+}
+
+/* Ensure Menu Background is Solid (not transparent) */
+.navbar-collapse, .mobile-menu-container, .dropdown-menu, .mobile-nav-container {
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Fix Dropdown Gap causing 'Close on Hover' */
+.dropdown-menu {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 @media (max-width: 768px) {

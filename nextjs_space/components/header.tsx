@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu, X, ChevronDown, ChevronRight, Calculator } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -10,6 +10,36 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false)
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false)
+
+  // Handle touch events for mobile dropdown to prevent immediate closing
+  useEffect(() => {
+    const handleTouchStart = (e: TouchEvent) => {
+      const target = e.target as HTMLElement
+      const dropdown = target.closest('.menu-item-has-children, .dropdown-toggle')
+      
+      if (dropdown && !dropdown.classList.contains('open')) {
+        e.preventDefault()
+        dropdown.classList.add('open', 'show')
+        const submenu = dropdown.querySelector('.dropdown-menu')
+        if (submenu) {
+          submenu.classList.add('show')
+        }
+      }
+    }
+
+    // Add event listeners to dropdown toggles
+    const dropdowns = document.querySelectorAll('.menu-item-has-children > a, .dropdown-toggle')
+    dropdowns.forEach(link => {
+      link.addEventListener('touchstart', handleTouchStart as EventListener, { passive: false })
+    })
+
+    // Cleanup
+    return () => {
+      dropdowns.forEach(link => {
+        link.removeEventListener('touchstart', handleTouchStart as EventListener)
+      })
+    }
+  }, [mobileMenuOpen, mobileDropdownOpen])
 
   const productLinks = [
     { href: '/products', label: 'All Products', description: 'Browse our full catalog' },
@@ -78,12 +108,12 @@ export default function Header() {
         <div className="hidden lg:flex lg:gap-x-3 xl:gap-x-6 lg:items-center">
           {/* Products & Services Dropdown */}
           <div 
-            className="relative"
+            className="relative menu-item-has-children"
             onMouseEnter={() => setDesktopDropdownOpen(true)}
             onMouseLeave={() => setDesktopDropdownOpen(false)}
           >
             <button
-              className="flex items-center gap-1 text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap"
+              className="dropdown-toggle flex items-center gap-1 text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap"
               aria-expanded={desktopDropdownOpen}
               aria-haspopup="true"
             >
@@ -92,7 +122,7 @@ export default function Header() {
             </button>
             
             {desktopDropdownOpen && (
-              <div className="absolute left-0 top-full mt-2 w-64 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 z-50">
+              <div className="dropdown-menu absolute left-0 top-full mt-2 w-64 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 z-50">
                 <div className="p-2">
                   {productLinks.map((link) => (
                     <Link
@@ -189,10 +219,10 @@ export default function Header() {
             <div className="py-4 px-2">
               <div className="space-y-1">
                 {/* Products & Services Section with Dropdown */}
-                <div className="mb-2">
+                <div className="mb-2 menu-item-has-children">
                   <button
                     onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
-                    className="flex items-center justify-between w-full px-4 py-3.5 text-sm font-semibold text-gray-900 bg-white hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-all duration-200 rounded-lg border border-gray-200"
+                    className="dropdown-toggle flex items-center justify-between w-full px-4 py-3.5 text-sm font-semibold text-gray-900 bg-white hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-all duration-200 rounded-lg border border-gray-200"
                     aria-expanded={mobileDropdownOpen}
                     aria-controls="mobile-products-dropdown"
                   >
@@ -207,7 +237,7 @@ export default function Header() {
                   
                   {/* Dropdown Items - Animated */}
                   <div 
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    className={`dropdown-menu overflow-hidden transition-all duration-300 ease-in-out ${
                       mobileDropdownOpen ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0'
                     }`}
                   >
