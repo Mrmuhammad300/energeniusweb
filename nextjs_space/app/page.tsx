@@ -106,46 +106,47 @@ export default function HomePage() {
           />
         </div>
         
-        <div className="relative z-10 mx-auto max-w-7xl px-6 text-center lg:px-8">
+        <div className="relative z-10 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8 }}
+            className="w-full"
           >
             {/* Company Name */}
-            <p className="text-xl sm:text-2xl font-semibold text-emerald-400 mb-4 tracking-wide">
+            <p className="text-base sm:text-xl md:text-2xl font-semibold text-emerald-400 mb-3 sm:mb-4 tracking-wide">
               Renewable Resource Group
             </p>
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white px-2">
               Power That Thinks Ahead
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-200 sm:text-xl max-w-2xl mx-auto">
+            <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl leading-7 sm:leading-8 text-gray-200 max-w-full sm:max-w-2xl mx-auto px-4">
               Professional-grade solar generators from 400W to 30,000W. Honest pricing, superior support, and industry-leading warranty.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Link href="/products">
-                <Button size="lg" className="bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 text-lg px-8 py-6">
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 px-4">
+              <Link href="/products" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6">
                   Explore Products
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </Link>
-              <Link href="/quote">
-                <Button size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 text-lg px-8 py-6">
+              <Link href="/quote" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto bg-white text-emerald-600 hover:bg-gray-100 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6">
                   Request Quote
                 </Button>
               </Link>
             </div>
-            <div className="mt-8 flex justify-center gap-8 text-white text-sm">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-emerald-400" />
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 text-white text-xs sm:text-sm px-4">
+              <div className="flex items-center justify-center gap-2">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
                 <span>5-Year Warranty</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-emerald-400" />
+              <div className="flex items-center justify-center gap-2">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
                 <span>30% Tax Credit</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-emerald-400" />
+              <div className="flex items-center justify-center gap-2">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
                 <span>Free Shipping</span>
               </div>
             </div>
