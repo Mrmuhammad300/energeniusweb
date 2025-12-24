@@ -83,21 +83,24 @@ export default function Header() {
         </div>
         
         {/* Mobile Action Buttons - Right Side */}
-        <div className="flex items-center gap-1.5 lg:hidden">
+        <div className="flex items-center gap-2 lg:hidden shrink-0">
+          {/* Calculator Button */}
           <Link href="/calculators">
             <Button 
               size="sm" 
               variant="outline"
-              className="border-emerald-600 text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation px-2 py-2 h-9"
-              aria-label="Calculators"
+              className="border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation px-2.5 py-2 h-10 min-w-[40px]"
+              aria-label="Solar Calculator"
+              title="Solar Calculator"
             >
-              <Calculator className="h-4 w-4" />
+              <Calculator className="h-5 w-5" />
             </Button>
           </Link>
+          {/* Quote Button */}
           <Link href="/quote">
             <Button 
               size="sm" 
-              className="bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 active:from-emerald-800 active:to-sky-800 touch-manipulation text-xs px-3 py-2 h-9"
+              className="bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 active:from-emerald-800 active:to-sky-800 touch-manipulation text-xs px-3 py-2 h-10 whitespace-nowrap"
             >
               Quote
             </Button>

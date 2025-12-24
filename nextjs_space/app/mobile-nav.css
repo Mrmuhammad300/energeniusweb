@@ -28,3 +28,19 @@ header, .navbar, .mobile-menu, #mobile-dropdown, .hamburger-menu {
     visibility: visible !important;
   }
 }
+
+/* Force Calculator Button Visibility on Mobile */
+@media (max-width: 1024px) {
+  /* Ensure mobile action buttons container is visible */
+  header nav > div:last-of-type {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  /* Ensure calculator button is visible */
+  header nav a[href="/calculators"] {
+    display: inline-flex !important;
+    visibility: visible !important;
+  }
+}
