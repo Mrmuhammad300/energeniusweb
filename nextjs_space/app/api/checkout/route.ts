@@ -29,6 +29,7 @@ interface CheckoutRequestBody {
   } | null;
   prerequisitesAcknowledged: { [key: string]: boolean };
   termsAccepted: boolean;
+  paymentIntentId?: string;
 }
 
 // Generate unique order number
