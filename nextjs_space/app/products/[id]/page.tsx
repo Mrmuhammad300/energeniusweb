@@ -13,7 +13,7 @@ import { ArrowLeft, Battery, Zap, Box, Shield, Clock, Plus, Check } from 'lucide
 
 interface Product {
   id: string;
-  name: string;
+  model: string;
   sku: string;
   description: string;
   specifications: any;
@@ -147,7 +147,7 @@ export default function ProductDetailPage() {
                 <div className="relative aspect-video mb-4 bg-gray-100 rounded-lg overflow-hidden">
                   <Image
                     src={product.imageUrl}
-                    alt={product.name}
+                    alt={product.model}
                     fill
                     className="object-contain p-4"
                   />
@@ -155,7 +155,7 @@ export default function ProductDetailPage() {
                 
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.model}</h1>
                     <p className="text-sm text-gray-600 mb-2">SKU: {product.sku}</p>
                     <Badge variant="outline" className="mb-4">{product.tier}</Badge>
                   </div>

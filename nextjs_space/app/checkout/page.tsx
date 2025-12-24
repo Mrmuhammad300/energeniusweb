@@ -16,7 +16,7 @@ import { toast } from '@/hooks/use-toast';
 
 interface Product {
   id: string;
-  name: string;
+  model: string;
   sku: string;
   priceNumeric: number;
   imageUrl: string;
@@ -433,13 +433,13 @@ export default function CheckoutPage() {
                     <div className="relative w-20 h-20 bg-gray-100 rounded">
                       <Image
                         src={checkoutData.product.imageUrl}
-                        alt={checkoutData.product.name}
+                        alt={checkoutData.product.model}
                         fill
                         className="object-contain p-2"
                       />
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-sm">{checkoutData.product.name}</p>
+                      <p className="font-medium text-sm">{checkoutData.product.model}</p>
                       <p className="text-xs text-gray-600">SKU: {checkoutData.product.sku}</p>
                     </div>
                   </div>

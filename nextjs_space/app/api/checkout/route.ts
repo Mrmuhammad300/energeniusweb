@@ -14,7 +14,8 @@ interface CheckoutRequestBody {
   zipCode: string;
   product: {
     id: string;
-    name: string;
+    name?: string;
+    model?: string;
     sku: string;
     priceNumeric: number;
     imageUrl: string;
@@ -123,6 +124,9 @@ export async function POST(request: NextRequest) {
     // Generate order number
     const orderNumber = generateOrderNumber();
 
+    // Get product name (use 'model' if 'name' is not available)
+    const productName = body.product.name || body.product.model || 'Solar Generator';
+
     // Create Order
     let order;
     try {
@@ -150,8 +154,8 @@ export async function POST(request: NextRequest) {
             create: [
               {
                 productSku: body.product.sku,
-                productName: body.product.name,
-                description: `${body.product.name} - Solar Generator`,
+                productName: productName,
+                description: `${productName} - Solar Generator`,
                 quantity: 1,
                 unitPrice: body.product.priceNumeric,
                 totalPrice: body.product.priceNumeric,
