@@ -31,6 +31,7 @@ interface Product {
   id: string;
   sku: string;
   name: string;
+  description: string;
   priceNumeric: number;
 }
 
@@ -169,13 +170,18 @@ export default function EditInvoicePage() {
   const handleProductSelect = (itemId: string, productId: string) => {
     const product = products.find((p) => p.id === productId);
     if (product) {
+      // Use product description if available, otherwise fall back to product name
+      const itemDescription = product.description && product.description.trim() 
+        ? product.description 
+        : product.name;
+      
       setItems(
         items.map((item) => {
           if (item.id === itemId) {
             return {
               ...item,
               productSku: product.sku,
-              description: product.name,
+              description: itemDescription,
               unitPrice: product.priceNumeric,
               totalPrice: item.quantity * product.priceNumeric,
             };
