@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
-import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
+import { Menu, X, ChevronDown, ChevronRight, Calculator } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function Header() {
@@ -52,10 +52,23 @@ export default function Header() {
           </Link>
         </div>
         
-        {/* Mobile Quote Button - Right Side */}
-        <div className="flex lg:hidden">
+        {/* Mobile Action Buttons - Right Side */}
+        <div className="flex items-center gap-1.5 lg:hidden">
+          <Link href="/calculators">
+            <Button 
+              size="sm" 
+              variant="outline"
+              className="border-emerald-600 text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation px-2 py-2 h-9"
+              aria-label="Calculators"
+            >
+              <Calculator className="h-4 w-4" />
+            </Button>
+          </Link>
           <Link href="/quote">
-            <Button size="sm" className="bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 text-xs px-3 py-2 h-9">
+            <Button 
+              size="sm" 
+              className="bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 active:from-emerald-800 active:to-sky-800 touch-manipulation text-xs px-3 py-2 h-9"
+            >
               Quote
             </Button>
           </Link>
