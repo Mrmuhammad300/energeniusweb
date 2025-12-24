@@ -3,11 +3,20 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false)
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false)
+
+  const productLinks = [
+    { href: '/products', label: 'All Products', description: 'Browse our full catalog' },
+    { href: '/residential', label: 'Residential', description: 'Home backup solutions' },
+    { href: '/commercial', label: 'Commercial', description: 'Business power systems' },
+    { href: '/subscription', label: 'Smart Connect', description: 'Monitoring & maintenance' },
+  ]
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
@@ -31,7 +40,7 @@ export default function Header() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 hover:bg-gray-100 transition-colors"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 hover:bg-gray-100 transition-colors touch-manipulation"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open navigation menu"
             aria-expanded={mobileMenuOpen}
@@ -41,19 +50,45 @@ export default function Header() {
           </button>
         </div>
         
-        <div className="hidden lg:flex lg:gap-x-3 xl:gap-x-6">
-          <Link href="/products" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
-            Products
-          </Link>
-          <Link href="/residential" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
-            Residential
-          </Link>
-          <Link href="/commercial" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
-            Commercial
-          </Link>
-          <Link href="/subscription" className="text-xs xl:text-sm font-semibold leading-6 text-emerald-600 hover:text-emerald-700 transition-colors whitespace-nowrap">
-            Smart Connect
-          </Link>
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex lg:gap-x-3 xl:gap-x-6 lg:items-center">
+          {/* Products & Services Dropdown */}
+          <div 
+            className="relative"
+            onMouseEnter={() => setDesktopDropdownOpen(true)}
+            onMouseLeave={() => setDesktopDropdownOpen(false)}
+          >
+            <button
+              className="flex items-center gap-1 text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap"
+              aria-expanded={desktopDropdownOpen}
+              aria-haspopup="true"
+            >
+              Products & Services
+              <ChevronDown className={`h-4 w-4 transition-transform ${desktopDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {desktopDropdownOpen && (
+              <div className="absolute left-0 top-full mt-2 w-64 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 z-50">
+                <div className="p-2">
+                  {productLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block rounded-lg px-4 py-3 hover:bg-emerald-50 transition-colors group"
+                    >
+                      <div className="font-semibold text-sm text-gray-900 group-hover:text-emerald-600">
+                        {link.label}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-0.5">
+                        {link.description}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           <Link href="/dashboard" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Dashboard
           </Link>
@@ -80,6 +115,7 @@ export default function Header() {
         </div>
       </nav>
       
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden">
           {/* Backdrop overlay */}
@@ -113,36 +149,41 @@ export default function Header() {
                 <X className="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
+            
             <div className="mt-6 flow-root">
               <div className="space-y-1 py-6">
-                <Link 
-                  href="/products" 
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Products
-                </Link>
-                <Link 
-                  href="/residential" 
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Residential
-                </Link>
-                <Link 
-                  href="/commercial" 
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Commercial
-                </Link>
-                <Link 
-                  href="/subscription" 
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-emerald-600 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Smart Connect
-                </Link>
+                {/* Mobile Products & Services Expandable Section */}
+                <div>
+                  <button
+                    onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
+                    className="flex items-center justify-between w-full rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors"
+                    aria-expanded={mobileDropdownOpen}
+                  >
+                    <span>Products & Services</span>
+                    <ChevronRight className={`h-5 w-5 transition-transform ${mobileDropdownOpen ? 'rotate-90' : ''}`} />
+                  </button>
+                  
+                  {mobileDropdownOpen && (
+                    <div className="mt-1 ml-4 space-y-1">
+                      {productLinks.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="block rounded-lg px-4 py-3 text-sm hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          <div className="font-semibold text-gray-900">
+                            {link.label}
+                          </div>
+                          <div className="text-xs text-gray-500 mt-0.5">
+                            {link.description}
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <Link 
                   href="/dashboard" 
                   className="block rounded-lg px-4 py-3 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors" 
@@ -178,6 +219,7 @@ export default function Header() {
                 >
                   Contact
                 </Link>
+                
                 <div className="pt-4">
                   <Link href="/quote" onClick={() => setMobileMenuOpen(false)}>
                     <Button className="w-full bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 active:from-emerald-800 active:to-sky-800 touch-manipulation py-3 text-base">
