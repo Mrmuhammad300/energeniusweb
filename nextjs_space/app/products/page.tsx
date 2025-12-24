@@ -57,9 +57,17 @@ export default function ProductsPage() {
     .filter(p => p.model?.toLowerCase().includes('powerbank') || p.tier === 'Battery')
     .sort((a, b) => extractCapacity(a) - extractCapacity(b))
   
-  const generators = products
-    .filter(p => !p.model?.toLowerCase().includes('powerbank') && p.tier !== 'Battery')
+  // Separate Scout generators from other generators
+  const allGenerators = products.filter(p => !p.model?.toLowerCase().includes('powerbank') && p.tier !== 'Battery')
+  const scoutGenerators = allGenerators
+    .filter(p => p.model?.toLowerCase().includes('scout'))
     .sort((a, b) => extractCapacity(a) - extractCapacity(b))
+  const otherGenerators = allGenerators
+    .filter(p => !p.model?.toLowerCase().includes('scout'))
+    .sort((a, b) => extractCapacity(a) - extractCapacity(b))
+  
+  // Combine with Scout generators first
+  const generators = [...scoutGenerators, ...otherGenerators]
 
   // Scroll to product if SKU is in URL hash
   useEffect(() => {
@@ -160,7 +168,7 @@ export default function ProductsPage() {
                 Solar Generators
               </h2>
               <p className="text-gray-600">
-                Complete power stations from 400W to 30,000W - sorted by capacity
+                Complete power stations from 400W to 30,000W - Scout series first, then sorted by capacity
               </p>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
