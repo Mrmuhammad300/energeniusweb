@@ -1,0 +1,39 @@
+╔══════════════════════════════════════════════════════════════╗
+║           STRIPE TEST CARDS - QUICK REFERENCE                ║
+╚══════════════════════════════════════════════════════════════╝
+
+✅ SUCCESSFUL PAYMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  4242 4242 4242 4242    Visa (Success)
+  5555 5555 5555 4444    Mastercard (Success)
+  3782 822463 10005      American Express (Success)
+
+❌ DECLINED PAYMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  4000 0000 0000 0002    Generic Decline
+  4000 0000 0000 9995    Insufficient Funds
+  4000 0000 0000 9987    Lost Card
+  4000 0000 0000 0069    Expired Card
+
+📋 CARD DETAILS (for all test cards)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Expiry:  Any future date (e.g., 12/25)
+  CVC:     Any 3 digits (e.g., 123)
+  ZIP:     Any 5 digits (e.g., 12345)
+
+🔗 QUICK ACCESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Site:    https://rrg-solutions.com
+  Admin:   https://rrg-solutions.com/admin/login
+  Login:   admin@energenius.com / admin123
+  Stripe:  https://dashboard.stripe.com/test
+
+🎯 TESTING FLOW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. Login to admin
+  2. Create new invoice
+  3. Click payment button
+  4. Use test card
+  5. Verify status updates
+
+╚══════════════════════════════════════════════════════════════╝
