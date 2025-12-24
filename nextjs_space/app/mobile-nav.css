@@ -1,0 +1,14 @@
+/* Custom CSS for Mobile Navigation Visibility */
+
+.hamburger-menu {
+  display: block !important;
+  z-index: 9999 !important;
+  position: relative !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-nav-container {
+    display: flex !important;
+    visibility: visible !important;
+  }
+}

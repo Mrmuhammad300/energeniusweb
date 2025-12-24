@@ -107,3 +107,6 @@
     }
   }
 }
+
+/* Import custom mobile navigation CSS */
+@import './mobile-nav.css';
