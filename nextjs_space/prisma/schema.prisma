@@ -516,3 +516,118 @@ model EmailTemplate {
   @@index([category])
   @@index([name])
 }
+
+// Phase 3: Service Packages (Productized Services)
+model ServicePackage {
+  id              String   @id @default(cuid())
+  
+  // Package Information
+  name            String   // "Virtual Site Audit", "Quick Start", "Turnkey", etc.
+  slug            String?  @unique // URL-friendly identifier
+  category        String   @default("residential") // residential, commercial
+  packageType     String   @default("one_time") // one_time, subscription, project_based
+  
+  // Pricing
+  price           Float
+  priceMonthly    Float?   // For subscription packages
+  currency        String   @default("USD")
+  
+  // Display Information
+  description     String   @db.Text
+  tagline         String?  // Short marketing headline
+  isPopular       Boolean  @default(false) // Mark as "Most Popular"
+  displayOrder    Int      @default(0)
+  
+  // Scope & Deliverables (JSON string)
+  deliverables    String[] // Array of included items
+  exclusions      String[] // What's NOT included
+  
+  // Guardrails (JSON string for complex rules)
+  prerequisites   String[] // Required before purchase
+  scopeLimits     String?  @db.Text // JSON: {"electrical_run_ft": 15, "revisions": 2}
+  
+  // Target Audience
+  bestFor         String?  // "PowerX 5kW-8kW Units"
+  targetWattage   String?  // "5000-8000"
+  
+  // Additional Fields
+  estimatedTimeline String? // "2-4 weeks"
+  warrantyInfo    String?  @db.Text
+  
+  // Status
+  isActive        Boolean  @default(true)
+  isPublic        Boolean  @default(true) // Show on public site
+  
+  // Relations
+  purchases       ServicePurchase[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([category])
+  @@index([packageType])
+  @@index([slug])
+  @@index([isActive])
+  @@index([displayOrder])
+}
+
+// Phase 3: Service Purchases
+model ServicePurchase {
+  id                    String   @id @default(cuid())
+  
+  // Package Reference
+  servicePackageId      String
+  servicePackage        ServicePackage @relation(fields: [servicePackageId], references: [id])
+  
+  // Customer Information
+  customerId            String?  // Link to Customer if exists
+  customerName          String
+  customerEmail         String
+  customerPhone         String
+  customerAddress       String?  @db.Text
+  
+  // Purchase Details
+  purchasePrice         Float    // Locked at time of purchase
+  subscriptionMonthly   Float?   // If subscription
+  
+  // Status
+  status                String   @default("pending") // pending, active, completed, cancelled
+  
+  // Prerequisites Acknowledgment (JSON string)
+  acknowledgedTerms     String[] // Which checkboxes they agreed to
+  acknowledgedAt        DateTime @default(now())
+  
+  // Project Information
+  projectStartDate      DateTime?
+  projectEndDate        DateTime?
+  dormancyDate          DateTime? // Auto-calculated based on last activity
+  
+  // Payment Information
+  paymentStatus         String   @default("unpaid") // unpaid, deposit_paid, paid
+  paymentMethod         String?  // stripe, ach, wire_transfer
+  stripePaymentIntentId String?  @unique
+  
+  // Subscription Management (if applicable)
+  subscriptionActive    Boolean  @default(false)
+  subscriptionStartDate DateTime?
+  subscriptionEndDate   DateTime?
+  stripSubscriptionId   String?  @unique
+  
+  // Notes
+  customerNotes         String?  @db.Text
+  internalNotes         String?  @db.Text
+  
+  // Relations
+  linkedQuoteId         String?  // Optional link to quote
+  linkedInvoiceId       String?  // Optional link to invoice
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([servicePackageId])
+  @@index([customerEmail])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([subscriptionActive])
+  @@index([createdAt])
+}

@@ -535,6 +535,289 @@ View Order: [Admin Dashboard Link]`,
   }
   
   console.log('\n✅ Phase 2 seeding complete!');
+  
+  // Phase 3: Service Packages (Productized Services)
+  console.log("\n🏗️  Phase 3: Seeding Service Packages...");
+  
+  const servicePackages = [
+    // Residential Packages
+    {
+      name: "Virtual Site Audit",
+      slug: "virtual-site-audit",
+      category: "residential",
+      packageType: "one_time",
+      price: 299,
+      priceMonthly: null,
+      description: "Professional virtual site assessment to verify your location is ready for solar generator installation. Reduce installation risk and get expert recommendations before you buy.",
+      tagline: "Verify Site Readiness & Reduce Installation Risk",
+      isPopular: false,
+      displayOrder: 1,
+      deliverables: [
+        "Site readiness verification via photos and video call",
+        "Electrical panel compatibility assessment",
+        "Installation location recommendations",
+        "Risk summary report with identified concerns",
+        "Professional installation recommendation"
+      ],
+      exclusions: [
+        "Physical installation services",
+        "Permitting assistance",
+        "Hardware configuration",
+        "On-site visit"
+      ],
+      prerequisites: [
+        "Client has clear photos of installation area",
+        "Client has photos of electrical panel",
+        "Client available for 1-hour video consultation"
+      ],
+      scopeLimits: JSON.stringify({ audit_duration_hours: 1 }),
+      bestFor: "All PowerX Units",
+      targetWattage: "5000-30000",
+      estimatedTimeline: "Completed within 48 hours",
+      warrantyInfo: "100% refundable if you purchase a full installation package within 30 days",
+      isActive: true,
+      isPublic: true
+    },
+    {
+      name: "The Quick Start",
+      slug: "quick-start-install",
+      category: "residential",
+      packageType: "one_time",
+      price: 3499,
+      priceMonthly: null,
+      description: "Essential installation service for smaller PowerX units. Perfect for straightforward installations with standard electrical runs. Get your solar generator up and running quickly and professionally.",
+      tagline: "Fast & Affordable Professional Installation",
+      isPopular: false,
+      displayOrder: 2,
+      deliverables: [
+        "Professional generator placement and mounting",
+        "Electrical hookup (up to 15ft from panel)",
+        "Transfer switch installation",
+        "City permitting (permit fees included)",
+        "System testing and startup",
+        "First annual service visit FREE ($200 value)"
+      ],
+      exclusions: [
+        "Trenching beyond 15ft",
+        "Rock excavation requiring specialized equipment",
+        "Gas line installation",
+        "HOA permitting",
+        "Crane services"
+      ],
+      prerequisites: [
+        "Installation location within 15ft of electrical panel",
+        "Standard soil conditions (no rock)",
+        "Electrical panel up to current code",
+        "Clear equipment access to installation site"
+      ],
+      scopeLimits: JSON.stringify({ electrical_run_ft: 15, included_permits: ["city"] }),
+      bestFor: "PowerX 5kW - 8kW Units",
+      targetWattage: "5000-8000",
+      estimatedTimeline: "2-4 weeks from booking",
+      warrantyInfo: "1-year installation workmanship warranty",
+      isActive: true,
+      isPublic: true
+    },
+    {
+      name: "The Turnkey",
+      slug: "turnkey-install",
+      category: "residential",
+      packageType: "one_time",
+      price: 5999,
+      priceMonthly: null,
+      description: "Our most popular installation package! Comprehensive installation service including extended electrical runs, gas line connection, and HOA permitting. We handle everything so you can enjoy worry-free backup power.",
+      tagline: "Complete Installation - We Handle Everything",
+      isPopular: true,
+      displayOrder: 3,
+      deliverables: [
+        "Professional generator placement and mounting",
+        "Extended electrical hookup (up to 50ft from panel)",
+        "Natural gas or LP line connection",
+        "Transfer switch installation with load management",
+        "City AND HOA permitting (all permit fees included)",
+        "24/7 remote monitoring setup",
+        "System testing and startup",
+        "1-Year comprehensive service plan included",
+        "Owner training and documentation"
+      ],
+      exclusions: [
+        "Trenching beyond 50ft",
+        "Rock excavation requiring blasting",
+        "Crane services (if required for access)",
+        "Main electrical panel upgrades"
+      ],
+      prerequisites: [
+        "Installation location within 50ft of electrical panel and gas line",
+        "Standard soil conditions",
+        "Existing gas service at property",
+        "Electrical panel capacity sufficient for transfer switch"
+      ],
+      scopeLimits: JSON.stringify({ 
+        electrical_run_ft: 50,
+        gas_line_ft: 50,
+        included_permits: ["city", "hoa"],
+        service_visits: 1 
+      }),
+      bestFor: "PowerX 10kW - 15kW Units",
+      targetWattage: "10000-15000",
+      estimatedTimeline: "3-5 weeks from booking",
+      warrantyInfo: "2-year installation workmanship warranty, 1-year service plan",
+      isActive: true,
+      isPublic: true
+    },
+    {
+      name: "The Peace of Mind",
+      slug: "peace-of-mind",
+      category: "residential",
+      packageType: "subscription",
+      price: 5999,
+      priceMonthly: 49,
+      description: "Premium installation PLUS lifetime annual service with active subscription. Protect your investment with proactive maintenance, priority service, and dealer monitoring. We call you if your system fails - not the other way around.",
+      tagline: "Premium Install + Lifetime Service Protection",
+      isPopular: false,
+      displayOrder: 4,
+      deliverables: [
+        "Everything included in The Turnkey package",
+        "Priority installation scheduling",
+        "Premium outdoor-rated materials upgrade",
+        "Expedited permitting service",
+        "Pro-active dealer monitoring (we call YOU if system fails)",
+        "Annual preventive maintenance visit (for life with active subscription)",
+        "Priority service dispatch for repairs",
+        "Extended 5-year installation warranty",
+        "Seasonal system health checks"
+      ],
+      exclusions: [
+        "Repair parts (covered under manufacturer warranty)",
+        "Service calls beyond annual visit (billable at standard rates)",
+        "Modifications to original installation"
+      ],
+      prerequisites: [
+        "Same as Turnkey package",
+        "Commitment to $49/month subscription",
+        "Installation location within 50ft of panel and gas line"
+      ],
+      scopeLimits: JSON.stringify({ 
+        electrical_run_ft: 50,
+        gas_line_ft: 50,
+        included_permits: ["city", "hoa"],
+        annual_service_visits: "unlimited_with_subscription"
+      }),
+      bestFor: "PowerX 10kW+ (High Criticality)",
+      targetWattage: "10000-30000",
+      estimatedTimeline: "2-3 weeks (priority scheduling)",
+      warrantyInfo: "5-year installation warranty, lifetime annual service with active $49/mo subscription",
+      isActive: true,
+      isPublic: true
+    },
+    // Commercial Packages
+    {
+      name: "Site Commissioning",
+      slug: "site-commissioning",
+      category: "commercial",
+      packageType: "one_time",
+      price: 2500,
+      priceMonthly: null,
+      description: "Professional startup and warranty certification service for commercial clients with their own installation contractors. We verify your installation meets manufacturer specifications and activate your warranty coverage.",
+      tagline: "Professional Startup & Warranty Certification",
+      isPopular: false,
+      displayOrder: 5,
+      deliverables: [
+        "Installation inspection and verification",
+        "System startup and testing",
+        "Load testing and performance validation",
+        "Warranty registration and activation",
+        "Operator training (up to 4 personnel)",
+        "Commissioning documentation package",
+        "Initial remote monitoring setup"
+      ],
+      exclusions: [
+        "Physical installation work",
+        "Permitting services",
+        "Electrical or gas line work",
+        "Equipment corrections (billable if required)"
+      ],
+      prerequisites: [
+        "Generator already installed by licensed contractor",
+        "All electrical and gas connections completed",
+        "All permits obtained and approved",
+        "Site ready for startup"
+      ],
+      scopeLimits: JSON.stringify({ 
+        included_personnel_training: 4,
+        startup_attempts: 1,
+        return_visits_billable: true
+      }),
+      bestFor: "Commercial clients with own contractors",
+      targetWattage: "15000-30000",
+      estimatedTimeline: "1-2 weeks from scheduling",
+      warrantyInfo: "Warranty activation service - manufacturer warranty applies",
+      isActive: true,
+      isPublic: true
+    },
+    {
+      name: "Full Deployment",
+      slug: "full-deployment",
+      category: "commercial",
+      packageType: "project_based",
+      price: 12500,
+      priceMonthly: null,
+      description: "Complete turnkey installation service for commercial and industrial clients. From site preparation to final startup, we handle every aspect of your backup power deployment including crane placement, heavy-gauge wiring, and commercial permitting.",
+      tagline: "Complete Commercial Turnkey Solution",
+      isPopular: true,
+      displayOrder: 6,
+      deliverables: [
+        "Site survey and engineering",
+        "Concrete pad design and installation",
+        "Crane placement services (if required)",
+        "Heavy-gauge electrical wiring and subpanel",
+        "Automatic transfer switch installation",
+        "Natural gas or diesel fuel system connection",
+        "Commercial permitting (all jurisdictions)",
+        "Load bank testing",
+        "System commissioning and startup",
+        "Operator training (up to 8 personnel)",
+        "As-built documentation package",
+        "2-year maintenance plan included"
+      ],
+      exclusions: [
+        "Rock excavation requiring blasting (quoted separately)",
+        "Environmental remediation",
+        "Building structural modifications",
+        "Ongoing fuel delivery contracts"
+      ],
+      prerequisites: [
+        "Site survey completed (can be arranged)",
+        "Electrical capacity confirmed",
+        "Fuel source available or planned",
+        "Project timeline of 8-12 weeks accepted"
+      ],
+      scopeLimits: JSON.stringify({ 
+        concrete_pad_included: true,
+        crane_services_included: true,
+        included_personnel_training: 8,
+        maintenance_visits_year_1: 2,
+        maintenance_visits_year_2: 2
+      }),
+      bestFor: "Commercial 15kW - 30kW Systems",
+      targetWattage: "15000-30000",
+      estimatedTimeline: "8-12 weeks from contract",
+      warrantyInfo: "3-year installation warranty, 2-year maintenance plan included",
+      isActive: true,
+      isPublic: true
+    }
+  ];
+
+  for (const pkg of servicePackages) {
+    await prisma.servicePackage.upsert({
+      where: { slug: pkg.slug },
+      update: pkg,
+      create: pkg
+    });
+  }
+
+  console.log(`   ✅ Created/updated ${servicePackages.length} service packages`);
+  console.log('\n✅ Phase 3 seeding complete!');
 }
 
 main()

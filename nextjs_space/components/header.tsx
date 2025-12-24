@@ -95,6 +95,9 @@ export default function Header() {
           <Link href="/calculators" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Calculators
           </Link>
+          <Link href="/pricing" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
+            Pricing
+          </Link>
           <Link href="/education" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Education
           </Link>
@@ -224,6 +227,16 @@ export default function Header() {
                   }}
                 >
                   Calculators
+                </Link>
+                <Link 
+                  href="/pricing" 
+                  className="block rounded-lg px-4 py-3.5 text-base font-semibold text-gray-900 hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors border border-gray-200" 
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    setMobileDropdownOpen(false)
+                  }}
+                >
+                  Pricing
                 </Link>
                 <Link 
                   href="/education" 
