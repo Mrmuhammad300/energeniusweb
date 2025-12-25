@@ -49,11 +49,11 @@ function KnowledgeBaseContent() {
       if (searchQuery) params.set('search', searchQuery);
       if (selectedCategory !== 'all') params.set('category', selectedCategory);
 
-      const response = await fetch(`/api/support/kb?${params.toString()}`);
+      const response = await fetch(`/api/kb?${params.toString()}`);
       const data = await response.json();
 
       if (response.ok) {
-        setArticles(data.articles || []);
+        setArticles(data || []);
       }
     } catch (error) {
       console.error('Failed to fetch articles:', error);

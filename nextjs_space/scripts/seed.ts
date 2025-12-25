@@ -817,6 +817,1211 @@ View Order: [Admin Dashboard Link]`,
   }
 
   console.log(`   ✅ Created/updated ${servicePackages.length} service packages`);
+
+  // Seed Knowledge Base Articles
+  console.log('\n🔖 Seeding knowledge base articles...');
+  const kbArticles = [
+    {
+      title: "Getting Started with Your Solar Generator",
+      slug: "getting-started-with-your-solar-generator",
+      category: "getting_started",
+      content: `# Welcome to Your New Solar Generator!
+
+Congratulations on your purchase! This guide will help you get started with your EnerGenius solar generator.
+
+## What's in the Box
+
+Your solar generator package includes:
+- Main power station unit
+- AC charging cable
+- User manual and quick start guide
+- Warranty registration card
+- Solar panel connection cables (if applicable)
+
+## Initial Setup
+
+### 1. Unboxing and Inspection
+- Carefully remove all items from the packaging
+- Inspect for any shipping damage
+- Keep all packaging materials for at least 30 days
+
+### 2. First Charge
+Before first use, charge your unit to 100% using the included AC adapter:
+- Connect the AC charging cable to a wall outlet
+- Plug the other end into your generator's AC input port
+- Charging time: 6-12 hours depending on model
+- LED indicators will show charging progress
+
+### 3. Location Selection
+Choose a location that is:
+- Dry and well-ventilated
+- Away from direct sunlight or heat sources
+- Easily accessible for monitoring
+- On a stable, level surface
+
+## Safety First
+
+⚠️ **Important Safety Guidelines:**
+- Never use indoors in enclosed spaces
+- Keep away from water and moisture
+- Do not cover ventilation openings
+- Read the full safety manual before operation
+
+## Next Steps
+
+After initial charging:
+1. Test the power output with a small device
+2. Register your warranty at our customer portal
+3. Download the Smart Connect app for monitoring
+4. Review the full user manual for advanced features
+
+## Need Help?
+
+- **Live Support:** Available 8 AM - 8 PM EST
+- **Email:** support@rrg-solutions.com
+- **Knowledge Base:** Browse articles for detailed guides
+- **Video Tutorials:** Visit our YouTube channel
+
+Your satisfaction is our priority. Don't hesitate to reach out with any questions!`,
+      excerpt: "Everything you need to know to get started with your new solar generator, from unboxing to first use.",
+      displayOrder: 1,
+      isPublished: true,
+      isFeatured: true,
+      metaDescription: "Complete getting started guide for your EnerGenius solar generator. Learn about initial setup, charging, and safety guidelines.",
+      keywords: ["getting started", "solar generator", "setup", "first use", "unboxing"],
+      viewCount: 0,
+      helpfulCount: 0,
+      notHelpfulCount: 0,
+      authorName: "EnerGenius Support Team",
+      publishedAt: new Date()
+    },
+    {
+      title: "Accessing Your Smart Connect Dashboard",
+      slug: "accessing-smart-connect-dashboard",
+      category: "getting_started",
+      content: `# Smart Connect Dashboard Guide
+
+Your Smart Connect dashboard provides real-time monitoring and control of your solar generator system.
+
+## What is Smart Connect?
+
+Smart Connect is your comprehensive monitoring portal that allows you to:
+- Track real-time power consumption
+- Monitor battery health and charge levels
+- View usage history and analytics
+- Receive maintenance alerts
+- Access warranty information
+- Schedule service appointments
+
+## Accessing Your Dashboard
+
+### First-Time Setup
+
+1. **Locate Your Credentials**
+   - Your login credentials were sent to your email after purchase
+   - Subject line: "Welcome to EnerGenius - Dashboard Access"
+   - If you can't find it, check your spam folder
+
+2. **Visit the Dashboard**
+   - Go to: https://rrg-solutions.com/dashboard
+   - Or click the "Dashboard" link in your navigation menu
+
+3. **Log In**
+   - Enter your email address
+   - Enter your temporary password
+   - Click "Sign In"
+
+4. **Set Your Permanent Password**
+   - You'll be prompted to change your password on first login
+   - Use a strong password (8+ characters, mix of letters, numbers, symbols)
+   - Confirm your new password
+
+### Troubleshooting Login Issues
+
+**Forgot Password?**
+- Click "Forgot Password" on the login page
+- Enter your email address
+- Check your email for reset instructions
+- Follow the link to create a new password
+
+**Account Not Found?**
+- Verify you're using the email address from your order
+- Allow up to 24 hours after purchase for account activation
+- Contact support if issues persist
+
+## Dashboard Features
+
+### Home Screen
+- **Current Status:** Real-time power output and battery level
+- **Quick Actions:** Start/stop monitoring, view alerts
+- **Recent Activity:** Last 7 days of usage
+
+### Power Monitoring
+- Live wattage consumption
+- Historical usage graphs (daily, weekly, monthly)
+- Peak usage times
+- Cost savings calculator
+
+### Battery Health
+- Current state of charge (%)
+- Estimated runtime remaining
+- Cycle count and battery health score
+- Temperature monitoring
+
+### Maintenance
+- Service history
+- Upcoming maintenance reminders
+- Warranty information
+- Parts and supplies ordering
+
+### Settings
+- User profile management
+- Notification preferences
+- Alert thresholds
+- System configuration
+
+## Mobile Access
+
+Access your dashboard on-the-go:
+- Fully responsive design works on any device
+- No app download required
+- Same features as desktop version
+- Save to home screen for quick access
+
+## Need Assistance?
+
+If you're having trouble accessing your dashboard:
+- **Email:** support@rrg-solutions.com
+- **Phone:** (555) 123-4567
+- **Live Chat:** Available on our website 8 AM - 8 PM EST
+
+We're here to help you get the most out of your solar generator system!`,
+      excerpt: "Learn how to access and navigate your Smart Connect dashboard for real-time monitoring and control.",
+      displayOrder: 2,
+      isPublished: true,
+      isFeatured: true,
+      metaDescription: "Step-by-step guide to accessing your Smart Connect dashboard and monitoring your solar generator system.",
+      keywords: ["smart connect", "dashboard", "monitoring", "login", "account access"],
+      viewCount: 0,
+      helpfulCount: 0,
+      notHelpfulCount: 0,
+      authorName: "EnerGenius Support Team",
+      publishedAt: new Date()
+    },
+    {
+      title: "Installation Guide for Residential Systems",
+      slug: "installation-guide-residential-systems",
+      category: "installation",
+      content: `# Residential Solar Generator Installation
+
+This guide covers installation considerations for residential solar generator systems.
+
+## DIY vs Professional Installation
+
+### When DIY is Appropriate
+- Portable units under 3kW
+- No permanent wiring required
+- Simple plug-and-play operation
+- Indoor/outdoor flexibility
+
+### When to Hire a Professional
+- Systems over 5kW
+- Permanent installation required
+- Automatic transfer switch integration
+- Building code compliance needed
+- Warranty requirements specify professional installation
+
+## Pre-Installation Checklist
+
+Before starting installation:
+- [ ] Review local building codes and permit requirements
+- [ ] Verify electrical capacity at installation site
+- [ ] Confirm clearance requirements (see specifications)
+- [ ] Prepare level, stable foundation or pad
+- [ ] Ensure proper ventilation
+- [ ] Plan cable routing paths
+- [ ] Gather necessary tools and materials
+
+## Location Requirements
+
+### Indoor Placement (Portable Units Only)
+- Well-ventilated area
+- Away from living spaces during operation
+- Near garage door or window for exhaust
+- Protected from weather
+- Easy access for maintenance
+
+### Outdoor Placement
+**Recommended:**
+- Concrete pad or stable platform
+- 3-5 feet clearance on all sides
+- Protected from direct rain/snow
+- Away from windows and air intakes
+- Secure from theft/vandalism
+
+**Avoid:**
+- Low-lying areas prone to flooding
+- Directly under roof drainage
+- Areas with poor ventilation
+- Locations blocking access routes
+
+## Electrical Connections
+
+### Simple Plug-In (Portable Units)
+1. Fully charge the unit
+2. Plug devices directly into AC outlets
+3. Monitor power consumption via display
+4. Avoid overloading (check wattage limits)
+
+### Transfer Switch Installation (Permanent Systems)
+**⚠️ REQUIRES LICENSED ELECTRICIAN**
+
+A transfer switch safely connects your generator to your home's electrical panel:
+
+**Benefits:**
+- Powers multiple circuits simultaneously
+- Automatic switching during outage
+- Prevents backfeed to utility grid
+- Code-compliant installation
+
+**Installation Steps (Professional Only):**
+1. Install transfer switch next to main panel
+2. Connect generator output to transfer switch
+3. Wire selected circuits through transfer switch
+4. Test switching operation
+5. Obtain final electrical inspection
+
+## Solar Panel Connections
+
+If you purchased solar panels:
+
+### Panel Placement
+- Face true south (northern hemisphere)
+- Tilt angle = your latitude ±15°
+- Free from shade 9 AM - 3 PM
+- Secure mounting (roof, ground, or tracker)
+
+### Wiring
+1. Connect panels in series for voltage matching
+2. Use proper gauge wire for distance
+3. Connect to generator's solar input port
+4. Verify polarity before connection
+5. Test charging operation
+
+### Safety
+- Never exceed maximum solar input voltage
+- Use weather-resistant connections
+- Install lightning protection if applicable
+- Follow NEC Article 690 requirements
+
+## Fuel Connections (Generator Models)
+
+For models with gas/propane options:
+
+**⚠️ REQUIRES LICENSED GAS PROFESSIONAL**
+
+- Natural gas connection: Hard-piped by licensed plumber
+- Propane: Installed per NFPA 58 standards
+- Proper pressure regulation required
+- Leak testing mandatory
+- Regular inspection recommended
+
+## Final Steps
+
+After installation:
+1. Perform safety inspection
+2. Test all operations
+3. Register product for warranty
+4. Document installation (photos recommended)
+5. Schedule first maintenance check
+6. Add to home insurance policy
+
+## Safety Reminders
+
+- Never operate gas-powered units indoors
+- Maintain proper clearances
+- Keep fire extinguisher nearby
+- Ensure proper grounding
+- Follow all manufacturer guidelines
+
+## Professional Installation Services
+
+Need expert installation? EnerGenius offers:
+- **Virtual Site Audit:** $95 - Remote consultation
+- **Quick Start Installation:** $750 - Basic setup and testing
+- **Turnkey Installation:** $3,950 - Complete residential installation
+
+Visit our Services page or contact us for a custom quote.
+
+## Questions?
+
+- **Technical Support:** support@rrg-solutions.com
+- **Installation Quotes:** sales@rrg-solutions.com  
+- **Phone:** (555) 123-4567
+- **Live Chat:** Available 8 AM - 8 PM EST`,
+      excerpt: "Complete installation guide for residential solar generator systems, including location selection, electrical connections, and safety requirements.",
+      displayOrder: 3,
+      isPublished: true,
+      isFeatured: false,
+      metaDescription: "Professional installation guide for residential solar generators covering placement, electrical connections, and safety requirements.",
+      keywords: ["installation", "residential", "solar generator", "setup", "electrical"],
+      viewCount: 0,
+      helpfulCount: 0,
+      notHelpfulCount: 0,
+      authorName: "EnerGenius Support Team",
+      publishedAt: new Date()
+    },
+    {
+      title: "Maintenance and Care Best Practices",
+      slug: "maintenance-and-care-best-practices",
+      category: "maintenance",
+      content: `# Solar Generator Maintenance Guide
+
+Proper maintenance ensures optimal performance and extends the life of your solar generator.
+
+## Daily Checks (For Active Systems)
+
+- Monitor battery charge level
+- Check for any error messages or alerts
+- Verify ventilation openings are clear
+- Inspect for any unusual sounds or odors
+- Confirm output voltage is within normal range
+
+## Weekly Maintenance
+
+### Visual Inspection
+- Check all connections for tightness
+- Inspect power cables for damage
+- Look for signs of moisture or corrosion
+- Verify cooling fans operate properly
+- Ensure unit is clean and dust-free
+
+### Performance Check
+- Test output with various loads
+- Monitor charging efficiency
+- Review power consumption logs
+- Check temperature readings
+
+## Monthly Maintenance
+
+### Deep Clean
+1. Power off and disconnect all cables
+2. Wipe exterior with damp cloth
+3. Clean ventilation openings (compressed air)
+4. Inspect and clean cooling fans
+5. Check and tighten all connections
+6. Clean solar panels (if applicable)
+
+### Battery Health
+- Run full charge/discharge cycle
+- Check battery voltage readings
+- Monitor charging time
+- Review battery health metrics in app
+- Clean battery terminals if accessible
+
+### Documentation
+- Log runtime hours
+- Record any issues or anomalies
+- Update maintenance log
+- Save performance data
+
+## Seasonal Maintenance
+
+### Spring
+- Inspect for winter weather damage
+- Check seals and gaskets
+- Test all safety features
+- Verify outdoor mounting security
+- Clean and inspect solar panels thoroughly
+
+### Summer
+- Verify cooling system operation
+- Check for overheating issues
+- Ensure adequate shade/ventilation
+- Monitor increased cooling demands
+- Inspect for insect nests or debris
+
+### Fall
+- Prepare for heating season load
+- Test automatic transfer switch
+- Inspect weatherproofing
+- Check fuel systems (if applicable)
+- Stock emergency supplies
+
+### Winter
+- Monitor battery performance in cold
+- Protect from freezing temperatures
+- Keep snow/ice clear from unit
+- Check for proper ventilation
+- Test cold weather starting
+
+## Annual Professional Service
+
+We recommend annual professional maintenance including:
+- Complete electrical testing
+- Battery capacity assessment
+- Cooling system service
+- Firmware updates
+- Safety system verification
+- Warranty compliance inspection
+
+**Schedule Your Annual Service:**
+- Online: rrg-solutions.com/service
+- Phone: (555) 123-4567
+- Email: service@rrg-solutions.com
+
+## Battery Care
+
+### Lithium Battery (LiFePO4) Systems
+**Best Practices:**
+- Keep charged between 20-80% for daily use
+- Fully charge/discharge monthly for calibration
+- Store at 50-60% charge if unused
+- Avoid extreme temperatures (32-95°F ideal)
+- Never let battery fully deplete repeatedly
+
+**Warning Signs:**
+- Reduced runtime
+- Slow charging
+- Swelling or deformation
+- Unusual heat during charging
+- Error messages
+
+### Battery Replacement
+- Typical lifespan: 8,000 cycles (10-15 years)
+- Always use manufacturer-approved batteries
+- Professional installation recommended
+- Recycle old batteries properly
+- Register new battery for warranty
+
+## Troubleshooting Common Issues
+
+### Unit Won't Power On
+1. Check main power switch position
+2. Verify battery charge level
+3. Inspect main fuse
+4. Check for error codes
+5. Contact support if unresolved
+
+### Reduced Output Power
+1. Check load requirements vs capacity
+2. Verify battery health
+3. Inspect for overheating
+4. Review error messages
+5. Test with different loads
+
+### Charging Issues
+1. Verify input power source
+2. Check charging cable connections
+3. Monitor charging current
+4. Review charge controller settings
+5. Test with AC charger (eliminate solar variables)
+
+### Unusual Noises
+- Cooling fan operation is normal
+- Inverter may produce slight hum
+- Clicking may indicate relay operation
+- Grinding or screeching requires immediate attention
+- Document any unusual sounds for technician
+
+## Safety Inspections
+
+Monthly safety checks should include:
+- [ ] Ground connections secure
+- [ ] No exposed wiring
+- [ ] Circuit breakers functional
+- [ ] Emergency shutoff accessible
+- [ ] Fire extinguisher nearby (for fuel units)
+- [ ] Carbon monoxide detector operational (if applicable)
+- [ ] Warning labels visible and legible
+
+## Storage (Long-Term)
+
+If storing your unit for extended periods:
+1. Fully charge battery to 50-60%
+2. Clean and dry unit completely
+3. Disconnect all cables
+4. Store in climate-controlled space
+5. Recharge every 3 months
+6. Cover to prevent dust accumulation
+7. Check condition monthly
+
+## Warranty Maintenance Requirements
+
+To maintain warranty coverage:
+- Perform all required maintenance
+- Use only approved parts/accessories
+- Document all maintenance activities
+- Schedule annual professional inspections
+- Report issues promptly
+- Follow all safety guidelines
+
+**Keep records of:**
+- Maintenance logs
+- Service receipts
+- Warranty registration
+- Installation documentation
+
+## When to Call for Service
+
+Contact professional service immediately if:
+- Unit displays error codes
+- Output is significantly reduced
+- Battery won't hold charge
+- Unit overheats frequently
+- Unusual smells or sounds
+- Physical damage occurs
+- Safety features not functioning
+
+## Replacement Parts
+
+Order genuine parts through:
+- **Online:** rrg-solutions.com/parts
+- **Phone:** (555) 123-PART
+- **Email:** parts@rrg-solutions.com
+
+Common replacement parts:
+- Charging cables
+- AC outlet covers
+- Cooling fans
+- Fuses and breakers
+- Battery packs (authorized only)
+
+## Extended Protection Plans
+
+Consider our extended maintenance plans:
+- **Basic:** Annual inspection + priority support
+- **Plus:** Bi-annual service + 20% parts discount
+- **Premium:** Quarterly service + free parts + 2-year warranty extension
+
+Contact sales for pricing and details.
+
+---
+
+**Questions or Concerns?**
+
+Our support team is here to help:
+- **Email:** support@rrg-solutions.com
+- **Phone:** (555) 123-4567  
+- **Live Chat:** 8 AM - 8 PM EST daily
+- **Emergency:** 24/7 technical support line`,
+      excerpt: "Comprehensive maintenance guide covering daily checks, seasonal care, battery maintenance, and troubleshooting tips.",
+      displayOrder: 4,
+      isPublished: true,
+      isFeatured: true,
+      metaDescription: "Essential maintenance and care guide for your solar generator including daily checks, cleaning, battery care, and troubleshooting.",
+      keywords: ["maintenance", "care", "battery", "troubleshooting", "cleaning"],
+      viewCount: 0,
+      helpfulCount: 0,
+      notHelpfulCount: 0,
+      authorName: "EnerGenius Support Team",
+      publishedAt: new Date()
+    },
+    {
+      title: "Understanding Your Warranty Coverage",
+      slug: "understanding-warranty-coverage",
+      category: "getting_started",
+      content: `# EnerGenius Warranty Coverage
+
+Understanding your warranty helps you get the most protection for your investment.
+
+## Standard Warranty Coverage
+
+All EnerGenius solar generators include:
+
+### 5-Year Limited Warranty
+**Covers:**
+- Manufacturing defects
+- Material failures
+- Workmanship issues
+- Component malfunctions
+- Inverter and charge controller
+
+**Excludes:**
+- Normal wear and tear
+- Accidental damage
+- Misuse or neglect
+- Unauthorized modifications
+- Environmental damage (flood, fire, etc.)
+- Battery degradation beyond specifications
+
+### Battery Warranty
+
+**LiFePO4 Batteries:**
+- 8,000 cycles or 10 years (whichever comes first)
+- Maintains 70% capacity at end of warranty period
+- Covers manufacturing defects
+- Does not cover user damage or improper charging
+
+**Lead-Acid Batteries:**
+- 2 years or 500 cycles
+- Maintains 80% capacity
+- Prorated after first year
+
+## What's Covered
+
+### Components Included
+- Inverter and power electronics
+- Charge controller
+- Battery management system (BMS)
+- Display and controls
+- AC/DC outlets
+- Internal wiring and connections
+- Cooling system
+- Structural housing
+
+### Types of Coverage
+1. **Repair:** We fix the issue at no cost
+2. **Replacement:** We provide equivalent or better part
+3. **Unit Exchange:** In rare cases of multiple failures
+
+## What's NOT Covered
+
+### Exclusions
+- Cosmetic damage (scratches, dents)
+- Accessories and cables (separate 1-year warranty)
+- Solar panels (covered by panel manufacturer)
+- Transportation costs (except major repairs)
+- Labor for user-serviceable parts
+- Damage from improper installation
+- Failure to perform required maintenance
+- Using incompatible power sources
+- Acts of God (lightning, floods, earthquakes)
+
+### Warranty Voids
+Your warranty may be void if:
+- Serial number removed or altered
+- Repairs by unauthorized technician
+- Use of non-genuine parts
+- Operating outside specifications
+- Commercial use (residential warranty)
+- Product modified or altered
+- Preventive maintenance neglected
+
+## Registering Your Warranty
+
+**Important: Register within 30 days of purchase!**
+
+### How to Register
+1. Visit: rrg-solutions.com/warranty
+2. Enter your information:
+   - Name and contact details
+   - Serial number (found on unit)
+   - Purchase date and order number
+   - Installation date
+3. Upload proof of purchase
+4. Submit registration form
+
+### What Happens Next
+- Receive confirmation email immediately
+- Warranty certificate sent within 5 business days
+- Account created in customer portal
+- Registered for service reminders
+
+## Making a Warranty Claim
+
+### Step 1: Troubleshoot
+Before filing a claim:
+- Check our troubleshooting guides
+- Contact technical support
+- Try suggested solutions
+- Document the issue with photos/videos
+
+### Step 2: Contact Us
+**Email:** warranty@rrg-solutions.com  
+**Phone:** (555) 123-WARE
+**Portal:** rrg-solutions.com/warranty-claim
+
+**Provide:**
+- Warranty registration number
+- Serial number
+- Description of issue
+- When problem started
+- Photos or videos
+- Error codes or messages
+
+### Step 3: Evaluation
+We will:
+- Review your claim within 48 hours
+- Request additional information if needed
+- Determine if issue is covered
+- Provide resolution options
+
+### Step 4: Resolution
+**If Approved:**
+- We'll send replacement parts (2-5 business days)
+- Provide return label for defective parts
+- Schedule technician visit (if needed)
+- Process warranty repair
+
+**If Not Covered:**
+- Explanation of why claim was denied
+- Quote for out-of-warranty repair
+- Advice on preventing future issues
+
+## Extended Warranty Options
+
+### EnerGenius Protection Plus
+Add up to 5 additional years of coverage:
+
+**Benefits:**
+- Extended component coverage
+- Accidental damage protection
+- Zero deductible
+- Priority service
+- Free annual inspections
+- Loaner unit during major repairs
+
+**Pricing:**
+- +2 Years: $299
+- +3 Years: $449
+- +5 Years: $699
+
+*Must be purchased within 90 days of original purchase*
+
+### Commercial Extended Warranty
+For commercial installations:
+- Up to 10-year coverage available
+- Include labor and transportation
+- On-site service priority
+- Preventive maintenance included
+- 24/7 emergency support
+
+Contact sales for commercial warranty options.
+
+## Service Locations
+
+### Authorized Service Centers
+We have service centers across our coverage area:
+- Ohio
+- Texas
+- Arizona
+- New Mexico
+- Midwest region
+
+Find nearest location: rrg-solutions.com/service-locators
+
+### Mobile Service
+For larger units or complex issues:
+- Technician comes to your location
+- Diagnose and repair on-site
+- Scheduled at your convenience
+- Available in most service areas
+
+## Warranty Transfers
+
+### Selling Your Unit?
+Warranty is transferable to new owner:
+1. Log into customer portal
+2. Submit transfer request
+3. Provide new owner information
+4. Pay $50 transfer fee
+5. New owner receives updated warranty
+
+**Benefits:**
+- Increases resale value
+- Provides buyer confidence
+- Simple online process
+
+## International Warranty
+
+For international purchases:
+- Warranty valid in country of purchase
+- Service through local authorized centers
+- May require proof of export
+- International shipping costs not covered
+- Contact international support for details
+
+## Maintenance Requirements
+
+To maintain warranty coverage:
+
+### Required Actions
+- Register product within 30 days
+- Perform routine maintenance
+- Use authorized service for major repairs
+- Document all maintenance
+- Report issues promptly
+
+### Recommended Actions
+- Annual professional inspection
+- Keep maintenance logs
+- Use genuine parts
+- Follow operating guidelines
+- Store safely when not in use
+
+## Frequently Asked Questions
+
+**Q: Do I need to keep my receipt?**  
+A: Yes! Keep original purchase receipt for warranty claims.
+
+**Q: What if I lost my warranty certificate?**  
+A: Access it anytime in your customer portal or request a new copy.
+
+**Q: Can I upgrade my warranty later?**  
+A: Extended warranties must be purchased within 90 days of original purchase.
+
+**Q: What's the turnaround time for warranty repairs?**  
+A: Most repairs completed within 7-14 business days from receiving unit.
+
+**Q: Who pays for shipping on warranty claims?**  
+A: We provide prepaid label for sending units to us. We pay return shipping.
+
+**Q: Can I get a refund instead of repair?**  
+A: Refunds are not provided under warranty. We repair or replace defective products.
+
+**Q: Does warranty cover installation?**  
+A: No. Installation must be done by licensed professional per local codes.
+
+## Contact Warranty Support
+
+**General Questions:**  
+warranty@rrg-solutions.com  
+(555) 123-WARE
+
+**File a Claim:**  
+rrg-solutions.com/warranty-claim
+
+**Live Chat:**  
+Available 8 AM - 6 PM EST M-F
+
+**Customer Portal:**  
+rrg-solutions.com/login
+
+---
+
+We stand behind our products with industry-leading warranty coverage. Your satisfaction and peace of mind are our priorities!`,
+      excerpt: "Complete guide to your EnerGenius warranty coverage, including what's covered, how to file claims, and extended protection options.",
+      displayOrder: 5,
+      isPublished: true,
+      isFeatured: false,
+      metaDescription: "Understand your EnerGenius solar generator warranty coverage, claim process, and extended protection options.",
+      keywords: ["warranty", "coverage", "protection", "claim", "guarantee"],
+      viewCount: 0,
+      helpfulCount: 0,
+      notHelpfulCount: 0,
+      authorName: "EnerGenius Support Team",
+      publishedAt: new Date()
+    },
+    {
+      title: "Shipping and Delivery Information",
+      slug: "shipping-and-delivery-information",
+      category: "shipping",
+      content: `# Shipping and Delivery Information
+
+Everything you need to know about receiving your solar generator order.
+
+## Shipping Timeline
+
+### Processing Time
+- **In-Stock Items:** 1-2 business days
+- **Made-to-Order:** 5-7 business days
+- **Custom Configurations:** 10-14 business days
+
+Orders placed before 2 PM EST ship same day (if in stock).
+
+### Delivery Time
+After shipment:
+- **Standard Ground:** 5-7 business days
+- **Express:** 2-3 business days
+- **Overnight:** Next business day
+
+*Times may vary by location and carrier*
+
+## Shipping Methods
+
+### Standard Ground (Free for most orders)
+- Free shipping on orders over $100
+- Carrier: FedEx or UPS
+- Tracking provided
+- Signature may be required
+
+### Express Shipping
+- 2-3 day delivery
+- Available at checkout
+- Pricing based on weight and destination
+- Signature required
+
+### Freight Shipping (Large Units)
+For units over 100 lbs:
+- LTL freight carrier
+- Scheduled delivery appointment
+- Curbside delivery included
+- Inside delivery available (additional cost)
+- Commercial addresses preferred
+
+## Tracking Your Order
+
+### Order Confirmation
+You'll receive an email immediately after ordering with:
+- Order number
+- Items purchased
+- Estimated ship date
+- Billing/shipping addresses
+
+### Shipping Notification
+When your order ships:
+- Shipping confirmation email
+- Tracking number
+- Carrier information
+- Estimated delivery date
+- Link to track package
+
+### Track Online
+- Visit: rrg-solutions.com/track
+- Enter order number or tracking number
+- View real-time status updates
+
+## Delivery Requirements
+
+### Residential Delivery
+- Someone 18+ must be present
+- Signature required for orders over $500
+- Safe drop-off location acceptable for smaller items
+- Driver cannot enter home or garage
+
+### Commercial Delivery
+- Business hours delivery
+- Receiving dock preferred
+- Provide business name and hours
+- May require DOT authority for freight
+
+### Freight Delivery (Large Units)
+1. Carrier calls to schedule appointment
+2. Must be available during delivery window
+3. Inspect shipment before signing
+4. Driver assists with unloading to curb only
+5. Additional services (inside delivery, setup) available
+
+## Preparing for Delivery
+
+### What You Need
+- Clear path to delivery location
+- Space to inspect shipment
+- Camera for damage documentation
+- Tools for uncrating (if freight)
+- Help for heavy items
+
+### Delivery Location
+Ensure your location:
+- Is accessible for delivery vehicle
+- Has clear path 48" wide minimum (freight)
+- Can accommodate pallet jack (if freight)
+- Is protected from weather
+- Has adequate space for inspection
+
+## Receiving Your Shipment
+
+### Inspection Checklist
+Before signing for delivery:
+- [ ] Count all packages
+- [ ] Check for visible damage
+- [ ] Look for punctures or tears
+- [ ] Note any concerns on delivery receipt
+- [ ] Take photos if damage suspected
+- [ ] Don't refuse delivery unless severely damaged
+
+### If You Find Damage
+**External damage:**
+1. Note on delivery receipt "damaged box"
+2. Take photos of all sides
+3. Sign for delivery
+4. Open and inspect contents immediately
+5. Contact us within 48 hours
+
+**Concealed damage:**
+1. Keep all packaging materials
+2. Take detailed photos
+3. Contact us within 48 hours
+4. Do not use damaged items
+5. We'll arrange inspection or replacement
+
+## Shipping Restrictions
+
+### Areas We Ship To
+- All 50 US states
+- APO/FPO addresses (some restrictions)
+- US territories (additional fees may apply)
+
+### Areas We Don't Ship To
+- International addresses (contact for options)
+- PO Boxes (for large items)
+- Restricted zip codes (carrier limitations)
+
+## Shipping Costs
+
+### Free Shipping Thresholds
+- Standard items: Orders over $100
+- Power banks: Always free shipping
+- Generators 5kW+: Free ground shipping
+- Freight items: Varies by weight and location
+
+### Cost Factors
+Shipping fees based on:
+- Item weight and dimensions
+- Destination zip code
+- Delivery speed selected
+- Special handling requirements
+
+Calculate shipping at checkout or contact us for quotes.
+
+## International Shipping
+
+We currently serve US customers primarily. For international orders:
+- Contact sales for availability
+- Customs and duties are customer responsibility
+- Extended delivery times
+- Warranty coverage may vary
+- Voltage compatibility must be verified
+
+## Refused or Returned Shipments
+
+### Refused Delivery
+If you refuse delivery:
+- Original shipping charges apply
+- Return shipping charges apply
+- 15% restocking fee
+- Refund processed after item received
+- May take 2-3 weeks total
+
+### Return to Sender
+If package is returned due to:
+- Incorrect address (your error)
+- Unable to deliver
+- Delivery refused
+
+You are responsible for:
+- Original shipping cost
+- Return shipping cost
+- Reshipment cost (if desired)
+
+## Lost or Stolen Packages
+
+### Carrier Lost Package
+If tracking shows:
+- Package stuck in transit 14+ days
+- Missing scan events
+- Delivery to wrong address
+
+We will:
+1. File claim with carrier
+2. Wait 7 days for carrier investigation
+3. Send replacement or refund
+4. Process claim with carrier
+
+### Stolen Package (Porch Theft)
+If tracking confirms delivery but you didn't receive:
+- File police report
+- Provide report number to us
+- Check with neighbors
+- Verify delivery address
+- We'll assess options case-by-case
+
+**Protection:** Consider requiring signature or use secure location delivery notes.
+
+## Delivery Issues
+
+### Damaged in Transit
+We pack securely but occasionally damage occurs:
+- We'll send replacement parts/unit
+- No cost to you for carrier damage
+- Keep all packaging for inspection
+- Photos required for claim
+
+### Wrong Item Received
+If you receive incorrect items:
+- Contact us immediately
+- Don't open if clearly wrong
+- We'll arrange correct shipment
+- Return label provided
+- No cost to you
+
+### Missing Items
+If your order is incomplete:
+- Verify all boxes received (check tracking)
+- Check packing slip
+- Contact us within 48 hours
+- We'll ship missing items immediately
+- Expedited at no charge
+
+## Special Delivery Options
+
+### Hold at Location
+Available for most carriers:
+- Hold at FedEx or UPS facility
+- Pick up at your convenience
+- Specify at checkout or contact carrier
+- Requires ID for pickup
+
+### Signature Required
+- Automatically applied for orders $500+
+- Can be added to any order
+- Ensures secure delivery
+- Someone must be present
+
+### Saturday Delivery
+- Available for express shipments
+- Additional fee applies
+- Must specify at checkout
+- Not available in all areas
+
+## Order Changes
+
+### Before Shipment
+Contact us ASAP if you need to:
+- Change shipping address
+- Upgrade shipping speed
+- Add items to order
+- Cancel order
+
+**Note:** Orders ship quickly! Changes may not be possible after 24 hours.
+
+### After Shipment
+Once shipped:
+- Contact carrier to hold or reroute (fees may apply)
+- Address changes difficult after shipment
+- Carrier charges apply to rerouting
+
+## Contact Shipping Support
+
+**Questions about your order?**
+
+**Email:** shipping@rrg-solutions.com  
+**Phone:** (555) 123-SHIP
+**Live Chat:** Available 8 AM - 6 PM EST
+
+**Include:**
+- Order number
+- Tracking number (if applicable)
+- Description of issue
+- Photos (if damage or wrong item)
+
+---
+
+We want your delivery experience to be smooth and hassle-free. Don't hesitate to reach out with any shipping questions or concerns!`,
+      excerpt: "Complete guide to shipping timelines, delivery methods, tracking, and what to do if you experience delivery issues.",
+      displayOrder: 6,
+      isPublished: true,
+      isFeatured: false,
+      metaDescription: "Everything about EnerGenius shipping and delivery including timelines, tracking, and handling delivery issues.",
+      keywords: ["shipping", "delivery", "tracking", "freight", "timeline"],
+      viewCount: 0,
+      helpfulCount: 0,
+      notHelpfulCount: 0,
+      authorName: "EnerGenius Support Team",
+      publishedAt: new Date()
+    }
+  ];
+
+  for (const article of kbArticles) {
+    await prisma.knowledgeBaseArticle.upsert({
+      where: { slug: article.slug },
+      update: article,
+      create: article
+    });
+  }
+
+  console.log(`   ✅ Created/updated ${kbArticles.length} knowledge base articles`);
   console.log('\n✅ Phase 3 seeding complete!');
 }
 

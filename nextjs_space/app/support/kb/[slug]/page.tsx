@@ -39,7 +39,7 @@ export default function ArticlePage() {
 
   const fetchArticle = async () => {
     try {
-      const response = await fetch(`/api/support/kb?slug=${slug}`);
+      const response = await fetch(`/api/kb/${slug}`);
       const data = await response.json();
 
       if (response.ok) {
@@ -60,9 +60,31 @@ export default function ArticlePage() {
       return;
     }
 
-    // In a real implementation, this would call an API
-    setFeedbackGiven(true);
-    toast.success('Thank you for your feedback!');
+    try {
+      const response = await fetch(`/api/kb/${slug}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          action: helpful ? 'helpful' : 'not_helpful' 
+        }),
+      });
+
+      if (response.ok) {
+        setFeedbackGiven(true);
+        toast.success('Thank you for your feedback!');
+        
+        // Update local counts
+        if (article) {
+          setArticle({
+            ...article,
+            helpfulCount: helpful ? article.helpfulCount + 1 : article.helpfulCount,
+            notHelpfulCount: !helpful ? article.notHelpfulCount + 1 : article.notHelpfulCount,
+          });
+        }
+      }
+    } catch (error) {
+      toast.error('Failed to submit feedback');
+    }
   };
 
   if (loading) {
