@@ -16,8 +16,15 @@ import { Badge } from '@/components/ui/badge';
 import { AlertCircle, ShieldCheck, CreditCard, Lock, ArrowLeft, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
-// Initialize Stripe
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+// Initialize Stripe with better error handling
+const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+console.log('[Checkout] Stripe publishable key exists:', !!publishableKey);
+
+if (!publishableKey) {
+  console.error('[Checkout] NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not defined');
+}
+
+const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
 
 interface Product {
   id: string;
@@ -58,14 +65,28 @@ function PaymentForm({
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
 
+  useEffect(() => {
+    console.log('[PaymentForm] Component mounted');
+    console.log('[PaymentForm] Stripe initialized:', !!stripe);
+    console.log('[PaymentForm] Elements initialized:', !!elements);
+  }, [stripe, elements]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('[PaymentForm] Form submitted');
 
     if (!stripe || !elements) {
+      console.log('[PaymentForm] Stripe or Elements not ready');
+      toast({
+        title: 'Payment System Loading',
+        description: 'Please wait for the payment system to initialize.',
+        variant: 'default'
+      });
       return;
     }
 
     setProcessing(true);
+    console.log('[PaymentForm] Processing payment...');
 
     try {
       const { error, paymentIntent } = await stripe.confirmPayment({
@@ -76,7 +97,10 @@ function PaymentForm({
         redirect: 'if_required',
       });
 
+      console.log('[PaymentForm] Payment result:', { error, paymentIntent: paymentIntent?.status });
+
       if (error) {
+        console.error('[PaymentForm] Payment error:', error);
         toast({
           title: 'Payment Failed',
           description: error.message,
@@ -84,10 +108,11 @@ function PaymentForm({
         });
         setProcessing(false);
       } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+        console.log('[PaymentForm] Payment succeeded');
         onSuccess(paymentIntent.id);
       }
     } catch (error) {
-      console.error('Payment error:', error);
+      console.error('[PaymentForm] Payment exception:', error);
       toast({
         title: 'Payment Failed',
         description: 'An unexpected error occurred. Please try again.',
@@ -235,15 +260,22 @@ export default function CheckoutPage() {
   };
 
   const proceedToPayment = async () => {
+    console.log('[Checkout] proceedToPayment called');
+    
     if (!validateForm()) {
+      console.log('[Checkout] Form validation failed');
       return;
     }
 
     setLoading(true);
+    console.log('[Checkout] Creating payment intent...');
 
     try {
       const totalPrice = checkoutData!.product.priceNumeric + 
         (checkoutData!.servicePackage?.price || 0);
+
+      console.log('[Checkout] Total price:', totalPrice);
+      console.log('[Checkout] Customer email:', formData.email);
 
       // Create payment intent
       const paymentResponse = await fetch('/api/create-payment-intent', {
@@ -256,16 +288,19 @@ export default function CheckoutPage() {
         })
       });
 
+      console.log('[Checkout] Payment response status:', paymentResponse.status);
       const paymentData = await paymentResponse.json();
+      console.log('[Checkout] Payment data:', paymentData);
 
       if (paymentResponse.ok) {
+        console.log('[Checkout] Setting client secret and moving to payment step');
         setClientSecret(paymentData.clientSecret);
         setStep('payment');
       } else {
         throw new Error(paymentData.error || 'Failed to initialize payment');
       }
     } catch (error) {
-      console.error('Payment initialization error:', error);
+      console.error('[Checkout] Payment initialization error:', error);
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to initialize payment',
@@ -619,7 +654,18 @@ export default function CheckoutPage() {
                   <CardDescription>Enter your card details to complete the purchase</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {clientSecret && (
+                  {!clientSecret ? (
+                    <div className="flex flex-col items-center justify-center py-8 space-y-4">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+                      <p className="text-gray-600">Initializing secure payment...</p>
+                    </div>
+                  ) : !stripePromise ? (
+                    <div className="flex flex-col items-center justify-center py-8 space-y-4">
+                      <AlertCircle className="h-12 w-12 text-red-600" />
+                      <p className="text-red-600 font-medium">Payment system unavailable</p>
+                      <p className="text-sm text-gray-600">Please contact support if this issue persists.</p>
+                    </div>
+                  ) : (
                     <Elements stripe={stripePromise} options={{ clientSecret }}>
                       <PaymentForm
                         totalAmount={totalPrice}
