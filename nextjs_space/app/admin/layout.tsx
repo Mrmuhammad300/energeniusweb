@@ -21,6 +21,7 @@ import {
   FileType,
   BarChart3,
   Settings,
+  Headphones,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { signOut } from 'next-auth/react';
@@ -41,6 +42,7 @@ const navItems: NavItem[] = [
   { href: '/admin/customers', label: 'Customers', icon: Users },
   { href: '/admin/team', label: 'Team', icon: UserCog },
   { href: '/admin/contacts', label: 'Contacts', icon: MessageSquare },
+  { href: '/admin/support-tickets', label: 'Support Tickets', icon: Headphones },
   { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
   { href: '/admin/email-templates', label: 'Email Templates', icon: FileType },
   { href: '/admin/settings', label: 'Settings', icon: Settings },

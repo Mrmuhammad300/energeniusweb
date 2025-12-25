@@ -631,3 +631,142 @@ model ServicePurchase {
   @@index([subscriptionActive])
   @@index([createdAt])
 }
+
+// Support Portal - Ticket Management
+model SupportTicket {
+  id              String   @id @default(cuid())
+  
+  // Ticket Information
+  ticketNumber    String   @unique
+  subject         String
+  category        String   @default("general") // general, technical, billing, shipping, product_inquiry, installation
+  priority        String   @default("medium") // low, medium, high, urgent
+  status          String   @default("open") // open, in_progress, waiting_customer, resolved, closed
+  
+  // Customer Information
+  customerName    String
+  customerEmail   String
+  customerPhone   String?
+  customerId      String?  // Link to Customer if exists
+  
+  // Ticket Content
+  description     String   @db.Text
+  
+  // Assignment & Tracking
+  assignedTo      String?  // Team member assigned to this ticket
+  tags            String[] // Custom tags for categorization
+  
+  // Resolution
+  resolvedAt      DateTime?
+  resolvedBy      String?  // Team member who resolved
+  resolution      String?  @db.Text
+  
+  // Related Records
+  orderId         String?  // Link to order if relevant
+  orderNumber     String?
+  productSku      String?  // Related product if applicable
+  
+  // Internal Notes
+  internalNotes   String?  @db.Text
+  
+  // Relations
+  replies         SupportReply[]
+  attachments     SupportAttachment[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([ticketNumber])
+  @@index([status])
+  @@index([category])
+  @@index([priority])
+  @@index([customerEmail])
+  @@index([assignedTo])
+  @@index([createdAt])
+}
+
+// Support Ticket Replies
+model SupportReply {
+  id              String   @id @default(cuid())
+  ticketId        String
+  ticket          SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  
+  // Reply Information
+  message         String   @db.Text
+  isCustomerReply Boolean  @default(false) // true if from customer, false if from staff
+  authorName      String
+  authorEmail     String
+  
+  // Visibility
+  isInternal      Boolean  @default(false) // Internal notes not visible to customer
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([ticketId])
+  @@index([createdAt])
+}
+
+// Support Ticket Attachments
+model SupportAttachment {
+  id              String   @id @default(cuid())
+  ticketId        String
+  ticket          SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  
+  // File Information
+  fileName        String
+  fileUrl         String   // S3 or storage URL
+  fileSize        Int      // In bytes
+  fileType        String   // MIME type
+  
+  // Upload Information
+  uploadedBy      String   // Customer name or staff name
+  uploadedByEmail String
+  
+  createdAt       DateTime @default(now())
+
+  @@index([ticketId])
+}
+
+// Knowledge Base Articles
+model KnowledgeBaseArticle {
+  id              String   @id @default(cuid())
+  
+  // Article Information
+  title           String
+  slug            String   @unique
+  category        String   @default("general") // getting_started, products, installation, maintenance, troubleshooting, shipping, returns
+  content         String   @db.Text
+  excerpt         String?  @db.Text
+  
+  // Display
+  displayOrder    Int      @default(0)
+  isPublished     Boolean  @default(true)
+  isFeatured      Boolean  @default(false)
+  
+  // SEO
+  metaDescription String?  @db.Text
+  keywords        String[]
+  
+  // Analytics
+  viewCount       Int      @default(0)
+  helpfulCount    Int      @default(0)
+  notHelpfulCount Int      @default(0)
+  
+  // Relations
+  relatedArticles String[] // Array of article IDs
+  
+  // Author
+  authorName      String?
+  lastEditedBy    String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  publishedAt     DateTime?
+
+  @@index([slug])
+  @@index([category])
+  @@index([isPublished])
+  @@index([displayOrder])
+  @@index([viewCount])
+}

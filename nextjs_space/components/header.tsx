@@ -164,6 +164,9 @@ export default function Header() {
           <Link href="/contact" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
             Contact
           </Link>
+          <Link href="/support" className="text-xs xl:text-sm font-semibold leading-6 text-gray-900 hover:text-emerald-600 transition-colors whitespace-nowrap">
+            Support
+          </Link>
         </div>
         
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4 lg:ml-4">
@@ -327,6 +330,16 @@ export default function Header() {
                   }}
                 >
                   Contact
+                </Link>
+                <Link 
+                  href="/support" 
+                  className="block px-4 py-3.5 text-sm font-semibold text-gray-900 bg-white hover:bg-emerald-50 active:bg-emerald-100 touch-manipulation transition-colors rounded-lg border border-gray-200" 
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    setMobileDropdownOpen(false)
+                  }}
+                >
+                  Support
                 </Link>
                 
                 {/* Full Width Quote Button */}
