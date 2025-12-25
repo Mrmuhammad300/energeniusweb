@@ -22,6 +22,8 @@ export async function POST(request: NextRequest) {
     // Convert amount to cents for Stripe
     const amountInCents = Math.round(amount * 100);
 
+    console.log('[API] Creating payment intent with amount:', amountInCents, 'cents');
+    
     // Create payment intent
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amountInCents,
@@ -35,6 +37,23 @@ export async function POST(request: NextRequest) {
         enabled: true,
       },
     });
+
+    console.log('[API] Payment intent created:', {
+      id: paymentIntent.id,
+      status: paymentIntent.status,
+      amount: paymentIntent.amount,
+      client_secret: paymentIntent.client_secret,
+      hasClientSecret: !!paymentIntent.client_secret
+    });
+
+    if (!paymentIntent.client_secret) {
+      console.error('[API] ERROR: Payment intent created but client_secret is null/undefined!');
+      console.error('[API] Full paymentIntent object:', JSON.stringify(paymentIntent, null, 2));
+      return NextResponse.json(
+        { error: 'Payment intent created but missing client secret. This may indicate a Stripe configuration issue.' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
