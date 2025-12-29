@@ -22,30 +22,108 @@ import {
   BarChart3,
   Settings,
   Headphones,
+  Shield,
+  Package,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { signOut } from 'next-auth/react';
 import { toast } from '@/hooks/use-toast';
+import { UserRole } from '@prisma/client';
+import { hasAnyPermission, Permission, getRoleName } from '@/lib/permissions';
 
 interface NavItem {
   href: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
+  permissions: Permission[];
 }
 
 const navItems: NavItem[] = [
-  { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/analytics', label: 'Sales Analytics', icon: BarChart3 },
-  { href: '/admin/quotes', label: 'Quote Requests', icon: FileText },
-  { href: '/admin/invoices', label: 'Invoices', icon: Receipt },
-  { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
-  { href: '/admin/customers', label: 'Customers', icon: Users },
-  { href: '/admin/team', label: 'Team', icon: UserCog },
-  { href: '/admin/contacts', label: 'Contacts', icon: MessageSquare },
-  { href: '/admin/support-tickets', label: 'Support Tickets', icon: Headphones },
-  { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
-  { href: '/admin/email-templates', label: 'Email Templates', icon: FileType },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+  { 
+    href: '/admin/dashboard', 
+    label: 'Dashboard', 
+    icon: LayoutDashboard,
+    permissions: ['analytics:view_own', 'analytics:view_all'],
+  },
+  { 
+    href: '/admin/analytics', 
+    label: 'Sales Analytics', 
+    icon: BarChart3,
+    permissions: ['analytics:view_all'],
+  },
+  { 
+    href: '/admin/quotes', 
+    label: 'Quote Requests', 
+    icon: FileText,
+    permissions: ['quotes:view_all', 'quotes:view_own'],
+  },
+  { 
+    href: '/admin/invoices', 
+    label: 'Invoices', 
+    icon: Receipt,
+    permissions: ['invoices:view_all', 'invoices:view_own'],
+  },
+  { 
+    href: '/admin/orders', 
+    label: 'Orders', 
+    icon: ShoppingCart,
+    permissions: ['orders:view_all', 'orders:view_own'],
+  },
+  { 
+    href: '/admin/customers', 
+    label: 'Customers', 
+    icon: Users,
+    permissions: ['customers:view_all'],
+  },
+  { 
+    href: '/admin/team', 
+    label: 'Team', 
+    icon: UserCog,
+    permissions: ['team:view'],
+  },
+  { 
+    href: '/admin/contacts', 
+    label: 'Contacts', 
+    icon: MessageSquare,
+    permissions: ['marketing:view_contacts', 'customers:view_all'],
+  },
+  { 
+    href: '/admin/support-tickets', 
+    label: 'Support Tickets', 
+    icon: Headphones,
+    permissions: ['support:view_all', 'support:view_assigned'],
+  },
+  { 
+    href: '/admin/newsletter', 
+    label: 'Newsletter', 
+    icon: Mail,
+    permissions: ['marketing:view_contacts', 'marketing:manage_lists'],
+  },
+  { 
+    href: '/admin/email-templates', 
+    label: 'Email Templates', 
+    icon: FileType,
+    permissions: ['settings:edit'],
+  },
+  { 
+    href: '/admin/audit-logs', 
+    label: 'Audit Logs', 
+    icon: Shield,
+    permissions: ['audit:view'],
+  },
+  { 
+    href: '/admin/settings', 
+    label: 'Settings', 
+    icon: Settings,
+    permissions: ['settings:view'],
+  },
+  { 
+    href: '/admin/fulfillment', 
+    label: 'Fulfillment', 
+    icon: Package,
+    permissions: ['fulfillment:view_assigned_orders'],
+  },
 ];
 
 export default function AdminLayout({
@@ -64,8 +142,8 @@ export default function AdminLayout({
     }
   }, [status, pathname, router]);
 
-  // Don't show the layout on the login page
-  if (pathname === '/admin/login') {
+  // Don't show the layout on the login and invitation pages
+  if (pathname === '/admin/login' || pathname === '/admin/team/accept-invitation') {
     return <>{children}</>;
   }
 
@@ -98,6 +176,12 @@ export default function AdminLayout({
     }
   };
 
+  // Filter nav items based on user permissions
+  const userRole = (session?.user as any)?.role as UserRole || 'SUPER_ADMIN';
+  const filteredNavItems = navItems.filter((item) =>
+    hasAnyPermission(userRole, item.permissions)
+  );
+
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar for desktop */}
@@ -120,7 +204,7 @@ export default function AdminLayout({
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
+          {filteredNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
@@ -142,7 +226,12 @@ export default function AdminLayout({
 
         <div className="p-4 border-t border-green-500">
           <div className="px-4 py-3 bg-green-800/30 rounded-lg mb-3">
-            <p className="text-sm font-medium">{session?.user?.name || 'Admin User'}</p>
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-sm font-medium">{session?.user?.name || 'Admin User'}</p>
+              <Badge className="bg-green-700 text-green-100 text-xs px-2 py-0.5">
+                {getRoleName(userRole).split(' ')[0]}
+              </Badge>
+            </div>
             <p className="text-xs text-green-100 truncate">
               {session?.user?.email}
             </p>
@@ -196,7 +285,7 @@ export default function AdminLayout({
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
+          {filteredNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
@@ -219,7 +308,12 @@ export default function AdminLayout({
 
         <div className="p-4 border-t border-green-500">
           <div className="px-4 py-3 bg-green-800/30 rounded-lg mb-3">
-            <p className="text-sm font-medium">{session?.user?.name || 'Admin User'}</p>
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-sm font-medium">{session?.user?.name || 'Admin User'}</p>
+              <Badge className="bg-green-700 text-green-100 text-xs px-2 py-0.5">
+                {getRoleName(userRole).split(' ')[0]}
+              </Badge>
+            </div>
             <p className="text-xs text-green-100 truncate">
               {session?.user?.email}
             </p>

@@ -105,6 +105,16 @@ model NewsletterSubscriber {
   @@index([status])
 }
 
+// RBAC Enums
+enum UserRole {
+  SUPER_ADMIN           // Full system control
+  SALES_REP             // Own records only
+  OPERATIONS_MANAGER    // View all, edit support items
+  MARKETING_SPECIALIST  // View all contacts/leads, manage campaigns
+  VIRTUAL_ASSISTANT     // Restricted field access
+  FULFILLMENT_PROVIDER  // Track orders/products assigned to them
+}
+
 // Authentication Models
 model User {
   id            String    @id @default(cuid())
@@ -112,16 +122,25 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   password      String
-  role          String    @default("admin") // admin, staff
+  role          UserRole  @default(SUPER_ADMIN)
   image         String?
+  teamId        String?   // For grouping users by team/company
+  isActive      Boolean   @default(true)
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret String? // For 2FA setup
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
   invoices      Invoice[] // Invoices created by this user
   teamMember    TeamMember? // Link to team member profile
+  auditLogs     AuditLog[] // Actions performed by this user
+  fulfillmentProvider FulfillmentProvider? // Link to fulfillment provider profile
 
   @@index([email])
+  @@index([role])
+  @@index([teamId])
+  @@index([isActive])
 }
 
 model Account {
@@ -769,4 +788,136 @@ model KnowledgeBaseArticle {
   @@index([isPublished])
   @@index([displayOrder])
   @@index([viewCount])
+}
+
+// RBAC: Audit Log for tracking sensitive actions
+model AuditLog {
+  id          String   @id @default(cuid())
+  
+  // Action Information
+  action      String   // "exported_customers", "deleted_order", "updated_invoice", "viewed_reports"
+  actionType  String   // "create", "read", "update", "delete", "export"
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  // Target Information
+  targetType  String   // "Order", "Customer", "Invoice", "Product", etc.
+  targetId    String?  // ID of the affected record
+  targetLabel String?  // Human-readable label (e.g., order number, customer name)
+  
+  // Context
+  ipAddress   String?
+  userAgent   String?  @db.Text
+  metadata    String?  @db.Text // JSON string for additional context
+  
+  // Result
+  success     Boolean  @default(true)
+  errorMessage String? @db.Text
+  
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([actionType])
+  @@index([targetType])
+  @@index([createdAt])
+}
+
+// RBAC: User Invitation System
+model UserInvitation {
+  id          String   @id @default(cuid())
+  
+  // Invitation Details
+  email       String
+  role        UserRole
+  token       String   @unique // Secure invitation token
+  
+  // Invitation Status
+  status      String   @default("pending") // pending, accepted, expired, cancelled
+  
+  // Inviter Information
+  invitedBy   String   // User ID of person who sent invitation
+  inviterName String   // Name for email display
+  
+  // Expiration
+  expiresAt   DateTime // Usually 7 days from creation
+  acceptedAt  DateTime?
+  
+  // Notes
+  message     String?  @db.Text // Optional welcome message
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([email])
+  @@index([token])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+// RBAC: Fulfillment Provider Management
+model FulfillmentProvider {
+  id              String   @id @default(cuid())
+  
+  // Provider Information
+  companyName     String
+  contactName     String
+  contactEmail    String   @unique
+  contactPhone    String?
+  
+  // User Association (links to User model for login)
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  
+  // Status
+  status          String   @default("active") // active, inactive, suspended
+  
+  // Capabilities
+  canUpdateOrders Boolean  @default(true)
+  canViewAnalytics Boolean @default(true)
+  
+  // Product Assignment
+  assignedProducts FulfillmentProductAssignment[]
+  
+  // Notes
+  notes           String?  @db.Text
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([contactEmail])
+}
+
+// RBAC: Fulfillment Provider Product Assignment
+model FulfillmentProductAssignment {
+  id                    String   @id @default(cuid())
+  
+  // Provider Link
+  fulfillmentProviderId String
+  fulfillmentProvider   FulfillmentProvider @relation(fields: [fulfillmentProviderId], references: [id], onDelete: Cascade)
+  
+  // Product Link
+  productSku            String   // SKU of assigned product
+  productName           String   // Product name for display
+  
+  // Assignment Status
+  isActive              Boolean  @default(true)
+  
+  // Analytics (auto-calculated)
+  totalOrdersShipped    Int      @default(0)
+  averageShippingDays   Float?
+  lastShipmentDate      DateTime?
+  
+  // Notes
+  notes                 String?  @db.Text
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([fulfillmentProviderId, productSku])
+  @@index([fulfillmentProviderId])
+  @@index([productSku])
+  @@index([isActive])
 }

@@ -20,10 +20,18 @@ export const authOptions: NextAuthOptions = {
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
+          include: {
+            fulfillmentProvider: true,
+          },
         });
 
         if (!user || !user.password) {
           throw new Error('Invalid credentials');
+        }
+
+        // Check if user is active
+        if (!user.isActive) {
+          throw new Error('Account is inactive. Please contact administrator.');
         }
 
         const isPasswordValid = await bcrypt.compare(
@@ -40,6 +48,8 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
+          teamId: user.teamId,
+          fulfillmentProviderId: user.fulfillmentProvider?.id,
         };
       },
     }),
@@ -55,6 +65,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = (user as any).role;
+        token.teamId = (user as any).teamId;
+        token.fulfillmentProviderId = (user as any).fulfillmentProviderId;
       }
       return token;
     },
@@ -62,6 +74,8 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         (session.user as any).id = token.id;
         (session.user as any).role = token.role;
+        (session.user as any).teamId = token.teamId;
+        (session.user as any).fulfillmentProviderId = token.fulfillmentProviderId;
       }
       return session;
     },

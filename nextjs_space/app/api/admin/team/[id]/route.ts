@@ -1,122 +1,151 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import prisma from '@/lib/db';
+import { prisma } from '@/lib/db';
+import { hasPermission } from '@/lib/permissions';
+import { createAuditLog } from '@/lib/audit';
+import { UserRole } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 
-// GET single team member by ID
-export async function GET(
+/**
+ * PUT /api/admin/team/[id]
+ * Update team member
+ */
+export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
     
-    if (!session || !session.user) {
+    if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const teamMember = await prisma.teamMember.findUnique({
-      where: { id: params.id },
-      include: {
-        user: {
-          select: {
-            email: true,
-            name: true,
-            role: true,
-          },
-        },
-      },
-    });
+    const userRole = (session.user as any).role as UserRole;
 
-    if (!teamMember) {
+    // Check permission
+    if (!hasPermission(userRole, 'team:edit')) {
       return NextResponse.json(
-        { error: 'Team member not found' },
-        { status: 404 }
+        { error: 'You do not have permission to edit team members' },
+        { status: 403 }
       );
     }
 
-    return NextResponse.json(teamMember);
+    const { role, isActive, teamId } = await request.json();
+
+    // Prevent self-demotion
+    if (params.id === (session.user as any).id && role !== userRole) {
+      return NextResponse.json(
+        { error: 'You cannot change your own role' },
+        { status: 400 }
+      );
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: params.id },
+      data: {
+        ...(role && { role }),
+        ...(typeof isActive === 'boolean' && { isActive }),
+        ...(teamId !== undefined && { teamId }),
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        isActive: true,
+      },
+    });
+
+    // Log the action
+    await createAuditLog({
+      action: 'updated_user_role',
+      actionType: 'update',
+      userId: (session.user as any).id,
+      targetType: 'User',
+      targetId: params.id,
+      targetLabel: updatedUser.email,
+      metadata: { role, isActive },
+    });
+
+    return NextResponse.json({ user: updatedUser });
   } catch (error) {
-    console.error('Error fetching team member:', error);
+    console.error('Error updating team member:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch team member' },
+      { error: 'Failed to update team member' },
       { status: 500 }
     );
   }
 }
 
-// PATCH - Update team member
-export async function PATCH(
+/**
+ * DELETE /api/admin/team/[id]
+ * Deactivate team member
+ */
+export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
     
-    if (!session || !session.user) {
+    if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Only admins can update team members
-    const currentUser = await prisma.user.findUnique({
-      where: { email: session.user.email! },
-    });
+    const userRole = (session.user as any).role as UserRole;
 
-    if (currentUser?.role !== 'admin') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    // Check permission
+    if (!hasPermission(userRole, 'team:delete')) {
+      return NextResponse.json(
+        { error: 'You do not have permission to delete team members' },
+        { status: 403 }
+      );
     }
 
-    const data = await request.json();
+    // Prevent self-deletion
+    if (params.id === (session.user as any).id) {
+      return NextResponse.json(
+        { error: 'You cannot delete your own account' },
+        { status: 400 }
+      );
+    }
 
-    // Check if team member exists
-    const existingMember = await prisma.teamMember.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: params.id },
+      select: { email: true },
     });
 
-    if (!existingMember) {
+    if (!user) {
       return NextResponse.json(
-        { error: 'Team member not found' },
+        { error: 'User not found' },
         { status: 404 }
       );
     }
 
-    // If email is being changed, check if new email is already in use
-    if (data.email && data.email !== existingMember.email) {
-      const emailExists = await prisma.teamMember.findUnique({
-        where: { email: data.email },
-      });
-
-      if (emailExists) {
-        return NextResponse.json(
-          { error: 'Email already in use by another team member' },
-          { status: 409 }
-        );
-      }
-    }
-
-    const teamMember = await prisma.teamMember.update({
+    // Deactivate instead of deleting
+    await prisma.user.update({
       where: { id: params.id },
-      data: {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        phone: data.phone,
-        role: data.role,
-        department: data.department,
-        status: data.status,
-        hireDate: data.hireDate ? new Date(data.hireDate) : existingMember.hireDate,
-        terminationDate: data.terminationDate ? new Date(data.terminationDate) : null,
-        notes: data.notes,
-      },
+      data: { isActive: false },
     });
 
-    return NextResponse.json(teamMember);
+    // Log the action
+    await createAuditLog({
+      action: 'deleted_user',
+      actionType: 'delete',
+      userId: (session.user as any).id,
+      targetType: 'User',
+      targetId: params.id,
+      targetLabel: user.email,
+    });
+
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error updating team member:', error);
+    console.error('Error deleting team member:', error);
     return NextResponse.json(
-      { error: 'Failed to update team member' },
+      { error: 'Failed to delete team member' },
       { status: 500 }
     );
   }

@@ -100,7 +100,7 @@ async function main() {
         name: 'Admin User',
         email: adminEmail,
         password: hashedPassword,
-        role: 'admin',
+        role: 'SUPER_ADMIN',
       },
     });
     console.log(`   ✅ Admin user created: ${adminEmail} / admin123`);

@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
         name,
         email,
         password: hashedPassword,
-        role: 'admin',
+        role: 'SUPER_ADMIN',
       },
       select: {
         id: true,
