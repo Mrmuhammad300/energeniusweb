@@ -82,7 +82,19 @@ export type Permission =
   // Fulfillment Provider Specific
   | 'fulfillment:view_assigned_orders'
   | 'fulfillment:update_shipment'
-  | 'fulfillment:view_analytics';
+  | 'fulfillment:view_analytics'
+  
+  // Installer Specific
+  | 'installations:view_assigned'
+  | 'installations:view_all'
+  | 'installations:create'
+  | 'installations:edit'
+  | 'installations:update_progress'
+  | 'installations:upload_photos'
+  | 'installations:complete'
+  | 'installations:assign_installer'
+  | 'installations:send_message'
+  | 'installations:view_messages';
 
 /**
  * Role-based permission matrix
@@ -131,6 +143,12 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'settings:edit',
     'data:export',
     'audit:view',
+    'installations:view_all',
+    'installations:create',
+    'installations:edit',
+    'installations:assign_installer',
+    'installations:send_message',
+    'installations:view_messages',
   ],
   
   SALES_REP: [
@@ -144,6 +162,11 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'invoices:view_own',
     'support:create',
     'analytics:view_own',
+    'installations:view_all',
+    'installations:create',
+    'installations:assign_installer',
+    'installations:send_message',
+    'installations:view_messages',
   ],
   
   OPERATIONS_MANAGER: [
@@ -188,6 +211,17 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'fulfillment:view_assigned_orders',
     'fulfillment:update_shipment',
     'fulfillment:view_analytics',
+  ],
+  
+  INSTALLER: [
+    // Limited to assigned installation jobs only
+    'installations:view_assigned',
+    'installations:update_progress',
+    'installations:upload_photos',
+    'installations:complete',
+    'installations:send_message',
+    'installations:view_messages',
+    'products:view',
   ],
 };
 
@@ -237,8 +271,8 @@ export function canManageTeam(role: UserRole): boolean {
  * Check if a role can access admin dashboard
  */
 export function canAccessAdmin(role: UserRole): boolean {
-  // All roles except FULFILLMENT_PROVIDER access standard admin
-  return role !== 'FULFILLMENT_PROVIDER';
+  // All roles except FULFILLMENT_PROVIDER and INSTALLER access standard admin
+  return role !== 'FULFILLMENT_PROVIDER' && role !== 'INSTALLER';
 }
 
 /**
@@ -246,6 +280,13 @@ export function canAccessAdmin(role: UserRole): boolean {
  */
 export function canAccessFulfillment(role: UserRole): boolean {
   return role === 'FULFILLMENT_PROVIDER' || role === 'SUPER_ADMIN';
+}
+
+/**
+ * Check if a role can access installer dashboard
+ */
+export function canAccessInstallerDashboard(role: UserRole): boolean {
+  return role === 'INSTALLER' || role === 'SUPER_ADMIN';
 }
 
 /**
@@ -259,6 +300,7 @@ export function getRoleName(role: UserRole): string {
     MARKETING_SPECIALIST: 'Marketing Specialist',
     VIRTUAL_ASSISTANT: 'Virtual Assistant',
     FULFILLMENT_PROVIDER: 'Fulfillment Provider',
+    INSTALLER: 'Installer',
   };
   return roleNames[role] || role;
 }
@@ -274,6 +316,7 @@ export function getRoleDescription(role: UserRole): string {
     MARKETING_SPECIALIST: 'Run campaigns and manage segmentation without impacting sales pipelines',
     VIRTUAL_ASSISTANT: 'Execute tasks with zero risk to business intelligence',
     FULFILLMENT_PROVIDER: 'Track and fulfill orders for assigned products',
+    INSTALLER: 'View assigned installation jobs and report progress',
   };
   return descriptions[role] || '';
 }

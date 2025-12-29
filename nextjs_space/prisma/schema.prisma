@@ -113,6 +113,7 @@ enum UserRole {
   MARKETING_SPECIALIST  // View all contacts/leads, manage campaigns
   VIRTUAL_ASSISTANT     // Restricted field access
   FULFILLMENT_PROVIDER  // Track orders/products assigned to them
+  INSTALLER             // Installation technicians - limited to assigned jobs
 }
 
 // Authentication Models
@@ -136,6 +137,10 @@ model User {
   teamMember    TeamMember? // Link to team member profile
   auditLogs     AuditLog[] // Actions performed by this user
   fulfillmentProvider FulfillmentProvider? // Link to fulfillment provider profile
+  installerProfile InstallerProfile? // Link to installer profile
+  installations Installation[] @relation("AssignedInstaller") // Installations assigned to this installer
+  installationUpdates InstallationUpdate[] // Progress updates created by installer
+  installationMessages InstallationMessage[] // Messages sent by user
 
   @@index([email])
   @@index([role])
@@ -439,6 +444,7 @@ model Order {
   // Relations
   items           OrderItem[]
   shipments       Shipment[]
+  installations   Installation[]
   
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -920,4 +926,196 @@ model FulfillmentProductAssignment {
   @@index([fulfillmentProviderId])
   @@index([productSku])
   @@index([isActive])
+}
+
+// RBAC: Installer Management
+model InstallerProfile {
+  id              String   @id @default(cuid())
+  
+  // Installer Information
+  companyName     String?  // Company name if independent contractor
+  specialization  String[] // Types of installations (residential, commercial, solar, battery)
+  serviceAreas    String[] // States/regions they service
+  licenseNumber   String?  // Professional license number
+  insuranceNumber String?  // Insurance policy number
+  
+  // User Association (links to User model for login)
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Status & Availability
+  status          String   @default("active") // active, inactive, suspended
+  availability    String   @default("available") // available, busy, off_duty
+  
+  // Performance Metrics
+  totalJobsCompleted Int    @default(0)
+  averageRating   Float?
+  onTimeCompletionRate Float?  // Percentage of jobs completed on time
+  
+  // Contact Info
+  phone           String
+  email           String
+  emergencyContact String?
+  
+  // Notes
+  notes           String?  @db.Text
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([availability])
+}
+
+// Installation Job Tracking
+model Installation {
+  id                  String   @id @default(cuid())
+  
+  // Job Information
+  installationNumber  String   @unique // Auto-generated: INS-YYYYMMDD-XXXX
+  title               String   // Brief description of the job
+  description         String   @db.Text
+  
+  // Related Records
+  orderId             String?  // Link to order if applicable
+  order               Order?   @relation(fields: [orderId], references: [id])
+  invoiceId           String?  // Link to invoice if applicable
+  
+  // Customer Information
+  customerName        String
+  customerEmail       String
+  customerPhone       String
+  installationAddress String   @db.Text
+  
+  // Product Details
+  products            String[] // Product SKUs being installed
+  productNames        String[] // Product names for display
+  
+  // Assignment
+  assignedInstallerId String?
+  assignedInstaller   User?    @relation("AssignedInstaller", fields: [assignedInstallerId], references: [id])
+  assignedBy          String?  // Sales rep who assigned the job
+  assignedAt          DateTime?
+  
+  // Scheduling
+  scheduledDate       DateTime?
+  estimatedDuration   Int?     // Hours
+  actualStartTime     DateTime?
+  actualEndTime       DateTime?
+  
+  // Status Tracking
+  status              String   @default("pending") // pending, assigned, in_progress, completed, cancelled, on_hold
+  progress            Int      @default(0) // 0-100 percentage
+  
+  // Job Details
+  priority            String   @default("normal") // low, normal, high, urgent
+  jobType             String   // residential, commercial, maintenance, repair
+  requiresPermit      Boolean  @default(false)
+  permitNumber        String?
+  
+  // Completion
+  completedAt         DateTime?
+  completionNotes     String?  @db.Text
+  customerSignature   String?  // Base64 or URL
+  installerRating     Int?     // 1-5 stars from customer
+  customerFeedback    String?  @db.Text
+  
+  // Issues & Photos
+  hasIssues           Boolean  @default(false)
+  issueDescription    String?  @db.Text
+  photoUrls           String[] // URLs to uploaded photos
+  documentUrls        String[] // URLs to uploaded documents (permits, etc.)
+  
+  // Relations
+  updates             InstallationUpdate[]
+  messages            InstallationMessage[]
+  
+  // Notes
+  internalNotes       String?  @db.Text
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([installationNumber])
+  @@index([status])
+  @@index([assignedInstallerId])
+  @@index([assignedBy])
+  @@index([scheduledDate])
+  @@index([orderId])
+  @@index([customerEmail])
+}
+
+// Installation Progress Updates
+model InstallationUpdate {
+  id              String   @id @default(cuid())
+  
+  installationId  String
+  installation    Installation @relation(fields: [installationId], references: [id], onDelete: Cascade)
+  
+  // Update Details
+  updateType      String   // status_change, progress, issue, note, photo
+  title           String   // Brief summary
+  description     String   @db.Text
+  
+  // Progress Info
+  oldStatus       String?  // Previous status if status change
+  newStatus       String?  // New status if status change
+  progressPercent Int?     // Current progress 0-100
+  
+  // Media
+  photoUrls       String[] // URLs to uploaded photos
+  documentUrls    String[] // URLs to uploaded documents
+  
+  // Location Data
+  latitude        Float?   // GPS coordinates when update was made
+  longitude       Float?
+  
+  // Created By
+  createdById     String
+  createdBy       User     @relation(fields: [createdById], references: [id])
+  createdAt       DateTime @default(now())
+
+  @@index([installationId])
+  @@index([createdById])
+  @@index([createdAt])
+  @@index([updateType])
+}
+
+// Installation Communication/Messages
+model InstallationMessage {
+  id              String   @id @default(cuid())
+  
+  installationId  String
+  installation    Installation @relation(fields: [installationId], references: [id], onDelete: Cascade)
+  
+  // Message Details
+  subject         String?  // Optional subject line
+  message         String   @db.Text
+  messageType     String   @default("general") // general, question, issue, update, response
+  
+  // Priority & Status
+  priority        String   @default("normal") // low, normal, high
+  isRead          Boolean  @default(false)
+  isResolved      Boolean  @default(false)
+  
+  // Sender/Receiver
+  senderId        String
+  sender          User     @relation(fields: [senderId], references: [id])
+  receiverRole    String?  // sales_rep, installer, customer
+  
+  // Attachments
+  attachmentUrls  String[] // URLs to uploaded files
+  
+  // Threading
+  parentMessageId String?  // For replies
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([installationId])
+  @@index([senderId])
+  @@index([isRead])
+  @@index([isResolved])
+  @@index([createdAt])
 }

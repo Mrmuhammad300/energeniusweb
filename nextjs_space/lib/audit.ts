@@ -19,7 +19,12 @@ type AuditAction =
   | 'deleted_user'
   | 'updated_user_role'
   | 'updated_settings'
-  | 'assigned_fulfillment_provider';
+  | 'assigned_fulfillment_provider'
+  | 'created_installation'
+  | 'updated_installation'
+  | 'assigned_installer'
+  | 'installation_completed'
+  | string; // Allow custom actions
 
 type AuditActionType = 'create' | 'read' | 'update' | 'delete' | 'export';
 
@@ -143,5 +148,41 @@ export async function logView(
     targetType,
     targetId,
     targetLabel,
+  });
+}
+
+/**
+ * Generic audit log action
+ */
+export async function logAuditAction(params: {
+  userId: string;
+  action: string;
+  targetType: string;
+  targetId?: string;
+  details?: string;
+  status?: 'success' | 'failure';
+  metadata?: Record<string, any>;
+}) {
+  // Map action strings to action types
+  const actionTypeMap: Record<string, AuditActionType> = {
+    create: 'create',
+    update: 'update',
+    delete: 'delete',
+    export: 'export',
+    view: 'read',
+    read: 'read',
+  };
+
+  const actionType = actionTypeMap[params.action] || 'update';
+
+  await createAuditLog({
+    action: params.action as AuditAction,
+    actionType,
+    userId: params.userId,
+    targetType: params.targetType,
+    targetId: params.targetId,
+    targetLabel: params.details || params.targetType,
+    metadata: params.metadata,
+    success: params.status === 'failure' ? false : true,
   });
 }

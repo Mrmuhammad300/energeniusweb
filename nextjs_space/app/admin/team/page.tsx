@@ -264,6 +264,7 @@ export default function TeamManagementPage() {
       MARKETING_SPECIALIST: 'bg-pink-100 text-pink-800',
       VIRTUAL_ASSISTANT: 'bg-gray-100 text-gray-800',
       FULFILLMENT_PROVIDER: 'bg-orange-100 text-orange-800',
+      INSTALLER: 'bg-indigo-100 text-indigo-800',
     };
     return colors[role] || 'bg-gray-100 text-gray-800';
   };
@@ -496,6 +497,7 @@ export default function TeamManagementPage() {
                   <SelectItem value="MARKETING_SPECIALIST">Marketing Specialist</SelectItem>
                   <SelectItem value="VIRTUAL_ASSISTANT">Virtual Assistant</SelectItem>
                   <SelectItem value="FULFILLMENT_PROVIDER">Fulfillment Provider</SelectItem>
+                  <SelectItem value="INSTALLER">Installer</SelectItem>
                   <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
                 </SelectContent>
               </Select>
@@ -557,6 +559,7 @@ export default function TeamManagementPage() {
                   <SelectItem value="MARKETING_SPECIALIST">Marketing Specialist</SelectItem>
                   <SelectItem value="VIRTUAL_ASSISTANT">Virtual Assistant</SelectItem>
                   <SelectItem value="FULFILLMENT_PROVIDER">Fulfillment Provider</SelectItem>
+                  <SelectItem value="INSTALLER">Installer</SelectItem>
                   <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
                 </SelectContent>
               </Select>

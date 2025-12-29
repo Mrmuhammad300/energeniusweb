@@ -20,6 +20,7 @@ export const authOptions: NextAuthOptions = {
           where: { email: credentials.email },
           include: {
             fulfillmentProvider: true,
+            installerProfile: true,
           },
         });
 
@@ -48,6 +49,7 @@ export const authOptions: NextAuthOptions = {
           role: user.role,
           teamId: user.teamId,
           fulfillmentProviderId: user.fulfillmentProvider?.id,
+          installerProfileId: user.installerProfile?.id,
         };
       },
     }),
@@ -65,6 +67,7 @@ export const authOptions: NextAuthOptions = {
         token.role = (user as any).role;
         token.teamId = (user as any).teamId;
         token.fulfillmentProviderId = (user as any).fulfillmentProviderId;
+        token.installerProfileId = (user as any).installerProfileId;
       }
       return token;
     },
@@ -74,6 +77,7 @@ export const authOptions: NextAuthOptions = {
         (session.user as any).role = token.role;
         (session.user as any).teamId = token.teamId;
         (session.user as any).fulfillmentProviderId = token.fulfillmentProviderId;
+        (session.user as any).installerProfileId = token.installerProfileId;
       }
       return session;
     },
