@@ -204,6 +204,109 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Nomad 20K Feature Section - Most Popular First */}
+      <section ref={solutionRef} className="py-16 sm:py-24 bg-gradient-to-br from-emerald-900 to-slate-900 text-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={solutionInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="inline-flex items-center gap-2 bg-emerald-500/20 rounded-full px-4 py-1.5 mb-6">
+                <Zap className="h-4 w-4 text-emerald-400" />
+                <span className="text-sm font-medium text-emerald-300">Our Most Popular Commercial System</span>
+              </div>
+              
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+                EnerGenius Nomad 20K
+              </h2>
+              
+              <p className="text-lg text-slate-300 mb-8 leading-relaxed">
+                The reference standard for commercial backup power. 20,000 watts of clean, silent power 
+                that runs for days—not hours. No fuel, no fumes, no noise complaints.
+              </p>
+
+              {/* Key Specs Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+                {nomadSpecs.map((spec) => (
+                  <div key={spec.label} className="bg-white/10 rounded-lg p-4">
+                    <p className="text-2xl font-bold text-emerald-400">{spec.value}</p>
+                    <p className="text-sm text-slate-400">{spec.label}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Benefits */}
+              <div className="space-y-3 mb-8">
+                {[
+                  'True black start — self-initiates from zero power',
+                  'Silent, zero-emission operation — no noise or fumes',
+                  'Zero fuel storage, delivery, or maintenance',
+                  'SmartConnect™ cloud monitoring included',
+                  'Qualifies for 30% Federal Tax Credit',
+                  'Professional installation with Turnkey package',
+                ].map((benefit) => (
+                  <div key={benefit} className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                    <span className="text-slate-200">{benefit}</span>
+                  </div>
+                ))}
+              </div>
+              
+              {/* SmartConnect Badge */}
+              <div className="bg-white/10 rounded-lg p-4 mb-8 border border-emerald-500/30">
+                <div className="flex items-center gap-3">
+                  <Wifi className="h-6 w-6 text-emerald-400" />
+                  <div>
+                    <p className="font-semibold text-white">SmartConnect™ Included</p>
+                    <p className="text-sm text-slate-300">Remote monitoring, load prioritization, and fleet management</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/quote">
+                  <Button size="lg" className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white px-8">
+                    Get Your Assessment
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Link href="/products">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto border-emerald-300 bg-emerald-800/50 text-white hover:bg-emerald-800">
+                    See All Systems
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={solutionInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-500x375.jpg"
+                  alt="EnerGenius Nomad 20K Commercial Solar Generator"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              {/* Price badge */}
+              <div className="absolute -bottom-4 -right-4 bg-white text-slate-900 rounded-xl shadow-xl p-4">
+                <p className="text-sm text-slate-500">Starting at</p>
+                <p className="text-2xl font-bold text-emerald-600">$18,750</p>
+                <p className="text-xs text-slate-400">Tax credit eligible</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Promotions Banner - High Visibility */}
       <section className="py-8 sm:py-10 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -439,109 +542,6 @@ export default function HomePage() {
                 <p className="text-sm text-slate-500">{audience.examples}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Nomad 20K Feature Section */}
-      <section ref={solutionRef} className="py-16 sm:py-24 bg-gradient-to-br from-emerald-900 to-slate-900 text-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Content */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={solutionInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="inline-flex items-center gap-2 bg-emerald-500/20 rounded-full px-4 py-1.5 mb-6">
-                <Zap className="h-4 w-4 text-emerald-400" />
-                <span className="text-sm font-medium text-emerald-300">Our Most Popular Commercial System</span>
-              </div>
-              
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-                EnerGenius Nomad 20K
-              </h2>
-              
-              <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-                The reference standard for commercial backup power. 20,000 watts of clean, silent power 
-                that runs for days—not hours. No fuel, no fumes, no noise complaints.
-              </p>
-
-              {/* Key Specs Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
-                {nomadSpecs.map((spec) => (
-                  <div key={spec.label} className="bg-white/10 rounded-lg p-4">
-                    <p className="text-2xl font-bold text-emerald-400">{spec.value}</p>
-                    <p className="text-sm text-slate-400">{spec.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Benefits */}
-              <div className="space-y-3 mb-8">
-                {[
-                  'True black start — self-initiates from zero power',
-                  'Silent, zero-emission operation — no noise or fumes',
-                  'Zero fuel storage, delivery, or maintenance',
-                  'SmartConnect™ cloud monitoring included',
-                  'Qualifies for 30% Federal Tax Credit',
-                  'Professional installation with Turnkey package',
-                ].map((benefit) => (
-                  <div key={benefit} className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-slate-200">{benefit}</span>
-                  </div>
-                ))}
-              </div>
-              
-              {/* SmartConnect Badge */}
-              <div className="bg-white/10 rounded-lg p-4 mb-8 border border-emerald-500/30">
-                <div className="flex items-center gap-3">
-                  <Wifi className="h-6 w-6 text-emerald-400" />
-                  <div>
-                    <p className="font-semibold text-white">SmartConnect™ Included</p>
-                    <p className="text-sm text-slate-300">Remote monitoring, load prioritization, and fleet management</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/quote">
-                  <Button size="lg" className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white px-8">
-                    Get Your Assessment
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <Link href="/products">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto border-emerald-300 bg-emerald-800/50 text-white hover:bg-emerald-800">
-                    See All Systems
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-
-            {/* Image */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={solutionInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative"
-            >
-              <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
-                <Image
-                  src="https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-500x375.jpg"
-                  alt="EnerGenius Nomad 20K Commercial Solar Generator"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              {/* Price badge */}
-              <div className="absolute -bottom-4 -right-4 bg-white text-slate-900 rounded-xl shadow-xl p-4">
-                <p className="text-sm text-slate-500">Starting at</p>
-                <p className="text-2xl font-bold text-emerald-600">$18,750</p>
-                <p className="text-xs text-slate-400">Tax credit eligible</p>
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>
