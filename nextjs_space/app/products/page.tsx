@@ -15,6 +15,7 @@ interface Product {
   price: string
   priceNumeric: number
   wattage: string
+  wattageNumeric: number
   batteryCapacity: string
   batteryType: string
   tier: string
@@ -47,18 +48,15 @@ export default function ProductsPage() {
       .catch(() => setLoading(false))
   }, [])
 
-  // Helper to extract wattage
-  const extractWattage = (product: Product): number => {
-    const match = product.wattage?.match(/(\d+)/)
-    return match ? parseInt(match[1]) : 0
+  // Helper to get wattage - use wattageNumeric directly
+  const getWattage = (product: Product): number => {
+    return product.wattageNumeric || 0
   }
 
-  // Find featured product (Nomad 20K) - specifically match 20K or 20000W
+  // Find featured product (Nomad 20K) - specifically match 20,000W
   const nomad20k = products.find(p => {
-    const model = p.model?.toLowerCase() || ''
-    const wattage = extractWattage(p)
-    // Match Nomad with exactly 20,000W (not 2000W)
-    return model.includes('nomad') && (model.includes('20k') || wattage === 20000)
+    const wattage = getWattage(p)
+    return wattage === 20000
   })
 
   // Helper to extract capacity for power banks (Amp Hours)
@@ -67,7 +65,7 @@ export default function ProductsPage() {
     return capacityMatch ? parseInt(capacityMatch[1]) : 0;
   }
 
-  // Categorize products
+  // Categorize products - Power Banks have tier "Battery" or very low wattage
   const isPowerBank = (p: Product) => 
     p.model?.toLowerCase().includes('powerbank') || p.tier === 'Battery'
 
@@ -75,27 +73,27 @@ export default function ProductsPage() {
     .filter(p => isPowerBank(p))
     .sort((a, b) => extractCapacity(a) - extractCapacity(b))
 
-  // Residential: 1,000W to 10,000W
+  // Residential: 1,000W to 10,000W (inclusive)
   const residentialProducts = products
     .filter(p => !isPowerBank(p))
     .filter(p => {
-      const wattage = extractWattage(p)
+      const wattage = getWattage(p)
       return wattage >= 1000 && wattage <= 10000
     })
-    .sort((a, b) => extractWattage(a) - extractWattage(b))
+    .sort((a, b) => getWattage(a) - getWattage(b))
 
-  // Commercial: 10,001W to 30,000W
+  // Commercial: 15,000W to 30,000W (products above 10K)
   const commercialProducts = products
     .filter(p => !isPowerBank(p))
     .filter(p => {
-      const wattage = extractWattage(p)
+      const wattage = getWattage(p)
       return wattage > 10000 && wattage <= 30000
     })
-    .sort((a, b) => extractWattage(a) - extractWattage(b))
+    .sort((a, b) => getWattage(a) - getWattage(b))
 
   const allGenerators = products
     .filter(p => !isPowerBank(p))
-    .sort((a, b) => extractWattage(a) - extractWattage(b))
+    .sort((a, b) => getWattage(a) - getWattage(b))
 
   // Get products based on active category
   const getDisplayedProducts = () => {
@@ -412,12 +410,8 @@ export default function ProductsPage() {
 
 // Simplified Product Card Component
 function ProductCard({ product, isPowerBank = false }: { product: Product; isPowerBank?: boolean }) {
-  const extractWattage = (wattage: string): number => {
-    const match = wattage?.match(/(\d+)/)
-    return match ? parseInt(match[1]) : 0
-  }
-  
-  const watts = extractWattage(product.wattage)
+  // Use wattageNumeric directly from product data
+  const watts = product.wattageNumeric || 0
   
   // Extract capacity for power banks
   const extractCapacity = (capacity: string): string => {
