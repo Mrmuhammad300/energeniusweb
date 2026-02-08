@@ -5,12 +5,20 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageSquare, BookOpen, Mail, Phone, Search, ExternalLink } from "lucide-react";
+import { MessageSquare, BookOpen, Mail, Phone, Search, ExternalLink, FileText } from "lucide-react";
 
 export default function SupportPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const quickLinks = [
+    {
+      title: "Black Start Explainer",
+      description: "1-page PDF on Black Start technology",
+      icon: FileText,
+      href: "/EnerGenius_Black_Start_Explainer.pdf",
+      color: "amber",
+      isDownload: true
+    },
     {
       title: "Knowledge Base",
       description: "Browse articles and guides",
@@ -107,22 +115,42 @@ export default function SupportPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Quick Links */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
           {quickLinks.map((link, index) => (
             <Card
               key={index}
-              className={`hover:shadow-lg transition-shadow cursor-pointer border-t-4 border-t-${link.color}-500`}
+              className={`hover:shadow-lg transition-shadow cursor-pointer border-t-4 ${
+                link.color === 'amber' ? 'border-t-amber-500' :
+                link.color === 'emerald' ? 'border-t-emerald-500' :
+                link.color === 'blue' ? 'border-t-blue-500' :
+                link.color === 'purple' ? 'border-t-purple-500' :
+                'border-t-sky-500'
+              }`}
               onClick={() => {
                 if (link.onClick) {
                   link.onClick();
+                } else if ((link as any).isDownload) {
+                  window.open(link.href, '_blank');
                 } else {
                   window.location.href = link.href;
                 }
               }}
             >
               <CardHeader>
-                <div className={`w-12 h-12 rounded-full bg-${link.color}-100 flex items-center justify-center mb-4`}>
-                  <link.icon className={`h-6 w-6 text-${link.color}-600`} />
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${
+                  link.color === 'amber' ? 'bg-amber-100' :
+                  link.color === 'emerald' ? 'bg-emerald-100' :
+                  link.color === 'blue' ? 'bg-blue-100' :
+                  link.color === 'purple' ? 'bg-purple-100' :
+                  'bg-sky-100'
+                }`}>
+                  <link.icon className={`h-6 w-6 ${
+                    link.color === 'amber' ? 'text-amber-600' :
+                    link.color === 'emerald' ? 'text-emerald-600' :
+                    link.color === 'blue' ? 'text-blue-600' :
+                    link.color === 'purple' ? 'text-purple-600' :
+                    'text-sky-600'
+                  }`} />
                 </div>
                 <CardTitle className="text-lg">{link.title}</CardTitle>
                 <CardDescription>{link.description}</CardDescription>
