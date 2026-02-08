@@ -124,7 +124,9 @@ export default function ProductDetailPage() {
         multiUnitDiscount: multiUnitDiscount,
         discountedTotal: discountedProductTotal,
         qualifiesForMultiUnitDiscount: qualifiesForMultiUnitDiscount,
-        multiUnitDiscountPercent: quantity > 1 && qualifiesForMultiUnitDiscount ? MULTI_UNIT_DISCOUNT_PERCENT : 0
+        multiUnitDiscountPercent: quantity > 1 && qualifiesForMultiUnitDiscount ? MULTI_UNIT_DISCOUNT_PERCENT : 0,
+        wattageNumeric: product.wattageNumeric,
+        application: product.application
       },
       servicePackage: pkg ? {
         ...pkg,
@@ -156,7 +158,9 @@ export default function ProductDetailPage() {
         multiUnitDiscount: multiUnitDiscount,
         discountedTotal: discountedProductTotal,
         qualifiesForMultiUnitDiscount: qualifiesForMultiUnitDiscount,
-        multiUnitDiscountPercent: quantity > 1 && qualifiesForMultiUnitDiscount ? MULTI_UNIT_DISCOUNT_PERCENT : 0
+        multiUnitDiscountPercent: quantity > 1 && qualifiesForMultiUnitDiscount ? MULTI_UNIT_DISCOUNT_PERCENT : 0,
+        wattageNumeric: product.wattageNumeric,
+        application: product.application
       },
       servicePackage: null
     }));
@@ -549,6 +553,18 @@ export default function ProductDetailPage() {
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
                       <p className="text-amber-800 text-sm font-medium">
                         🎉 <span className="font-bold">Bundle Discount Applied!</span> This 5kW+ unit qualifies for reduced installation pricing.
+                      </p>
+                    </div>
+                  )}
+                  
+                  {/* SmartConnect 3-Month Free Promo */}
+                  {qualifiesForBundle && selectedPkg && (selectedPkg.slug === 'full-deployment' || selectedPkg.name?.toLowerCase().includes('full deployment')) && selectedPkg.priceMonthly && (
+                    <div className="bg-gradient-to-r from-emerald-50 to-sky-50 border border-emerald-300 rounded-lg p-3 text-center">
+                      <p className="text-emerald-800 text-sm font-medium">
+                        🎁 <span className="font-bold">SmartConnect FREE for 3 Months!</span>
+                      </p>
+                      <p className="text-xs text-emerald-700 mt-1">
+                        Full Deployment + Commercial Generator = ${(selectedPkg.priceMonthly * 3).toLocaleString()} value included FREE
                       </p>
                     </div>
                   )}

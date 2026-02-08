@@ -32,16 +32,27 @@ interface Product {
   sku: string;
   priceNumeric: number;
   imageUrl: string;
+  wattageNumeric?: number;
+  application?: string[];
+  // Multi-unit purchase fields
+  quantity?: number;
+  unitPrice?: number;
+  multiUnitDiscount?: number;
+  discountedTotal?: number;
+  qualifiesForMultiUnitDiscount?: boolean;
+  multiUnitDiscountPercent?: number;
 }
 
 interface ServicePackage {
   id: string;
   name: string;
+  slug?: string;
   price: number;
   priceMonthly: number | null;
   prerequisites: string[];
   exclusions: string[];
   deliverables: string[];
+  category?: string;
   // Bundle pricing fields (added by product page for 5kW+ products)
   effectivePrice?: number;
   originalPrice?: number;
@@ -377,10 +388,28 @@ export default function CheckoutPage() {
     return null;
   }
 
+  // Calculate product total (with quantity and multi-unit discount if applicable)
+  const quantity = checkoutData.product.quantity || 1;
+  const unitPrice = checkoutData.product.unitPrice || checkoutData.product.priceNumeric;
+  const baseProductTotal = unitPrice * quantity;
+  const multiUnitDiscount = checkoutData.product.multiUnitDiscount || 0;
+  const productTotal = checkoutData.product.discountedTotal || (baseProductTotal - multiUnitDiscount);
+  
   // Use effectivePrice if available (for bundle pricing), otherwise fall back to price
   const servicePrice = checkoutData.servicePackage?.effectivePrice ?? checkoutData.servicePackage?.price ?? 0;
-  const totalPrice = checkoutData.product.priceNumeric + servicePrice;
   const bundleSavings = checkoutData.servicePackage?.bundleSavings ?? 0;
+  
+  // Check if eligible for SmartConnect 3-month free promo
+  // Commercial generators + Full Deployment installation = SmartConnect free for 3 months
+  const isCommercialGenerator = checkoutData.product.wattageNumeric && checkoutData.product.wattageNumeric >= 5000;
+  const isFullDeployment = checkoutData.servicePackage?.slug === 'full-deployment' || 
+    checkoutData.servicePackage?.name?.toLowerCase().includes('full deployment');
+  const qualifiesForSmartConnectPromo = isCommercialGenerator && isFullDeployment;
+  const smartConnectMonthlyValue = checkoutData.servicePackage?.priceMonthly || 0;
+  const smartConnectPromoValue = qualifiesForSmartConnectPromo ? smartConnectMonthlyValue * 3 : 0;
+  
+  const totalPrice = productTotal + servicePrice;
+  const totalSavings = multiUnitDiscount + bundleSavings + smartConnectPromoValue;
 
   // Success step
   if (step === 'success') {
@@ -709,12 +738,48 @@ export default function CheckoutPage() {
                     <div className="flex-1">
                       <p className="font-medium text-sm">{checkoutData.product.model}</p>
                       <p className="text-xs text-gray-600">SKU: {checkoutData.product.sku}</p>
+                      {quantity > 1 && (
+                        <Badge variant="secondary" className="mt-1">
+                          Qty: {quantity}
+                        </Badge>
+                      )}
                     </div>
                   </div>
+                  
+                  {/* Product Pricing */}
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Product:</span>
-                    <span className="font-medium">${checkoutData.product.priceNumeric.toLocaleString()}</span>
+                    <span className="text-gray-600">
+                      {quantity > 1 ? `Unit Price (×${quantity}):` : 'Product:'}
+                    </span>
+                    <span className="font-medium">
+                      {quantity > 1 
+                        ? `$${unitPrice.toLocaleString()} × ${quantity}`
+                        : `$${unitPrice.toLocaleString()}`
+                      }
+                    </span>
                   </div>
+                  
+                  {quantity > 1 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Subtotal:</span>
+                      <span className="font-medium">${baseProductTotal.toLocaleString()}</span>
+                    </div>
+                  )}
+                  
+                  {/* Multi-Unit Discount */}
+                  {multiUnitDiscount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-amber-600 font-medium">Multi-Unit Discount (10%):</span>
+                      <span className="font-bold text-amber-600">-${multiUnitDiscount.toLocaleString()}</span>
+                    </div>
+                  )}
+                  
+                  {multiUnitDiscount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Product Total:</span>
+                      <span className="font-medium">${productTotal.toLocaleString()}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Service Package */}
@@ -726,9 +791,17 @@ export default function CheckoutPage() {
                         <div>
                           <p className="font-medium text-sm">{checkoutData.servicePackage.name}</p>
                           {checkoutData.servicePackage.priceMonthly && (
-                            <Badge variant="outline" className="mt-1">
-                              +${checkoutData.servicePackage.priceMonthly}/month
-                            </Badge>
+                            <div className="mt-1">
+                              {qualifiesForSmartConnectPromo ? (
+                                <Badge className="bg-gradient-to-r from-emerald-500 to-sky-500 text-white">
+                                  🎁 SmartConnect FREE for 3 months!
+                                </Badge>
+                              ) : (
+                                <Badge variant="outline">
+                                  +${checkoutData.servicePackage.priceMonthly}/month
+                                </Badge>
+                              )}
+                            </div>
                           )}
                         </div>
                       </div>
@@ -749,8 +822,18 @@ export default function CheckoutPage() {
                       </div>
                       {bundleSavings > 0 && (
                         <div className="flex justify-between text-sm mt-1">
-                          <span className="text-emerald-600 font-medium">Bundle Savings:</span>
+                          <span className="text-emerald-600 font-medium">Install Bundle Savings:</span>
                           <span className="font-bold text-emerald-600">-${bundleSavings.toLocaleString()}</span>
+                        </div>
+                      )}
+                      
+                      {/* SmartConnect Promo Details */}
+                      {qualifiesForSmartConnectPromo && smartConnectMonthlyValue > 0 && (
+                        <div className="mt-2 p-2 bg-emerald-50 rounded border border-emerald-200">
+                          <p className="text-xs text-emerald-800">
+                            <strong>SmartConnect Promo:</strong> ${smartConnectMonthlyValue}/mo × 3 months = 
+                            <span className="font-bold"> ${smartConnectPromoValue} value FREE!</span>
+                          </p>
                         </div>
                       )}
                     </div>
@@ -766,6 +849,20 @@ export default function CheckoutPage() {
                     ${totalPrice.toLocaleString()}
                   </span>
                 </div>
+                
+                {/* Total Savings Summary */}
+                {totalSavings > 0 && (
+                  <div className="bg-gradient-to-r from-emerald-50 to-amber-50 rounded-lg p-3 border border-emerald-200">
+                    <p className="text-sm text-emerald-800 font-semibold text-center">
+                      🎉 Total Savings: ${totalSavings.toLocaleString()}
+                    </p>
+                    <div className="mt-1 text-xs text-gray-600 text-center space-y-0.5">
+                      {multiUnitDiscount > 0 && <p>Multi-Unit: -${multiUnitDiscount.toLocaleString()}</p>}
+                      {bundleSavings > 0 && <p>Bundle: -${bundleSavings.toLocaleString()}</p>}
+                      {smartConnectPromoValue > 0 && <p>SmartConnect (3mo): ${smartConnectPromoValue.toLocaleString()} value</p>}
+                    </div>
+                  </div>
+                )}
 
                 {step === 'info' && (
                   <Button
