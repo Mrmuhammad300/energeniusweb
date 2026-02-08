@@ -30,9 +30,9 @@ const benefits = [
 ]
 
 const recommendedProducts = [
-  { name: 'Guardian 3000', power: '3000W', use: 'Essential backup' },
-  { name: 'Guardian 5000', power: '5000W', use: 'Whole-home backup' },
-  { name: 'Guardian 8000', power: '8000W', use: 'Extended protection' },
+  { name: 'Guardian 3000', power: '3000W', use: 'Essential backup', id: 'cmjlywk8v0007vsvt9wbzgvhv' },
+  { name: 'Guardian 5000', power: '5000W', use: 'Whole-home backup', id: 'cmjlywk8t0006vsvt7byko3d1' },
+  { name: 'Guardian 8000', power: '8000W', use: 'Extended protection', id: 'cmjlywk8r0005vsvtg8yopwya' },
 ]
 
 export default function ResidentialPage() {
@@ -85,7 +85,7 @@ export default function ResidentialPage() {
                   <h3 className="text-xl font-bold mb-2">{product.name}</h3>
                   <p className="text-emerald-600 font-semibold mb-2">{product.power}</p>
                   <p className="text-sm text-gray-600 mb-4">{product.use}</p>
-                  <Link href="/products">
+                  <Link href={`/products/${product.id}`}>
                     <Button className="w-full bg-gradient-to-r from-emerald-600 to-sky-600">
                       View Details
                     </Button>
