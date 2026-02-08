@@ -270,7 +270,7 @@ export default function HomePage() {
               {/* Benefits */}
               <div className="space-y-3 mb-8">
                 {[
-                  'Powers entire buildings for 24-72+ hours',
+                  'Continuous power with black start capability',
                   'Silent operation—no noise complaints',
                   'Zero fuel storage or maintenance',
                   'Qualifies for 30% Federal Tax Credit',

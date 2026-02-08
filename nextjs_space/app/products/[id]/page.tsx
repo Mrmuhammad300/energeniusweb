@@ -9,7 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Battery, Zap, Box, Shield, Clock, Plus, Check } from 'lucide-react';
+import { ArrowLeft, Battery, Zap, Box, Shield, Clock, Plus, Check, Power, RefreshCw, Globe, Layers, Gauge, ChevronDown } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 interface Product {
   id: string;
@@ -232,6 +233,79 @@ export default function ProductDetailPage() {
                       </div>
                     </div>
                   )}
+
+                  {/* Power System Capabilities */}
+                  <div className="pt-4 border-t border-gray-200">
+                    <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+                      <Power className="h-5 w-5 text-emerald-600 mr-2" />
+                      Power System Capabilities
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <Gauge className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="font-medium text-gray-900">Continuous Power Architecture</p>
+                          <p className="text-sm text-gray-600">Built for sustained operation rather than short-term emergency runtime.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <RefreshCw className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="font-medium text-gray-900">Black Start Capability</p>
+                          <p className="text-sm text-gray-600">Restarts independently from zero power without reliance on the utility grid.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Globe className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="font-medium text-gray-900">Off-Grid Ready Design</p>
+                          <p className="text-sm text-gray-600">Operates independently when paired with renewable inputs and balance-of-system components.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Layers className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="font-medium text-gray-900">Expandable Energy Ecosystem</p>
+                          <p className="text-sm text-gray-600">Supports additional generation, storage, and system scaling as demand increases.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Zap className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="font-medium text-gray-900">Load-Driven Runtime</p>
+                          <p className="text-sm text-gray-600">Power availability is governed by energy generation and consumption, not fixed-hour limits.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Technical FAQ */}
+                    <Accordion type="single" collapsible className="mt-4">
+                      <AccordionItem value="runtime-faq" className="border rounded-lg bg-slate-50">
+                        <AccordionTrigger className="px-4 text-sm font-medium hover:no-underline">
+                          Is this system limited to 48–72 hours of power?
+                        </AccordionTrigger>
+                        <AccordionContent className="px-4 pb-4 text-sm text-gray-700">
+                          <p className="mb-2"><strong>No.</strong></p>
+                          <p className="mb-2">
+                            EnerGenius systems are not designed around fixed runtime windows. Operating duration depends on 
+                            system configuration, connected energy sources, storage capacity, and load management.
+                          </p>
+                          <p>
+                            With proper design, these systems support extended or continuous operation in off-grid or 
+                            grid-independent environments.
+                          </p>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+
+                    {/* Simple Explainer */}
+                    <div className="mt-4 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+                      <p className="text-sm text-emerald-800 italic">
+                        Think of EnerGenius less like a battery and more like a self-sustaining power plant. 
+                        Power continues as long as energy is being generated and managed — not until a timer runs out.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -389,20 +463,20 @@ export default function ProductDetailPage() {
               <CardContent className="p-4">
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div>
+                    <Power className="h-6 w-6 text-emerald-600 mx-auto mb-2" />
+                    <p className="text-sm font-medium">Continuous Power</p>
+                  </div>
+                  <div>
+                    <RefreshCw className="h-6 w-6 text-emerald-600 mx-auto mb-2" />
+                    <p className="text-sm font-medium">Black Start Capable</p>
+                  </div>
+                  <div>
+                    <Globe className="h-6 w-6 text-emerald-600 mx-auto mb-2" />
+                    <p className="text-sm font-medium">Off-Grid Ready</p>
+                  </div>
+                  <div>
                     <Shield className="h-6 w-6 text-emerald-600 mx-auto mb-2" />
                     <p className="text-sm font-medium">5-Year Warranty</p>
-                  </div>
-                  <div>
-                    <Check className="h-6 w-6 text-emerald-600 mx-auto mb-2" />
-                    <p className="text-sm font-medium">Licensed Installers</p>
-                  </div>
-                  <div>
-                    <Box className="h-6 w-6 text-emerald-600 mx-auto mb-2" />
-                    <p className="text-sm font-medium">Fast Shipping</p>
-                  </div>
-                  <div>
-                    <Zap className="h-6 w-6 text-emerald-600 mx-auto mb-2" />
-                    <p className="text-sm font-medium">Local Support</p>
                   </div>
                 </div>
               </CardContent>

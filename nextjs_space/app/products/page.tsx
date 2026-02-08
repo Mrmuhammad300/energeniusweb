@@ -467,7 +467,7 @@ function ProductCard({ product, isPowerBank = false }: { product: Product; isPow
         {/* What it can power - Simple examples */}
         <div className="mb-4 text-sm text-slate-500">
           {isPowerBank ? (
-            'Expands storage capacity for longer backup runtime'
+            'Expands capacity for extended off-grid operation'
           ) : (
             <>
               {watts <= 1000 && 'Great for: Phones, laptops, small appliances'}
