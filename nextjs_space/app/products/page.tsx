@@ -53,10 +53,13 @@ export default function ProductsPage() {
     return match ? parseInt(match[1]) : 0
   }
 
-  // Find featured product (Nomad 20K)
-  const nomad20k = products.find(p => 
-    p.model?.toLowerCase().includes('nomad') && p.model?.toLowerCase().includes('20')
-  )
+  // Find featured product (Nomad 20K) - specifically match 20K or 20000W
+  const nomad20k = products.find(p => {
+    const model = p.model?.toLowerCase() || ''
+    const wattage = extractWattage(p)
+    // Match Nomad with exactly 20,000W (not 2000W)
+    return model.includes('nomad') && (model.includes('20k') || wattage === 20000)
+  })
 
   // Helper to extract capacity for power banks (Amp Hours)
   const extractCapacity = (product: Product): number => {
@@ -72,14 +75,22 @@ export default function ProductsPage() {
     .filter(p => isPowerBank(p))
     .sort((a, b) => extractCapacity(a) - extractCapacity(b))
 
+  // Residential: 1,000W to 10,000W
   const residentialProducts = products
     .filter(p => !isPowerBank(p))
-    .filter(p => extractWattage(p) <= 8000)
+    .filter(p => {
+      const wattage = extractWattage(p)
+      return wattage >= 1000 && wattage <= 10000
+    })
     .sort((a, b) => extractWattage(a) - extractWattage(b))
 
+  // Commercial: 10,001W to 30,000W
   const commercialProducts = products
     .filter(p => !isPowerBank(p))
-    .filter(p => extractWattage(p) > 8000)
+    .filter(p => {
+      const wattage = extractWattage(p)
+      return wattage > 10000 && wattage <= 30000
+    })
     .sort((a, b) => extractWattage(a) - extractWattage(b))
 
   const allGenerators = products
@@ -253,7 +264,7 @@ export default function ProductsPage() {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900">Residential Solutions</h2>
-                    <p className="text-slate-600">400W - 8,000W systems for home backup</p>
+                    <p className="text-slate-600">1,000W - 10,000W systems for home backup</p>
                   </div>
                   <Button 
                     variant="outline" 
@@ -472,9 +483,9 @@ function ProductCard({ product, isPowerBank = false }: { product: Product; isPow
             <>
               {watts <= 1000 && 'Great for: Phones, laptops, small appliances'}
               {watts > 1000 && watts <= 3000 && 'Great for: Fridge, lights, TV, computers'}
-              {watts > 3000 && watts <= 8000 && 'Great for: Whole home essentials, AC unit'}
-              {watts > 8000 && watts <= 15000 && 'Great for: Full building, multiple AC units'}
-              {watts > 15000 && 'Great for: Commercial buildings, industrial use'}
+              {watts > 3000 && watts <= 10000 && 'Great for: Whole home essentials, AC unit'}
+              {watts > 10000 && watts <= 20000 && 'Great for: Full building, multiple AC units'}
+              {watts > 20000 && 'Great for: Commercial buildings, industrial use'}
             </>
           )}
         </div>
