@@ -106,7 +106,11 @@ export default function ProductDetailPage() {
     
     const pkg = servicePackages.find(pkg => pkg.id === selectedPackage);
     const qualifies = product.wattageNumeric >= 5000;
-    const effectivePrice = qualifies && pkg?.bundlePrice ? pkg.bundlePrice : pkg?.price;
+    // Peace of Mind is excluded from bundle discounts for differentiation
+    const pkgIsPeaceOfMind = pkg?.slug === 'peace-of-mind' || 
+      pkg?.name?.toLowerCase().includes('peace of mind');
+    const pkgEligibleForBundle = qualifies && !pkgIsPeaceOfMind;
+    const effectivePrice = pkgEligibleForBundle && pkg?.bundlePrice ? pkg.bundlePrice : pkg?.price;
     
     // Calculate multi-unit discount for 20K+ generators
     const baseProductTotal = product.priceNumeric * quantity;
@@ -132,8 +136,8 @@ export default function ProductDetailPage() {
         ...pkg,
         effectivePrice: effectivePrice, // The actual price to charge
         originalPrice: pkg.price,        // For display purposes
-        isBundlePrice: qualifies && pkg.bundlePrice !== null,
-        bundleSavings: qualifies && pkg.bundlePrice ? pkg.price - pkg.bundlePrice : 0
+        isBundlePrice: pkgEligibleForBundle && pkg.bundlePrice !== null,
+        bundleSavings: pkgEligibleForBundle && pkg.bundlePrice ? pkg.price - pkg.bundlePrice : 0
       } : null
     }));
     
@@ -187,12 +191,17 @@ export default function ProductDetailPage() {
   const qualifiesForBundle = product.wattageNumeric >= 5000;
   
   // Get the selected package and determine price
+  // Note: "Peace of Mind" package is excluded from bundle discounts for differentiation
   const selectedPkg = servicePackages.find(pkg => pkg.id === selectedPackage);
+  const isPeaceOfMind = selectedPkg?.slug === 'peace-of-mind' || 
+    selectedPkg?.name?.toLowerCase().includes('peace of mind');
+  const eligibleForBundleDiscount = qualifiesForBundle && !isPeaceOfMind;
+  
   const installationPrice = selectedPkg 
-    ? (qualifiesForBundle && selectedPkg.bundlePrice ? selectedPkg.bundlePrice : selectedPkg.price)
+    ? (eligibleForBundleDiscount && selectedPkg.bundlePrice ? selectedPkg.bundlePrice : selectedPkg.price)
     : 0;
   const originalInstallationPrice = selectedPkg?.price || 0;
-  const bundleSavings = qualifiesForBundle && selectedPkg?.bundlePrice 
+  const bundleSavings = eligibleForBundleDiscount && selectedPkg?.bundlePrice 
     ? selectedPkg.price - selectedPkg.bundlePrice 
     : 0;
 
@@ -548,11 +557,20 @@ export default function ProductDetailPage() {
 
                   <Separator />
 
-                  {/* Bundle Savings Banner */}
-                  {qualifiesForBundle && (
+                  {/* Bundle Savings Banner - only for eligible packages (not Peace of Mind) */}
+                  {qualifiesForBundle && eligibleForBundleDiscount && selectedPkg?.bundlePrice && (
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
                       <p className="text-amber-800 text-sm font-medium">
                         🎉 <span className="font-bold">Bundle Discount Applied!</span> This 5kW+ unit qualifies for reduced installation pricing.
+                      </p>
+                    </div>
+                  )}
+                  
+                  {/* Peace of Mind Premium Value Message */}
+                  {qualifiesForBundle && isPeaceOfMind && (
+                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 text-center">
+                      <p className="text-purple-800 text-sm font-medium">
+                        ✨ <span className="font-bold">Premium Peace of Mind Package</span> - Includes lifetime annual service & proactive monitoring
                       </p>
                     </div>
                   )}

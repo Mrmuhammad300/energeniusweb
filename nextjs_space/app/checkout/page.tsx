@@ -396,8 +396,11 @@ export default function CheckoutPage() {
   const productTotal = checkoutData.product.discountedTotal || (baseProductTotal - multiUnitDiscount);
   
   // Use effectivePrice if available (for bundle pricing), otherwise fall back to price
+  // Note: Peace of Mind package is excluded from bundle discounts (isBundlePrice will be false)
   const servicePrice = checkoutData.servicePackage?.effectivePrice ?? checkoutData.servicePackage?.price ?? 0;
   const bundleSavings = checkoutData.servicePackage?.bundleSavings ?? 0;
+  const isPeaceOfMindPackage = checkoutData.servicePackage?.slug === 'peace-of-mind' || 
+    checkoutData.servicePackage?.name?.toLowerCase().includes('peace of mind');
   
   // Check if eligible for SmartConnect 3-month free promo
   // Commercial generators + Full Deployment installation = SmartConnect free for 3 months
@@ -824,6 +827,15 @@ export default function CheckoutPage() {
                         <div className="flex justify-between text-sm mt-1">
                           <span className="text-emerald-600 font-medium">Install Bundle Savings:</span>
                           <span className="font-bold text-emerald-600">-${bundleSavings.toLocaleString()}</span>
+                        </div>
+                      )}
+                      
+                      {/* Peace of Mind Premium Value Banner */}
+                      {isPeaceOfMindPackage && (
+                        <div className="mt-2 p-2 bg-purple-50 rounded border border-purple-200">
+                          <p className="text-xs text-purple-800">
+                            <strong>✨ Premium Package:</strong> Lifetime annual service & proactive dealer monitoring included
+                          </p>
                         </div>
                       )}
                       
