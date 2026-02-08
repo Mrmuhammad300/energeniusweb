@@ -3,7 +3,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { BookOpen, Lightbulb, Settings, Battery, Calculator, Power, RefreshCw, Globe, Layers, Gauge, Zap } from 'lucide-react'
+import { BookOpen, Lightbulb, Settings, Battery, Calculator, Power, RefreshCw, Globe, Layers, Gauge, Zap, Sun, Shield, Plug, ArrowRight, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 
 const topics = [
@@ -121,30 +121,162 @@ export default function EducationPage() {
         </section>
 
         <section className="mb-16">
-          <Card>
-            <CardContent className="p-8">
-              <h2 className="text-3xl font-bold mb-6">Understanding Solar Generators</h2>
-              <div className="space-y-4 text-gray-700">
-                <p>
-                  A solar generator is a portable power system that captures, stores, and distributes electricity
-                  from sunlight. Unlike traditional gas generators, solar generators produce clean, renewable energy
-                  without emissions, noise, or fuel costs.
-                </p>
-                <h3 className="text-xl font-semibold mt-6 mb-3">Four Essential Components:</h3>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>
-                    <strong>Solar Panels:</strong> Capture sunlight and convert it to electricity
-                  </li>
-                  <li>
-                    <strong>Charge Controller:</strong> Regulates power flow to protect batteries
-                  </li>
-                  <li>
-                    <strong>Battery Storage:</strong> Stores energy for use anytime, day or night
-                  </li>
-                  <li>
-                    <strong>Inverter:</strong> Converts stored DC power to AC for standard appliances
-                  </li>
-                </ul>
+          {/* Section Header */}
+          <div className="flex items-center gap-3 mb-8">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
+              <Sun className="h-6 w-6 text-amber-600" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold">Understanding Solar Generators</h2>
+              <p className="text-gray-600">How clean, renewable power works for you</p>
+            </div>
+          </div>
+
+          {/* Introduction Card */}
+          <Card className="mb-8 bg-gradient-to-r from-amber-50 to-emerald-50 border-amber-200">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500 flex-shrink-0">
+                  <Lightbulb className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-2">What is a Solar Generator?</h3>
+                  <p className="text-gray-700">
+                    A solar generator is a portable power system that captures, stores, and distributes electricity
+                    from sunlight. Unlike traditional gas generators, solar generators produce clean, renewable energy
+                    without emissions, noise, or fuel costs. They're designed for sustained operation — not just emergency backup.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Four Essential Components */}
+          <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+            <Settings className="h-5 w-5 text-emerald-600" />
+            Four Essential Components
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {/* Solar Panels */}
+            <Card className="hover:shadow-lg transition-shadow border-l-4 border-l-amber-500">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 flex-shrink-0">
+                    <Sun className="h-6 w-6 text-amber-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-2">Solar Panels</h4>
+                    <p className="text-sm text-gray-600 mb-3">Capture sunlight and convert it to electricity through photovoltaic cells.</p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">Energy Capture</span>
+                      <span className="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">DC Output</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Charge Controller */}
+            <Card className="hover:shadow-lg transition-shadow border-l-4 border-l-blue-500">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 flex-shrink-0">
+                    <Shield className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-2">Charge Controller</h4>
+                    <p className="text-sm text-gray-600 mb-3">Regulates power flow to protect batteries from overcharging and damage.</p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">MPPT Technology</span>
+                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Battery Protection</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Battery Storage */}
+            <Card className="hover:shadow-lg transition-shadow border-l-4 border-l-emerald-500">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 flex-shrink-0">
+                    <Battery className="h-6 w-6 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-2">Battery Storage</h4>
+                    <p className="text-sm text-gray-600 mb-3">Stores energy for use anytime, day or night — the heart of your power system.</p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">LiFePO4</span>
+                      <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">8,000+ Cycles</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Inverter */}
+            <Card className="hover:shadow-lg transition-shadow border-l-4 border-l-purple-500">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 flex-shrink-0">
+                    <Plug className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-2">Inverter</h4>
+                    <p className="text-sm text-gray-600 mb-3">Converts stored DC power to AC for standard appliances and equipment.</p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Pure Sine Wave</span>
+                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">120V/240V</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* How It Works Flow */}
+          <Card className="bg-slate-50">
+            <CardContent className="p-6">
+              <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <ArrowRight className="h-5 w-5 text-emerald-600" />
+                How Energy Flows Through Your System
+              </h4>
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-2 text-center">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500 text-white">
+                    <Sun className="h-5 w-5" />
+                  </div>
+                  <span className="text-sm font-medium">Sunlight</span>
+                </div>
+                <ArrowRight className="h-5 w-5 text-gray-400 hidden md:block" />
+                <div className="flex items-center gap-2 text-center">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white">
+                    <Shield className="h-5 w-5" />
+                  </div>
+                  <span className="text-sm font-medium">Regulated</span>
+                </div>
+                <ArrowRight className="h-5 w-5 text-gray-400 hidden md:block" />
+                <div className="flex items-center gap-2 text-center">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500 text-white">
+                    <Battery className="h-5 w-5" />
+                  </div>
+                  <span className="text-sm font-medium">Stored</span>
+                </div>
+                <ArrowRight className="h-5 w-5 text-gray-400 hidden md:block" />
+                <div className="flex items-center gap-2 text-center">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-500 text-white">
+                    <Plug className="h-5 w-5" />
+                  </div>
+                  <span className="text-sm font-medium">Converted</span>
+                </div>
+                <ArrowRight className="h-5 w-5 text-gray-400 hidden md:block" />
+                <div className="flex items-center gap-2 text-center">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-700 text-white">
+                    <Zap className="h-5 w-5" />
+                  </div>
+                  <span className="text-sm font-medium">Your Power</span>
+                </div>
               </div>
             </CardContent>
           </Card>
