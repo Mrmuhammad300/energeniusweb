@@ -51,6 +51,7 @@ export default function ProductDetailPage() {
   const [servicePackages, setServicePackages] = useState<ServicePackage[]>([]);
   const [selectedPackage, setSelectedPackage] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState<number>(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,6 +91,13 @@ export default function ProductDetailPage() {
     fetchData();
   }, [params.id, router]);
 
+  // Bundle discount for 20K+ generators when purchasing multiple units
+  const MULTI_UNIT_DISCOUNT_THRESHOLD = 20000; // 20kW
+  const MULTI_UNIT_DISCOUNT_PERCENT = 10; // 10% discount per unit for multi-unit orders
+  
+  const qualifiesForMultiUnitDiscount = product ? product.wattageNumeric >= MULTI_UNIT_DISCOUNT_THRESHOLD : false;
+  const multiUnitDiscountRate = quantity > 1 && qualifiesForMultiUnitDiscount ? MULTI_UNIT_DISCOUNT_PERCENT / 100 : 0;
+  
   const handleAddToCart = () => {
     if (!selectedPackage || !product) {
       alert('Please select an installation package');
@@ -100,9 +108,24 @@ export default function ProductDetailPage() {
     const qualifies = product.wattageNumeric >= 5000;
     const effectivePrice = qualifies && pkg?.bundlePrice ? pkg.bundlePrice : pkg?.price;
     
+    // Calculate multi-unit discount for 20K+ generators
+    const baseProductTotal = product.priceNumeric * quantity;
+    const multiUnitDiscount = qualifiesForMultiUnitDiscount && quantity > 1 
+      ? Math.round(baseProductTotal * multiUnitDiscountRate) 
+      : 0;
+    const discountedProductTotal = baseProductTotal - multiUnitDiscount;
+    
     // Store selection in sessionStorage for checkout with bundle pricing info
     sessionStorage.setItem('checkout_data', JSON.stringify({
-      product: product,
+      product: {
+        ...product,
+        quantity: quantity,
+        unitPrice: product.priceNumeric,
+        multiUnitDiscount: multiUnitDiscount,
+        discountedTotal: discountedProductTotal,
+        qualifiesForMultiUnitDiscount: qualifiesForMultiUnitDiscount,
+        multiUnitDiscountPercent: quantity > 1 && qualifiesForMultiUnitDiscount ? MULTI_UNIT_DISCOUNT_PERCENT : 0
+      },
       servicePackage: pkg ? {
         ...pkg,
         effectivePrice: effectivePrice, // The actual price to charge
@@ -116,8 +139,25 @@ export default function ProductDetailPage() {
   };
 
   const handleProductOnly = () => {
+    if (!product) return;
+    
+    // Calculate multi-unit discount for 20K+ generators
+    const baseProductTotal = product.priceNumeric * quantity;
+    const multiUnitDiscount = qualifiesForMultiUnitDiscount && quantity > 1 
+      ? Math.round(baseProductTotal * multiUnitDiscountRate) 
+      : 0;
+    const discountedProductTotal = baseProductTotal - multiUnitDiscount;
+    
     sessionStorage.setItem('checkout_data', JSON.stringify({
-      product: product,
+      product: {
+        ...product,
+        quantity: quantity,
+        unitPrice: product.priceNumeric,
+        multiUnitDiscount: multiUnitDiscount,
+        discountedTotal: discountedProductTotal,
+        qualifiesForMultiUnitDiscount: qualifiesForMultiUnitDiscount,
+        multiUnitDiscountPercent: quantity > 1 && qualifiesForMultiUnitDiscount ? MULTI_UNIT_DISCOUNT_PERCENT : 0
+      },
       servicePackage: null
     }));
     
@@ -152,9 +192,16 @@ export default function ProductDetailPage() {
     ? selectedPkg.price - selectedPkg.bundlePrice 
     : 0;
 
+  // Calculate multi-unit pricing for display
+  const baseProductTotal = product.priceNumeric * quantity;
+  const currentMultiUnitDiscount = qualifiesForMultiUnitDiscount && quantity > 1 
+    ? Math.round(baseProductTotal * multiUnitDiscountRate) 
+    : 0;
+  const discountedProductTotal = baseProductTotal - currentMultiUnitDiscount;
+
   const totalPrice = selectedPackage 
-    ? product.priceNumeric + installationPrice
-    : product.priceNumeric;
+    ? discountedProductTotal + installationPrice
+    : discountedProductTotal;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -350,6 +397,59 @@ export default function ProductDetailPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
+                  {/* Quantity Selector for 20K+ Generators */}
+                  {qualifiesForMultiUnitDiscount && (
+                    <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 mb-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 flex items-center">
+                            <Layers className="h-4 w-4 mr-2 text-amber-600" />
+                            Multi-Unit Deployment
+                          </h4>
+                          <p className="text-sm text-amber-800">
+                            Purchase multiple units for full deployment coverage
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium text-gray-700">
+                          Quantity:
+                        </label>
+                        <div className="flex items-center space-x-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                            className="h-8 w-8 p-0"
+                            disabled={quantity <= 1}
+                          >
+                            -
+                          </Button>
+                          <span className="w-12 text-center font-bold text-lg">{quantity}</span>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                            className="h-8 w-8 p-0"
+                            disabled={quantity >= 10}
+                          >
+                            +
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      {quantity > 1 && (
+                        <div className="mt-3 p-2 bg-emerald-100 rounded border border-emerald-300">
+                          <p className="text-sm text-emerald-800 font-medium text-center">
+                            🎉 <span className="font-bold">10% Multi-Unit Discount</span> applied! 
+                            Save ${currentMultiUnitDiscount.toLocaleString()} on your order
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Select Installation Package (Optional)
@@ -454,10 +554,35 @@ export default function ProductDetailPage() {
                   )}
 
                   <div className="space-y-2">
+                    {/* Unit Price */}
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Product:</span>
-                      <span className="font-medium">${product.priceNumeric.toLocaleString()}</span>
+                      <span className="text-gray-600">
+                        {quantity > 1 ? `Unit Price (×${quantity}):` : 'Product:'}
+                      </span>
+                      <span className="font-medium">
+                        ${quantity > 1 
+                          ? `${product.priceNumeric.toLocaleString()} × ${quantity} = $${baseProductTotal.toLocaleString()}`
+                          : product.priceNumeric.toLocaleString()
+                        }
+                      </span>
                     </div>
+                    
+                    {/* Multi-Unit Discount for 20K+ */}
+                    {currentMultiUnitDiscount > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-amber-600 font-medium">Multi-Unit Discount (10%):</span>
+                        <span className="font-bold text-amber-600">-${currentMultiUnitDiscount.toLocaleString()}</span>
+                      </div>
+                    )}
+                    
+                    {/* Subtotal after multi-unit discount */}
+                    {currentMultiUnitDiscount > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Product Subtotal:</span>
+                        <span className="font-medium">${discountedProductTotal.toLocaleString()}</span>
+                      </div>
+                    )}
+
                     {selectedPackage && (
                       <>
                         <div className="flex justify-between text-sm">
@@ -477,7 +602,7 @@ export default function ProductDetailPage() {
                         </div>
                         {bundleSavings > 0 && (
                           <div className="flex justify-between text-sm">
-                            <span className="text-emerald-600 font-medium">Bundle Savings:</span>
+                            <span className="text-emerald-600 font-medium">Install Bundle Savings:</span>
                             <span className="font-bold text-emerald-600">-${bundleSavings.toLocaleString()}</span>
                           </div>
                         )}
@@ -490,6 +615,15 @@ export default function ProductDetailPage() {
                         ${totalPrice.toLocaleString()}
                       </span>
                     </div>
+                    
+                    {/* Total Savings Summary */}
+                    {(currentMultiUnitDiscount > 0 || bundleSavings > 0) && (
+                      <div className="bg-emerald-50 rounded p-2 text-center">
+                        <p className="text-sm text-emerald-700 font-medium">
+                          Total Savings: ${(currentMultiUnitDiscount + bundleSavings).toLocaleString()}
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-3 pt-4">
