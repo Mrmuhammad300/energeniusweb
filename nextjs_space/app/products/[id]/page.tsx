@@ -575,14 +575,14 @@ export default function ProductDetailPage() {
                     </div>
                   )}
                   
-                  {/* SmartConnect 3-Month Free Promo */}
-                  {qualifiesForBundle && selectedPkg && (selectedPkg.slug === 'full-deployment' || selectedPkg.name?.toLowerCase().includes('full deployment')) && selectedPkg.priceMonthly && (
+                  {/* SmartConnect Pro 3-Month Free Promo */}
+                  {qualifiesForBundle && selectedPkg && (selectedPkg.slug === 'full-deployment' || selectedPkg.name?.toLowerCase().includes('full deployment')) && (
                     <div className="bg-gradient-to-r from-emerald-50 to-sky-50 border border-emerald-300 rounded-lg p-3 text-center">
                       <p className="text-emerald-800 text-sm font-medium">
-                        🎁 <span className="font-bold">SmartConnect FREE for 3 Months!</span>
+                        🎁 <span className="font-bold">SmartConnect Pro FREE for 3 Months!</span>
                       </p>
                       <p className="text-xs text-emerald-700 mt-1">
-                        Full Deployment + Commercial Generator = ${(selectedPkg.priceMonthly * 3).toLocaleString()} value included FREE
+                        Full Deployment + Commercial Generator = ${(19.99 * 3).toFixed(2)} value included FREE
                       </p>
                     </div>
                   )}

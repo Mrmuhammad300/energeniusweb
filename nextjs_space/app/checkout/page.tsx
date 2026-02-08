@@ -402,13 +402,14 @@ export default function CheckoutPage() {
   const isPeaceOfMindPackage = checkoutData.servicePackage?.slug === 'peace-of-mind' || 
     checkoutData.servicePackage?.name?.toLowerCase().includes('peace of mind');
   
-  // Check if eligible for SmartConnect 3-month free promo
-  // Commercial generators + Full Deployment installation = SmartConnect free for 3 months
+  // Check if eligible for SmartConnect Pro 3-month free promo
+  // Commercial generators + Full Deployment installation = SmartConnect Pro free for 3 months
   const isCommercialGenerator = checkoutData.product.wattageNumeric && checkoutData.product.wattageNumeric >= 5000;
   const isFullDeployment = checkoutData.servicePackage?.slug === 'full-deployment' || 
     checkoutData.servicePackage?.name?.toLowerCase().includes('full deployment');
   const qualifiesForSmartConnectPromo = isCommercialGenerator && isFullDeployment;
-  const smartConnectMonthlyValue = checkoutData.servicePackage?.priceMonthly || 0;
+  // SmartConnect Pro plan is $19.99/mo (changed from Business $49.99/mo)
+  const smartConnectMonthlyValue = 19.99;
   const smartConnectPromoValue = qualifiesForSmartConnectPromo ? smartConnectMonthlyValue * 3 : 0;
   
   const totalPrice = productTotal + servicePrice;
@@ -797,7 +798,7 @@ export default function CheckoutPage() {
                             <div className="mt-1">
                               {qualifiesForSmartConnectPromo ? (
                                 <Badge className="bg-gradient-to-r from-emerald-500 to-sky-500 text-white">
-                                  🎁 SmartConnect FREE for 3 months!
+                                  🎁 SmartConnect Pro FREE for 3 months!
                                 </Badge>
                               ) : (
                                 <Badge variant="outline">
@@ -839,11 +840,11 @@ export default function CheckoutPage() {
                         </div>
                       )}
                       
-                      {/* SmartConnect Promo Details */}
+                      {/* SmartConnect Pro Promo Details */}
                       {qualifiesForSmartConnectPromo && smartConnectMonthlyValue > 0 && (
                         <div className="mt-2 p-2 bg-emerald-50 rounded border border-emerald-200">
                           <p className="text-xs text-emerald-800">
-                            <strong>SmartConnect Promo:</strong> ${smartConnectMonthlyValue}/mo × 3 months = 
+                            <strong>SmartConnect Pro:</strong> ${smartConnectMonthlyValue}/mo × 3 months = 
                             <span className="font-bold"> ${smartConnectPromoValue} value FREE!</span>
                           </p>
                         </div>
@@ -871,7 +872,7 @@ export default function CheckoutPage() {
                     <div className="mt-1 text-xs text-gray-600 text-center space-y-0.5">
                       {multiUnitDiscount > 0 && <p>Multi-Unit: -${multiUnitDiscount.toLocaleString()}</p>}
                       {bundleSavings > 0 && <p>Bundle: -${bundleSavings.toLocaleString()}</p>}
-                      {smartConnectPromoValue > 0 && <p>SmartConnect (3mo): ${smartConnectPromoValue.toLocaleString()} value</p>}
+                      {smartConnectPromoValue > 0 && <p>SmartConnect Pro (3mo): ${smartConnectPromoValue.toFixed(2)} value</p>}
                     </div>
                   </div>
                 )}
