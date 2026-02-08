@@ -15,13 +15,13 @@ export default function Header() {
   const mainLinks = [
     { href: '/products', label: 'Products' },
     { href: '/calculators', label: 'Calculator' },
+    { href: '/subscription', label: 'SmartConnect' },
     { href: '/support', label: 'Support' },
   ]
 
   const moreLinks = [
     { href: '/residential', label: 'Residential Solutions', description: 'Home backup power' },
     { href: '/commercial', label: 'Commercial Solutions', description: 'Business & industrial' },
-    { href: '/subscription', label: 'Smart Connect', description: 'Monitoring & maintenance' },
     { href: '/dashboard', label: 'Customer Dashboard', description: 'Manage your system' },
   ]
 

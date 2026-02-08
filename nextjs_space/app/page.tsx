@@ -179,7 +179,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
-              Power Outages Aren't Just Inconvenient—<span className="text-red-600">They're Expensive</span>
+              Power Outages Aren't Just Inconvenient. <span className="text-red-600">They're Expensive.</span>
             </h2>
             <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
               The average business loses $5,600 per minute of downtime. Is your backup plan ready?
