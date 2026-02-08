@@ -3,7 +3,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { BookOpen, Lightbulb, Settings, Battery, Calculator } from 'lucide-react'
+import { BookOpen, Lightbulb, Settings, Battery, Calculator, Power, RefreshCw, Globe, Layers, Gauge, Zap } from 'lucide-react'
 import Link from 'next/link'
 
 const topics = [
@@ -29,7 +29,40 @@ const topics = [
   },
 ]
 
+const powerCapabilities = [
+  {
+    icon: Gauge,
+    title: 'Continuous Power Architecture',
+    description: 'Built for sustained operation rather than short-term emergency runtime. EnerGenius systems are designed to provide ongoing power as long as energy is being generated and managed.',
+  },
+  {
+    icon: RefreshCw,
+    title: 'Black Start Capability',
+    description: 'Restarts independently from zero power without reliance on the utility grid. Your system can bring itself back online after a complete discharge or outage.',
+  },
+  {
+    icon: Globe,
+    title: 'Off-Grid Ready Design',
+    description: 'Operates independently when paired with renewable inputs and balance-of-system components. Perfect for remote locations or complete energy independence.',
+  },
+  {
+    icon: Layers,
+    title: 'Expandable Energy Ecosystem',
+    description: 'Supports additional generation, storage, and system scaling as your energy demands increase. Start small and grow your system over time.',
+  },
+  {
+    icon: Zap,
+    title: 'Load-Driven Runtime',
+    description: 'Power availability is governed by energy generation and consumption, not fixed-hour limits. Runtime depends on your actual usage patterns and energy inputs.',
+  },
+]
+
 const faqs = [
+  {
+    question: 'Is this system limited to 48–72 hours of power?',
+    answer:
+      'No. EnerGenius systems are not designed around fixed runtime windows. Operating duration depends on system configuration, connected energy sources, storage capacity, and load management. With proper design, these systems support extended or continuous operation in off-grid or grid-independent environments.',
+  },
   {
     question: 'How long will a solar generator last?',
     answer:
@@ -112,6 +145,56 @@ export default function EducationPage() {
                     <strong>Inverter:</strong> Converts stored DC power to AC for standard appliances
                   </li>
                 </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Power System Capabilities Section */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
+              <Power className="h-6 w-6 text-emerald-600" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold">Power System Capabilities</h2>
+              <p className="text-gray-600">What makes EnerGenius systems different from traditional backup power</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {powerCapabilities.map((capability) => (
+              <Card key={capability.title} className="hover:shadow-lg transition-shadow border-l-4 border-l-emerald-500">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 flex-shrink-0">
+                      <capability.icon className="h-5 w-5 text-emerald-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-gray-900 mb-2">{capability.title}</h3>
+                      <p className="text-sm text-gray-600">{capability.description}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Key Insight Card */}
+          <Card className="bg-emerald-50 border-emerald-200">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 flex-shrink-0">
+                  <Lightbulb className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-emerald-900 mb-2">Think Power Plant, Not Battery</h4>
+                  <p className="text-emerald-800">
+                    Think of EnerGenius less like a battery and more like a self-sustaining power plant. 
+                    Power continues as long as energy is being generated and managed — not until a timer runs out.
+                    Unlike conventional battery backups, runtime is determined by energy input, not a fixed discharge window.
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
