@@ -7,17 +7,41 @@ import { Card, CardContent } from '@/components/ui/card'
 import { 
   Zap, ShieldCheck, AlertTriangle, Building2, Home, Church, 
   Timer, Fuel, Volume2, ArrowRight, CheckCircle, Phone, Calendar,
-  Factory, Plug, BatteryCharging
+  Factory, Plug, BatteryCharging, Power, Cpu, Wifi, Thermometer
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+
+// Black Start Differentiators
+const blackStartFeatures = [
+  {
+    icon: Power,
+    title: 'True Black Start',
+    description: 'Self-initiates from zero power. No grid, no solar, no external input required.',
+  },
+  {
+    icon: Cpu,
+    title: 'Autonomous Startup',
+    description: 'Internal DC bus + inverter boot logic enables independent system recovery.',
+  },
+  {
+    icon: Zap,
+    title: 'Instant Partial Load',
+    description: 'Supports immediate partial load upon startup — power when you need it.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Auto-Restart',
+    description: 'Automatically restores power after full system depletion.',
+  },
+]
 
 // Problem statements - what prospects are experiencing
 const problems = [
   {
     icon: AlertTriangle,
-    title: 'Unexpected Outages',
-    description: 'Texas grid failures, Ohio ice storms, Arizona monsoons - power outages cost businesses thousands per hour.',
+    title: 'Grid Dependence',
+    description: 'Traditional battery backups wait for grid voltage. When the grid is down, they\'re down too.',
     color: 'text-red-500',
   },
   {
@@ -103,7 +127,7 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col">
-      {/* Hero Section - Outcome-Based Messaging */}
+      {/* Hero Section - Black Start Power Plant Positioning */}
       <section
         ref={heroRef}
         className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900"
@@ -125,18 +149,24 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="w-full"
           >
-            {/* Problem-Solution Headline */}
+            {/* Black Start Badge */}
+            <div className="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-5 py-2 mb-6">
+              <Power className="h-4 w-4 text-emerald-400" />
+              <span className="text-sm font-semibold text-emerald-300 uppercase tracking-wide">True Black Start Power</span>
+            </div>
+            
+            {/* Primary Headline - Core Differentiator */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight px-2">
-              Your Business Never Stops<br className="hidden sm:block" />
-              <span className="text-emerald-400">Even When the Grid Does</span>
+              When Everything Else Is Offline<br className="hidden sm:block" />
+              <span className="text-emerald-400">EnerGenius Comes Online First</span>
             </h1>
             
             <p className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl text-slate-200 max-w-3xl mx-auto px-4 leading-relaxed">
-              Stay online and productive with silent, fuel-free power that eliminates downtime automatically.
+              The only off-grid power system that starts itself from zero. No grid. No solar. No external input required.
             </p>
             
             <p className="mt-4 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto px-4">
-              Commercial-grade lithium backup systems sized, installed, and monitored for real-world use.
+              <span className="text-amber-400 font-medium">This isn't a backup system.</span> It's a self-starting power plant for businesses that need certainty.
             </p>
 
             {/* Primary CTA */}
@@ -174,15 +204,55 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Black Start Differentiator Section */}
+      <section className="py-16 sm:py-20 bg-gradient-to-b from-slate-900 to-slate-800 text-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-amber-500/20 rounded-full px-4 py-1.5 mb-4">
+              <Zap className="h-4 w-4 text-amber-400" />
+              <span className="text-sm font-medium text-amber-300">Key Differentiator</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold">
+              What Is <span className="text-emerald-400">Black Start</span> Capability?
+            </h2>
+            <p className="mt-4 text-lg text-slate-300 max-w-3xl mx-auto">
+              Traditional battery backups require grid voltage or solar input to restart after depletion. 
+              EnerGenius systems feature true black start architecture — they initiate power independently, 
+              bringing your facility online even when everything else has failed.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {blackStartFeatures.map((feature, index) => (
+              <Card key={feature.title} className="bg-slate-800/50 border-slate-700 hover:border-emerald-500/50 transition-colors">
+                <CardContent className="p-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-500/20 mb-4">
+                    <feature.icon className="h-6 w-6 text-emerald-400" />
+                  </div>
+                  <h3 className="font-bold text-white mb-2">{feature.title}</h3>
+                  <p className="text-sm text-slate-400">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          
+          <div className="mt-12 text-center">
+            <p className="text-xl font-semibold text-emerald-400 italic">
+              "Batteries store energy. EnerGenius creates it."
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Problem Framing Section */}
       <section ref={problemRef} className="py-16 sm:py-20 bg-slate-50">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
-              Power Outages Aren't Just Inconvenient. <span className="text-red-600">They're Expensive.</span>
+              Why Traditional Backup Power <span className="text-red-600">Falls Short</span>
             </h2>
             <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-              The average business loses $5,600 per minute of downtime. Is your backup plan ready?
+              The average business loses $5,600 per minute of downtime. Most backup solutions can't keep up.
             </p>
           </div>
 
@@ -270,17 +340,29 @@ export default function HomePage() {
               {/* Benefits */}
               <div className="space-y-3 mb-8">
                 {[
-                  'Continuous power with black start capability',
-                  'Silent operation—no noise complaints',
-                  'Zero fuel storage or maintenance',
+                  'True black start — self-initiates from zero power',
+                  'Silent, zero-emission operation — no noise or fumes',
+                  'Zero fuel storage, delivery, or maintenance',
+                  'SmartConnect™ cloud monitoring included',
                   'Qualifies for 30% Federal Tax Credit',
-                  'Professional installation included with Turnkey package',
+                  'Professional installation with Turnkey package',
                 ].map((benefit) => (
                   <div key={benefit} className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                     <span className="text-slate-200">{benefit}</span>
                   </div>
                 ))}
+              </div>
+              
+              {/* SmartConnect Badge */}
+              <div className="bg-white/10 rounded-lg p-4 mb-8 border border-emerald-500/30">
+                <div className="flex items-center gap-3">
+                  <Wifi className="h-6 w-6 text-emerald-400" />
+                  <div>
+                    <p className="font-semibold text-white">SmartConnect™ Included</p>
+                    <p className="text-sm text-slate-300">Remote monitoring, load prioritization, and fleet management</p>
+                  </div>
+                </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">

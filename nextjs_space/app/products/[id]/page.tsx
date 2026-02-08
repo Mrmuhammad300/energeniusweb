@@ -255,6 +255,19 @@ export default function ProductDetailPage() {
 
                 <Separator className="my-6" />
 
+                {/* Black Start Badge - Key Differentiator */}
+                <div className="bg-gradient-to-r from-slate-900 to-emerald-900 rounded-lg p-4 mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/20">
+                      <Power className="h-5 w-5 text-emerald-400" />
+                    </div>
+                    <div>
+                      <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wide">Black Start Technology</p>
+                      <p className="text-white text-sm">Self-initiates from zero power — no grid, no solar required</p>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
@@ -323,21 +336,24 @@ export default function ProductDetailPage() {
                   <div className="pt-4 border-t border-gray-200">
                     <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
                       <Power className="h-5 w-5 text-emerald-600 mr-2" />
-                      Power System Capabilities
+                      Off-Grid Power Plant Capabilities
                     </h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      This isn't a backup system — it's a self-starting power plant designed for continuous operation.
+                    </p>
                     <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <RefreshCw className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="font-medium text-gray-900">True Black Start</p>
+                          <p className="text-sm text-gray-600">Self-initiates from zero power without grid voltage, solar input, or pre-charged batteries.</p>
+                        </div>
+                      </div>
                       <div className="flex items-start gap-3">
                         <Gauge className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="font-medium text-gray-900">Continuous Power Architecture</p>
                           <p className="text-sm text-gray-600">Built for sustained operation rather than short-term emergency runtime.</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <RefreshCw className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="font-medium text-gray-900">Black Start Capability</p>
-                          <p className="text-sm text-gray-600">Restarts independently from zero power without reliance on the utility grid.</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
@@ -385,9 +401,11 @@ export default function ProductDetailPage() {
 
                     {/* Simple Explainer */}
                     <div className="mt-4 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-                      <p className="text-sm text-emerald-800 italic">
-                        Think of EnerGenius less like a battery and more like a self-sustaining power plant. 
-                        Power continues as long as energy is being generated and managed — not until a timer runs out.
+                      <p className="text-sm text-emerald-800 italic font-medium mb-2">
+                        "Batteries store energy. EnerGenius creates it."
+                      </p>
+                      <p className="text-sm text-emerald-700">
+                        When everything else is offline, EnerGenius comes online first.
                       </p>
                     </div>
                   </div>

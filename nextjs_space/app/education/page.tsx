@@ -37,8 +37,8 @@ const powerCapabilities = [
   },
   {
     icon: RefreshCw,
-    title: 'Black Start Capability',
-    description: 'Restarts independently from zero power without reliance on the utility grid. Your system can bring itself back online after a complete discharge or outage.',
+    title: 'True Black Start Capability',
+    description: 'Self-initiates from zero power — no grid, no solar, no external input required. Internal DC bus + inverter boot logic enables autonomous startup.',
   },
   {
     icon: Globe,
@@ -54,6 +54,35 @@ const powerCapabilities = [
     icon: Zap,
     title: 'Load-Driven Runtime',
     description: 'Power availability is governed by energy generation and consumption, not fixed-hour limits. Runtime depends on your actual usage patterns and energy inputs.',
+  },
+]
+
+// Black Start vs Traditional Backup comparison
+const blackStartComparison = [
+  {
+    feature: 'Startup Requirement',
+    traditional: 'Needs grid voltage or solar input to restart',
+    energenius: 'Self-initiates from zero power automatically',
+  },
+  {
+    feature: 'After Full Depletion',
+    traditional: 'Requires external charging before restart',
+    energenius: 'Automatically restores power independently',
+  },
+  {
+    feature: 'Grid Dependency',
+    traditional: 'Waits for grid to return before operating',
+    energenius: 'Functions as standalone power plant',
+  },
+  {
+    feature: 'Runtime Limits',
+    traditional: 'Fixed-hour backup window (48-72 hrs typical)',
+    energenius: 'Continuous operation based on energy management',
+  },
+  {
+    feature: 'Recovery Speed',
+    traditional: 'Manual intervention often required',
+    energenius: 'Immediate partial load support on startup',
   },
 ]
 
@@ -445,6 +474,107 @@ export default function EducationPage() {
                     Unlike conventional battery backups, runtime is determined by energy input, not a fixed discharge window.
                   </p>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Black Start Deep Dive Section */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
+              <RefreshCw className="h-6 w-6 text-amber-600" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold">Understanding Black Start Technology</h2>
+              <p className="text-gray-600">The key differentiator that sets EnerGenius apart</p>
+            </div>
+          </div>
+
+          {/* What is Black Start */}
+          <Card className="mb-8 bg-gradient-to-br from-slate-900 to-emerald-900 text-white border-0">
+            <CardContent className="p-8">
+              <h3 className="text-2xl font-bold mb-4">What Is Black Start Capability?</h3>
+              <p className="text-slate-200 text-lg mb-6">
+                <strong className="text-emerald-400">Black start</strong> refers to the ability of a power system to restart itself 
+                from a completely de-energized state — without relying on external power sources. In the context of 
+                EnerGenius systems, this means:
+              </p>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-white/10 rounded-lg p-6">
+                  <h4 className="font-bold text-emerald-400 mb-3">How It Works</h4>
+                  <ul className="space-y-2 text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-emerald-400 mt-1 flex-shrink-0" />
+                      <span>Internal DC bus provides control power</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-emerald-400 mt-1 flex-shrink-0" />
+                      <span>Inverter boot logic initiates startup sequence</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-emerald-400 mt-1 flex-shrink-0" />
+                      <span>System self-tests and comes online autonomously</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-emerald-400 mt-1 flex-shrink-0" />
+                      <span>Partial load support available immediately</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-white/10 rounded-lg p-6">
+                  <h4 className="font-bold text-emerald-400 mb-3">Why It Matters</h4>
+                  <ul className="space-y-2 text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-emerald-400 mt-1 flex-shrink-0" />
+                      <span>No waiting for grid to return</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-emerald-400 mt-1 flex-shrink-0" />
+                      <span>No solar irradiance required to restart</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-emerald-400 mt-1 flex-shrink-0" />
+                      <span>Automatic recovery after total depletion</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-emerald-400 mt-1 flex-shrink-0" />
+                      <span>True energy independence, not just backup</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-6 text-center">
+                <p className="text-xl font-semibold text-emerald-400 italic">
+                  "When everything else is offline, EnerGenius comes online first."
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Comparison Table */}
+          <Card className="border-slate-200">
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Black Start vs. Traditional Battery Backup</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200">
+                      <th className="text-left py-3 px-4 font-semibold text-slate-700">Feature</th>
+                      <th className="text-left py-3 px-4 font-semibold text-red-600">Traditional Backup</th>
+                      <th className="text-left py-3 px-4 font-semibold text-emerald-600">EnerGenius Black Start</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {blackStartComparison.map((row, index) => (
+                      <tr key={row.feature} className={index % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                        <td className="py-3 px-4 font-medium text-slate-900">{row.feature}</td>
+                        <td className="py-3 px-4 text-slate-600">{row.traditional}</td>
+                        <td className="py-3 px-4 text-emerald-700 font-medium">{row.energenius}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </CardContent>
           </Card>
