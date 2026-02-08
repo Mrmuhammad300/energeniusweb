@@ -42,6 +42,11 @@ interface ServicePackage {
   prerequisites: string[];
   exclusions: string[];
   deliverables: string[];
+  // Bundle pricing fields (added by product page for 5kW+ products)
+  effectivePrice?: number;
+  originalPrice?: number;
+  isBundlePrice?: boolean;
+  bundleSavings?: number;
 }
 
 interface CheckoutData {
@@ -271,8 +276,9 @@ export default function CheckoutPage() {
     console.log('[Checkout] Creating payment intent...');
 
     try {
-      const totalPrice = checkoutData!.product.priceNumeric + 
-        (checkoutData!.servicePackage?.price || 0);
+      // Use effectivePrice if available (for bundle pricing), otherwise fall back to price
+      const installationPrice = checkoutData!.servicePackage?.effectivePrice ?? checkoutData!.servicePackage?.price ?? 0;
+      const totalPrice = checkoutData!.product.priceNumeric + installationPrice;
 
       console.log('[Checkout] Total price:', totalPrice);
       console.log('[Checkout] Customer email:', formData.email);
@@ -371,8 +377,10 @@ export default function CheckoutPage() {
     return null;
   }
 
-  const totalPrice = checkoutData.product.priceNumeric + 
-    (checkoutData.servicePackage?.price || 0);
+  // Use effectivePrice if available (for bundle pricing), otherwise fall back to price
+  const servicePrice = checkoutData.servicePackage?.effectivePrice ?? checkoutData.servicePackage?.price ?? 0;
+  const totalPrice = checkoutData.product.priceNumeric + servicePrice;
+  const bundleSavings = checkoutData.servicePackage?.bundleSavings ?? 0;
 
   // Success step
   if (step === 'success') {
@@ -726,10 +734,25 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Installation:</span>
-                        <span className="font-medium text-emerald-600">
-                          +${checkoutData.servicePackage.price.toLocaleString()}
-                        </span>
+                        {bundleSavings > 0 ? (
+                          <div className="text-right">
+                            <span className="text-gray-400 line-through text-xs">${checkoutData.servicePackage.originalPrice?.toLocaleString() || checkoutData.servicePackage.price.toLocaleString()}</span>
+                            <span className="font-medium text-emerald-600 ml-2">
+                              +${servicePrice.toLocaleString()}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="font-medium text-emerald-600">
+                            +${servicePrice.toLocaleString()}
+                          </span>
+                        )}
                       </div>
+                      {bundleSavings > 0 && (
+                        <div className="flex justify-between text-sm mt-1">
+                          <span className="text-emerald-600 font-medium">Bundle Savings:</span>
+                          <span className="font-bold text-emerald-600">-${bundleSavings.toLocaleString()}</span>
+                        </div>
+                      )}
                     </div>
                   </>
                 )}

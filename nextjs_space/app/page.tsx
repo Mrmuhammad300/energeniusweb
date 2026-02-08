@@ -336,6 +336,13 @@ export default function HomePage() {
             </p>
           </div>
 
+          {/* Bundle Savings Banner */}
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 max-w-4xl mx-auto">
+            <p className="text-center text-amber-800 font-medium">
+              <span className="font-bold">🎉 Bundle & Save!</span> Get discounted installation when you purchase a 5,000W+ generator
+            </p>
+          </div>
+
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Quick Start */}
             <Card className="border-2 hover:border-emerald-200 transition-colors">
@@ -344,7 +351,11 @@ export default function HomePage() {
                   <Plug className="h-7 w-7 text-slate-600" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Quick Start Install</h3>
-                <p className="text-emerald-600 font-semibold mb-4">$399</p>
+                <div className="mb-4">
+                  <span className="text-slate-400 line-through text-lg">$3,499</span>
+                  <span className="text-emerald-600 font-bold text-2xl ml-2">$399</span>
+                  <span className="text-xs text-slate-500 block mt-1">with 5kW+ generator purchase</span>
+                </div>
                 <p className="text-slate-600 mb-6">
                   Perfect if you have a licensed electrician. We deliver, you handle installation.
                 </p>
@@ -362,6 +373,9 @@ export default function HomePage() {
                     Installation documentation
                   </li>
                 </ul>
+                <div className="mt-4 pt-4 border-t border-slate-100">
+                  <p className="text-xs text-emerald-600 font-semibold">Save $3,100 with bundle!</p>
+                </div>
               </CardContent>
             </Card>
 
@@ -377,7 +391,11 @@ export default function HomePage() {
                   <ShieldCheck className="h-7 w-7 text-emerald-600" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Turnkey Installation</h3>
-                <p className="text-emerald-600 font-semibold mb-4">$2,499</p>
+                <div className="mb-4">
+                  <span className="text-slate-400 line-through text-lg">$5,999</span>
+                  <span className="text-emerald-600 font-bold text-2xl ml-2">$2,499</span>
+                  <span className="text-xs text-slate-500 block mt-1">with 5kW+ generator purchase</span>
+                </div>
                 <p className="text-slate-600 mb-6">
                   We handle everything. Site audit, permits, professional installation, and commissioning.
                 </p>
@@ -399,6 +417,9 @@ export default function HomePage() {
                     System commissioning & training
                   </li>
                 </ul>
+                <div className="mt-4 pt-4 border-t border-emerald-200">
+                  <p className="text-xs text-emerald-700 font-semibold">Save $3,500 with bundle!</p>
+                </div>
               </CardContent>
             </Card>
           </div>

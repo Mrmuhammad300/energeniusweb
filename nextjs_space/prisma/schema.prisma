@@ -418,6 +418,7 @@ model ServicePackage {
   name              String
   category          String            @default("residential")
   price             Float
+  bundlePrice       Float?            // Discounted price when bundled with 5,000W+ generator
   priceMonthly      Float?
   currency          String            @default("USD")
   description       String

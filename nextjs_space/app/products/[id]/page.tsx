@@ -20,6 +20,7 @@ interface Product {
   specifications: any;
   features: string[];
   priceNumeric: number;
+  wattageNumeric: number;
   imageUrl: string;
   tier: string;
   application: string[];
@@ -32,6 +33,7 @@ interface ServicePackage {
   slug: string;
   description: string;
   price: number;
+  bundlePrice: number | null;
   priceMonthly: number | null;
   deliverables: string[];
   exclusions: string[];
@@ -89,15 +91,25 @@ export default function ProductDetailPage() {
   }, [params.id, router]);
 
   const handleAddToCart = () => {
-    if (!selectedPackage) {
+    if (!selectedPackage || !product) {
       alert('Please select an installation package');
       return;
     }
     
-    // Store selection in sessionStorage for checkout
+    const pkg = servicePackages.find(pkg => pkg.id === selectedPackage);
+    const qualifies = product.wattageNumeric >= 5000;
+    const effectivePrice = qualifies && pkg?.bundlePrice ? pkg.bundlePrice : pkg?.price;
+    
+    // Store selection in sessionStorage for checkout with bundle pricing info
     sessionStorage.setItem('checkout_data', JSON.stringify({
       product: product,
-      servicePackage: servicePackages.find(pkg => pkg.id === selectedPackage)
+      servicePackage: pkg ? {
+        ...pkg,
+        effectivePrice: effectivePrice, // The actual price to charge
+        originalPrice: pkg.price,        // For display purposes
+        isBundlePrice: qualifies && pkg.bundlePrice !== null,
+        bundleSavings: qualifies && pkg.bundlePrice ? pkg.price - pkg.bundlePrice : 0
+      } : null
     }));
     
     router.push('/checkout');
@@ -127,8 +139,21 @@ export default function ProductDetailPage() {
     return null;
   }
 
+  // Check if product qualifies for bundle pricing (5,000W+)
+  const qualifiesForBundle = product.wattageNumeric >= 5000;
+  
+  // Get the selected package and determine price
+  const selectedPkg = servicePackages.find(pkg => pkg.id === selectedPackage);
+  const installationPrice = selectedPkg 
+    ? (qualifiesForBundle && selectedPkg.bundlePrice ? selectedPkg.bundlePrice : selectedPkg.price)
+    : 0;
+  const originalInstallationPrice = selectedPkg?.price || 0;
+  const bundleSavings = qualifiesForBundle && selectedPkg?.bundlePrice 
+    ? selectedPkg.price - selectedPkg.bundlePrice 
+    : 0;
+
   const totalPrice = selectedPackage 
-    ? product.priceNumeric + (servicePackages.find(pkg => pkg.id === selectedPackage)?.price || 0)
+    ? product.priceNumeric + installationPrice
     : product.priceNumeric;
 
   return (
@@ -341,7 +366,16 @@ export default function ProductDetailPage() {
                         ) : (
                           servicePackages.map((pkg) => (
                             <SelectItem key={pkg.id} value={pkg.id}>
-                              {pkg.name} - ${pkg.price.toLocaleString()}{pkg.isPopular ? ' ⭐ Most Popular' : ''}
+                              {pkg.name} - {qualifiesForBundle && pkg.bundlePrice ? (
+                                <span>
+                                  <span className="line-through text-gray-400">${pkg.price.toLocaleString()}</span>
+                                  {' '}
+                                  <span className="text-emerald-600 font-semibold">${pkg.bundlePrice.toLocaleString()}</span>
+                                </span>
+                              ) : (
+                                <span>${pkg.price.toLocaleString()}</span>
+                              )}
+                              {pkg.isPopular ? ' ⭐ Most Popular' : ''}
                             </SelectItem>
                           ))
                         )}
@@ -410,18 +444,44 @@ export default function ProductDetailPage() {
 
                   <Separator />
 
+                  {/* Bundle Savings Banner */}
+                  {qualifiesForBundle && (
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
+                      <p className="text-amber-800 text-sm font-medium">
+                        🎉 <span className="font-bold">Bundle Discount Applied!</span> This 5kW+ unit qualifies for reduced installation pricing.
+                      </p>
+                    </div>
+                  )}
+
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Product:</span>
                       <span className="font-medium">${product.priceNumeric.toLocaleString()}</span>
                     </div>
                     {selectedPackage && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Installation:</span>
-                        <span className="font-medium text-emerald-600">
-                          +${(servicePackages.find(pkg => pkg.id === selectedPackage)?.price || 0).toLocaleString()}
-                        </span>
-                      </div>
+                      <>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Installation:</span>
+                          {bundleSavings > 0 ? (
+                            <div className="text-right">
+                              <span className="text-gray-400 line-through text-xs">${originalInstallationPrice.toLocaleString()}</span>
+                              <span className="font-medium text-emerald-600 ml-2">
+                                +${installationPrice.toLocaleString()}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="font-medium text-emerald-600">
+                              +${installationPrice.toLocaleString()}
+                            </span>
+                          )}
+                        </div>
+                        {bundleSavings > 0 && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-emerald-600 font-medium">Bundle Savings:</span>
+                            <span className="font-bold text-emerald-600">-${bundleSavings.toLocaleString()}</span>
+                          </div>
+                        )}
+                      </>
                     )}
                     <Separator />
                     <div className="flex justify-between">
