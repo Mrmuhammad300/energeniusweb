@@ -99,26 +99,32 @@ export default function Header() {
             onMouseLeave={() => setDesktopDropdownOpen(false)}
           >
             <button
-              className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors"
+              className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors py-2"
               aria-expanded={desktopDropdownOpen}
+              onClick={() => setDesktopDropdownOpen(!desktopDropdownOpen)}
             >
               More
               <ChevronDown className={`h-4 w-4 transition-transform ${desktopDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
             
             {desktopDropdownOpen && (
-              <div className="absolute left-0 top-full mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 z-50">
-                <div className="p-2">
-                  {moreLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="block rounded-lg px-4 py-3 hover:bg-emerald-50 transition-colors"
-                    >
-                      <div className="font-medium text-sm text-gray-900">{link.label}</div>
-                      <div className="text-xs text-gray-500 mt-0.5">{link.description}</div>
-                    </Link>
-                  ))}
+              <div className="absolute left-0 top-full pt-1 w-56 z-50">
+                {/* Invisible bridge to prevent gap */}
+                <div className="absolute -top-1 left-0 right-0 h-2 bg-transparent" />
+                <div className="rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5">
+                  <div className="p-2">
+                    {moreLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="block rounded-lg px-4 py-3 hover:bg-emerald-50 transition-colors"
+                        onClick={() => setDesktopDropdownOpen(false)}
+                      >
+                        <div className="font-medium text-sm text-gray-900">{link.label}</div>
+                        <div className="text-xs text-gray-500 mt-0.5">{link.description}</div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}

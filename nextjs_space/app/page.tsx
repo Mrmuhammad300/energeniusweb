@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { 
   Zap, ShieldCheck, AlertTriangle, Building2, Home, Church, 
   Timer, Fuel, Volume2, ArrowRight, CheckCircle, Phone, Calendar,
-  Factory, Plug, BatteryCharging, Power, Cpu, Wifi, Thermometer
+  Factory, Plug, BatteryCharging, Power, Cpu, Wifi, Thermometer, Gift, Star, Sparkles
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
@@ -201,6 +201,146 @@ export default function HomePage() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Featured Promotions Banner - High Visibility */}
+      <section className="py-8 sm:py-10 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            {/* Promo Message */}
+            <div className="flex items-center gap-4">
+              <div className="hidden sm:flex h-14 w-14 items-center justify-center rounded-full bg-white/30 backdrop-blur">
+                <Gift className="h-7 w-7 text-amber-900" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="bg-amber-900 text-white text-xs font-bold px-2 py-0.5 rounded uppercase">Limited Time</span>
+                  <h3 className="text-lg sm:text-xl font-bold text-amber-900">3 Months SmartConnect Pro FREE</h3>
+                </div>
+                <p className="text-amber-800 text-sm mt-1">
+                  With any <span className="font-semibold">Nomad Series</span> purchase (5kW+) + Premium Installation • $60 Value
+                </p>
+              </div>
+            </div>
+            
+            {/* Quick Links */}
+            <div className="flex flex-wrap gap-3">
+              <Link href="/commercial">
+                <Button className="bg-amber-900 hover:bg-amber-950 text-white text-sm font-semibold">
+                  <Star className="mr-2 h-4 w-4" />
+                  Nomad Series
+                </Button>
+              </Link>
+              <Link href="/subscription">
+                <Button variant="outline" className="border-amber-900 text-amber-900 hover:bg-amber-900 hover:text-white text-sm font-semibold">
+                  <Wifi className="mr-2 h-4 w-4" />
+                  SmartConnect Plans
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Nomad Series Quick Overview */}
+      <section className="py-12 sm:py-16 bg-slate-900 text-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/20 rounded-full px-4 py-1.5 mb-4">
+              <Sparkles className="h-4 w-4 text-emerald-400" />
+              <span className="text-sm font-medium text-emerald-300">Featured Products</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold">
+              The <span className="text-emerald-400">Nomad Series</span> — Commercial Off-Grid Power
+            </h2>
+            <p className="mt-3 text-slate-400 max-w-2xl mx-auto">
+              Self-starting power plants for businesses that can't afford downtime. True black start technology.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Nomad 20K */}
+            <Link href="/commercial" className="group">
+              <Card className="bg-slate-800 border-slate-700 hover:border-emerald-500 transition-all h-full group-hover:shadow-lg group-hover:shadow-emerald-500/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded">Most Popular</span>
+                    <span className="text-emerald-400 text-sm font-medium">From $18,750</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">Nomad 20K</h3>
+                  <p className="text-slate-400 text-sm mb-4">20,000W continuous • 40,000W peak</p>
+                  <div className="text-xs text-slate-500">
+                    Offices, retail, medical clinics, churches
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-slate-700 flex items-center text-emerald-400 text-sm font-medium group-hover:text-emerald-300">
+                    View Details <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Nomad 40K */}
+            <Link href="/commercial" className="group">
+              <Card className="bg-slate-800 border-slate-700 hover:border-emerald-500 transition-all h-full group-hover:shadow-lg group-hover:shadow-emerald-500/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">High Capacity</span>
+                    <span className="text-emerald-400 text-sm font-medium">From $34,500</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">Nomad 40K</h3>
+                  <p className="text-slate-400 text-sm mb-4">40,000W continuous • 80,000W peak</p>
+                  <div className="text-xs text-slate-500">
+                    Warehouses, manufacturing, data centers
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-slate-700 flex items-center text-emerald-400 text-sm font-medium group-hover:text-emerald-300">
+                    View Details <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Nomad 80K */}
+            <Link href="/commercial" className="group">
+              <Card className="bg-slate-800 border-slate-700 hover:border-emerald-500 transition-all h-full group-hover:shadow-lg group-hover:shadow-emerald-500/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded">Enterprise</span>
+                    <span className="text-emerald-400 text-sm font-medium">From $67,500</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">Nomad 80K</h3>
+                  <p className="text-slate-400 text-sm mb-4">80,000W continuous • 160,000W peak</p>
+                  <div className="text-xs text-slate-500">
+                    Large facilities, emergency services, EV charging
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-slate-700 flex items-center text-emerald-400 text-sm font-medium group-hover:text-emerald-300">
+                    View Details <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+
+          {/* Bundle Promo */}
+          <div className="mt-8 bg-gradient-to-r from-emerald-900/50 to-slate-800/50 rounded-xl p-6 border border-emerald-500/30">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                  <Gift className="h-6 w-6 text-emerald-400" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold">Bundle & Save Up to $7,000</p>
+                  <p className="text-slate-400 text-sm">Installation + SmartConnect Pro 3-months free with any Nomad system</p>
+                </div>
+              </div>
+              <Link href="/quote">
+                <Button className="bg-emerald-500 hover:bg-emerald-600 text-white">
+                  Get Custom Quote
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
