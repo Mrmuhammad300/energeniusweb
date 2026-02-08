@@ -127,12 +127,12 @@ export default function HomePage() {
           >
             {/* Problem-Solution Headline */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight px-2">
-              Keep Your Business Running<br className="hidden sm:block" />
-              <span className="text-emerald-400">During Power Outages</span>
+              Your Business Never Stops —<br className="hidden sm:block" />
+              <span className="text-emerald-400">Even When the Grid Does</span>
             </h1>
             
             <p className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl text-slate-200 max-w-3xl mx-auto px-4 leading-relaxed">
-              Without fuel, noise, or downtime.
+              Stay online and productive with silent, fuel-free power that eliminates downtime automatically.
             </p>
             
             <p className="mt-4 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto px-4">
@@ -147,7 +147,7 @@ export default function HomePage() {
                   className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white text-base sm:text-lg px-8 py-6 rounded-xl shadow-lg shadow-emerald-500/30 font-semibold"
                 >
                   <Calendar className="mr-2 h-5 w-5" />
-                  Get a 15-Minute Energy Assessment
+                  Book a Free Power Resilience Assessment
                 </Button>
               </Link>
               <p className="text-sm text-slate-400">
@@ -211,6 +211,9 @@ export default function HomePage() {
       <section className="py-16 sm:py-20 bg-white">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
+            <p className="text-emerald-600 font-semibold text-sm uppercase tracking-wide mb-3">
+              Stay Online, Stay Productive — No Fuel, No Noise, No Downtime
+            </p>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
               Built For Organizations That Can't Afford Downtime
             </h2>
