@@ -575,14 +575,19 @@ export default function ProductDetailPage() {
                     </div>
                   )}
                   
-                  {/* SmartConnect Pro 3-Month Free Promo */}
-                  {qualifiesForBundle && selectedPkg && (selectedPkg.slug === 'full-deployment' || selectedPkg.name?.toLowerCase().includes('full deployment')) && (
+                  {/* SmartConnect Pro 3-Month Free Promo - Available for Full Deployment OR Peace of Mind */}
+                  {qualifiesForBundle && selectedPkg && (
+                    selectedPkg.slug === 'full-deployment' || 
+                    selectedPkg.name?.toLowerCase().includes('full deployment') ||
+                    selectedPkg.slug === 'peace-of-mind' ||
+                    selectedPkg.name?.toLowerCase().includes('peace of mind')
+                  ) && (
                     <div className="bg-gradient-to-r from-emerald-50 to-sky-50 border border-emerald-300 rounded-lg p-3 text-center">
                       <p className="text-emerald-800 text-sm font-medium">
                         🎁 <span className="font-bold">SmartConnect Pro FREE for 3 Months!</span>
                       </p>
                       <p className="text-xs text-emerald-700 mt-1">
-                        Full Deployment + Commercial Generator = ${(19.99 * 3).toFixed(2)} value included FREE
+                        {isPeaceOfMind ? 'Peace of Mind' : 'Full Deployment'} + 5kW+ Generator = ${(19.99 * 3).toFixed(2)} value included FREE
                       </p>
                     </div>
                   )}

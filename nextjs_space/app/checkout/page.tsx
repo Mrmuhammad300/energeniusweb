@@ -403,11 +403,12 @@ export default function CheckoutPage() {
     checkoutData.servicePackage?.name?.toLowerCase().includes('peace of mind');
   
   // Check if eligible for SmartConnect Pro 3-month free promo
-  // Commercial generators + Full Deployment installation = SmartConnect Pro free for 3 months
+  // 5kW+ generators + (Full Deployment OR Peace of Mind) = SmartConnect Pro free for 3 months
   const isCommercialGenerator = checkoutData.product.wattageNumeric && checkoutData.product.wattageNumeric >= 5000;
   const isFullDeployment = checkoutData.servicePackage?.slug === 'full-deployment' || 
     checkoutData.servicePackage?.name?.toLowerCase().includes('full deployment');
-  const qualifiesForSmartConnectPromo = isCommercialGenerator && isFullDeployment;
+  const isEligiblePackage = isFullDeployment || isPeaceOfMindPackage;
+  const qualifiesForSmartConnectPromo = isCommercialGenerator && isEligiblePackage;
   // SmartConnect Pro plan is $19.99/mo (changed from Business $49.99/mo)
   const smartConnectMonthlyValue = 19.99;
   const smartConnectPromoValue = qualifiesForSmartConnectPromo ? smartConnectMonthlyValue * 3 : 0;
