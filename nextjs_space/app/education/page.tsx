@@ -236,46 +236,164 @@ export default function EducationPage() {
           </div>
 
           {/* How It Works Flow */}
-          <Card className="bg-slate-50">
-            <CardContent className="p-6">
-              <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <ArrowRight className="h-5 w-5 text-emerald-600" />
+          <Card className="bg-gradient-to-br from-slate-50 to-emerald-50/30 border-emerald-100">
+            <CardContent className="p-6 md:p-8">
+              <h4 className="font-bold text-xl text-gray-900 mb-6 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
+                  <ArrowRight className="h-5 w-5 text-emerald-600" />
+                </div>
                 How Energy Flows Through Your System
               </h4>
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-2 text-center">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500 text-white">
-                    <Sun className="h-5 w-5" />
+              
+              {/* Desktop Flow - Horizontal */}
+              <div className="hidden md:flex items-start justify-between gap-2">
+                {/* Step 1: Sunlight */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <div className="relative">
+                    <div className="absolute -top-2 -left-2 flex h-6 w-6 items-center justify-center rounded-full bg-amber-600 text-white text-xs font-bold">1</div>
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-500 text-white shadow-lg">
+                      <Sun className="h-8 w-8" />
+                    </div>
                   </div>
-                  <span className="text-sm font-medium">Sunlight</span>
+                  <h5 className="font-semibold text-gray-900 mt-3">Capture</h5>
+                  <p className="text-xs text-gray-600 mt-1 max-w-[100px]">Solar panels absorb sunlight</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-gray-400 hidden md:block" />
-                <div className="flex items-center gap-2 text-center">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white">
-                    <Shield className="h-5 w-5" />
+
+                <ArrowRight className="h-6 w-6 text-amber-400 mt-5 flex-shrink-0" />
+
+                {/* Step 2: Regulated */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <div className="relative">
+                    <div className="absolute -top-2 -left-2 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white text-xs font-bold">2</div>
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg">
+                      <Shield className="h-8 w-8" />
+                    </div>
                   </div>
-                  <span className="text-sm font-medium">Regulated</span>
+                  <h5 className="font-semibold text-gray-900 mt-3">Regulate</h5>
+                  <p className="text-xs text-gray-600 mt-1 max-w-[100px]">MPPT optimizes power flow</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-gray-400 hidden md:block" />
-                <div className="flex items-center gap-2 text-center">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500 text-white">
-                    <Battery className="h-5 w-5" />
+
+                <ArrowRight className="h-6 w-6 text-blue-400 mt-5 flex-shrink-0" />
+
+                {/* Step 3: Stored */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <div className="relative">
+                    <div className="absolute -top-2 -left-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-white text-xs font-bold">3</div>
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500 text-white shadow-lg">
+                      <Battery className="h-8 w-8" />
+                    </div>
                   </div>
-                  <span className="text-sm font-medium">Stored</span>
+                  <h5 className="font-semibold text-gray-900 mt-3">Store</h5>
+                  <p className="text-xs text-gray-600 mt-1 max-w-[100px]">LiFePO4 batteries bank energy</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-gray-400 hidden md:block" />
-                <div className="flex items-center gap-2 text-center">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-500 text-white">
-                    <Plug className="h-5 w-5" />
+
+                <ArrowRight className="h-6 w-6 text-emerald-400 mt-5 flex-shrink-0" />
+
+                {/* Step 4: Converted */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <div className="relative">
+                    <div className="absolute -top-2 -left-2 flex h-6 w-6 items-center justify-center rounded-full bg-purple-600 text-white text-xs font-bold">4</div>
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-purple-500 text-white shadow-lg">
+                      <Plug className="h-8 w-8" />
+                    </div>
                   </div>
-                  <span className="text-sm font-medium">Converted</span>
+                  <h5 className="font-semibold text-gray-900 mt-3">Convert</h5>
+                  <p className="text-xs text-gray-600 mt-1 max-w-[100px]">Inverter creates AC power</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-gray-400 hidden md:block" />
-                <div className="flex items-center gap-2 text-center">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-700 text-white">
-                    <Zap className="h-5 w-5" />
+
+                <ArrowRight className="h-6 w-6 text-purple-400 mt-5 flex-shrink-0" />
+
+                {/* Step 5: Your Power */}
+                <div className="flex flex-col items-center text-center flex-1">
+                  <div className="relative">
+                    <div className="absolute -top-2 -left-2 flex h-6 w-6 items-center justify-center rounded-full bg-gray-700 text-white text-xs font-bold">5</div>
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-700 text-white shadow-lg">
+                      <Zap className="h-8 w-8" />
+                    </div>
                   </div>
-                  <span className="text-sm font-medium">Your Power</span>
+                  <h5 className="font-semibold text-gray-900 mt-3">Power</h5>
+                  <p className="text-xs text-gray-600 mt-1 max-w-[100px]">Ready for your devices</p>
+                </div>
+              </div>
+
+              {/* Mobile Flow - Vertical Cards */}
+              <div className="md:hidden space-y-4">
+                {/* Step 1: Capture */}
+                <div className="flex items-center gap-4 bg-white rounded-lg p-3 shadow-sm">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-600 text-white text-xs font-bold">1</div>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500 text-white shadow-md">
+                      <Sun className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h5 className="font-semibold text-gray-900">Capture</h5>
+                    <p className="text-sm text-gray-600">Solar panels absorb sunlight and convert it to DC electricity</p>
+                  </div>
+                </div>
+                
+                <div className="flex justify-center"><ArrowRight className="h-5 w-5 text-amber-400 rotate-90" /></div>
+
+                {/* Step 2: Regulate */}
+                <div className="flex items-center gap-4 bg-white rounded-lg p-3 shadow-sm">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-white text-xs font-bold">2</div>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500 text-white shadow-md">
+                      <Shield className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h5 className="font-semibold text-gray-900">Regulate</h5>
+                    <p className="text-sm text-gray-600">MPPT charge controller optimizes power flow to batteries</p>
+                  </div>
+                </div>
+                
+                <div className="flex justify-center"><ArrowRight className="h-5 w-5 text-blue-400 rotate-90" /></div>
+
+                {/* Step 3: Store */}
+                <div className="flex items-center gap-4 bg-white rounded-lg p-3 shadow-sm">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-white text-xs font-bold">3</div>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-white shadow-md">
+                      <Battery className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h5 className="font-semibold text-gray-900">Store</h5>
+                    <p className="text-sm text-gray-600">LiFePO4 batteries safely bank energy for anytime use</p>
+                  </div>
+                </div>
+                
+                <div className="flex justify-center"><ArrowRight className="h-5 w-5 text-emerald-400 rotate-90" /></div>
+
+                {/* Step 4: Convert */}
+                <div className="flex items-center gap-4 bg-white rounded-lg p-3 shadow-sm">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-purple-600 text-white text-xs font-bold">4</div>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-500 text-white shadow-md">
+                      <Plug className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h5 className="font-semibold text-gray-900">Convert</h5>
+                    <p className="text-sm text-gray-600">Pure sine wave inverter creates standard AC power</p>
+                  </div>
+                </div>
+                
+                <div className="flex justify-center"><ArrowRight className="h-5 w-5 text-purple-400 rotate-90" /></div>
+
+                {/* Step 5: Power */}
+                <div className="flex items-center gap-4 bg-white rounded-lg p-3 shadow-sm">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-gray-700 text-white text-xs font-bold">5</div>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-700 text-white shadow-md">
+                      <Zap className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h5 className="font-semibold text-gray-900">Power</h5>
+                    <p className="text-sm text-gray-600">Clean, reliable electricity ready for your devices</p>
+                  </div>
                 </div>
               </div>
             </CardContent>
