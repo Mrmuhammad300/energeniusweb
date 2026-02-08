@@ -6,8 +6,7 @@ import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Battery, Zap, Shield, ArrowRight, Sparkles, Activity, TrendingUp } from 'lucide-react'
-import { getBatteryRuntimeExamples, getQuickBenefitTags, getBenefitHeadline, parseCapacityToWattHours } from '@/lib/spec-benefits'
+import { Battery, Zap, Shield, ArrowRight, Star, CheckCircle, Calendar, Building2, Home, Briefcase } from 'lucide-react'
 
 interface Product {
   id: string
@@ -21,11 +20,21 @@ interface Product {
   tier: string
   imageUrl: string
   warranty: string
+  description?: string
 }
+
+// Product categories for easier navigation
+const categories = [
+  { id: 'featured', label: 'Featured', icon: Star },
+  { id: 'residential', label: 'Residential', icon: Home },
+  { id: 'commercial', label: 'Commercial', icon: Building2 },
+  { id: 'all', label: 'All Products', icon: Briefcase },
+]
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const [activeCategory, setActiveCategory] = useState('featured')
 
   useEffect(() => {
     fetch('/api/products')
@@ -37,58 +46,45 @@ export default function ProductsPage() {
       .catch(() => setLoading(false))
   }, [])
 
-  // Helper function to extract numeric capacity for sorting
-  const extractCapacity = (product: Product): number => {
-    // For generators, extract wattage
-    const wattageMatch = product.wattage?.match(/(\d+)/)
-    if (wattageMatch) {
-      return parseInt(wattageMatch[1])
-    }
-    // For batteries, extract amp hours
-    const ampMatch = product.batteryCapacity?.match(/(\d+)\s*(?:amp|ah)/i)
-    if (ampMatch) {
-      return parseInt(ampMatch[1])
-    }
-    return 0
+  // Helper to extract wattage
+  const extractWattage = (product: Product): number => {
+    const match = product.wattage?.match(/(\d+)/)
+    return match ? parseInt(match[1]) : 0
   }
 
-  // Separate and sort products
-  const powerBanks = products
-    .filter(p => p.model?.toLowerCase().includes('powerbank') || p.tier === 'Battery')
-    .sort((a, b) => extractCapacity(a) - extractCapacity(b))
-  
-  // Separate Scout generators from other generators
-  const allGenerators = products.filter(p => !p.model?.toLowerCase().includes('powerbank') && p.tier !== 'Battery')
-  const scoutGenerators = allGenerators
-    .filter(p => p.model?.toLowerCase().includes('scout'))
-    .sort((a, b) => extractCapacity(a) - extractCapacity(b))
-  const otherGenerators = allGenerators
-    .filter(p => !p.model?.toLowerCase().includes('scout'))
-    .sort((a, b) => extractCapacity(a) - extractCapacity(b))
-  
-  // Combine with Scout generators first
-  const generators = [...scoutGenerators, ...otherGenerators]
+  // Find featured product (Nomad 20K)
+  const nomad20k = products.find(p => 
+    p.model?.toLowerCase().includes('nomad') && p.model?.toLowerCase().includes('20')
+  )
 
-  // Scroll to product if SKU is in URL hash
-  useEffect(() => {
-    if (!loading && products.length > 0) {
-      const hash = window.location.hash.slice(1) // Remove the # symbol
-      if (hash) {
-        // Wait a bit for the page to render
-        setTimeout(() => {
-          const element = document.getElementById(hash)
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' })
-            // Add a highlight effect
-            element.classList.add('ring-4', 'ring-emerald-500', 'ring-offset-4')
-            setTimeout(() => {
-              element.classList.remove('ring-4', 'ring-emerald-500', 'ring-offset-4')
-            }, 3000)
-          }
-        }, 100)
-      }
+  // Categorize products
+  const residentialProducts = products
+    .filter(p => !p.model?.toLowerCase().includes('powerbank') && p.tier !== 'Battery')
+    .filter(p => extractWattage(p) <= 8000)
+    .sort((a, b) => extractWattage(a) - extractWattage(b))
+
+  const commercialProducts = products
+    .filter(p => !p.model?.toLowerCase().includes('powerbank') && p.tier !== 'Battery')
+    .filter(p => extractWattage(p) > 8000)
+    .sort((a, b) => extractWattage(a) - extractWattage(b))
+
+  const allGenerators = products
+    .filter(p => !p.model?.toLowerCase().includes('powerbank') && p.tier !== 'Battery')
+    .sort((a, b) => extractWattage(a) - extractWattage(b))
+
+  // Get products based on active category
+  const getDisplayedProducts = () => {
+    switch (activeCategory) {
+      case 'residential':
+        return residentialProducts
+      case 'commercial':
+        return commercialProducts
+      case 'all':
+        return allGenerators
+      default:
+        return []
     }
-  }, [loading, products])
+  }
 
   if (loading) {
     return (
@@ -99,296 +95,312 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-4">
-            Our Complete Product Line
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Professional-grade solar generators from 400W to 30,000W
-          </p>
+    <div className="min-h-screen bg-slate-50">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-slate-900 to-emerald-900 text-white py-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-4">
+              Find Your Perfect Backup Power System
+            </h1>
+            <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+              From portable units to commercial-grade systems. All backed by our 5-year warranty.
+            </p>
+          </div>
+          
+          {/* Quick Assessment CTA */}
+          <div className="flex justify-center">
+            <Link href="/quote">
+              <Button className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-6 text-lg">
+                <Calendar className="mr-2 h-5 w-5" />
+                Not Sure What You Need? Get a Free Assessment
+              </Button>
+            </Link>
+          </div>
         </div>
+      </section>
 
-        {/* Subscription Upsell Banner */}
-        <div className="mb-12">
-          <Card className="overflow-hidden border-2 border-emerald-500 bg-gradient-to-br from-emerald-50 via-teal-50 to-blue-50">
-            <CardContent className="p-8">
-              <div className="flex flex-col lg:flex-row items-center gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-                    <Sparkles className="h-10 w-10 text-white" />
+      {/* Featured Product - Nomad 20K */}
+      {nomad20k && (
+        <section className="py-12 bg-white border-b">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-2 mb-6">
+              <Star className="h-5 w-5 text-amber-500 fill-amber-500" />
+              <span className="text-sm font-semibold text-amber-600 uppercase tracking-wide">Most Popular for Commercial</span>
+            </div>
+            
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+              <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
+                <Image
+                  src={nomad20k.imageUrl}
+                  alt={nomad20k.model}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute top-4 left-4">
+                  <Badge className="bg-emerald-600 text-white px-3 py-1">Best Seller</Badge>
+                </div>
+              </div>
+              
+              <div>
+                <h2 className="text-3xl font-bold text-slate-900 mb-2">{nomad20k.model}</h2>
+                <p className="text-3xl font-bold text-emerald-600 mb-4">{nomad20k.price}</p>
+                
+                <p className="text-slate-600 mb-6">
+                  The reference standard for commercial backup power. Powers entire buildings for days, 
+                  not hours. Silent, clean, and maintenance-free.
+                </p>
+                
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    <p className="text-2xl font-bold text-emerald-600">20,000W</p>
+                    <p className="text-sm text-slate-500">Continuous Power</p>
+                  </div>
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    <p className="text-2xl font-bold text-emerald-600">40,000W</p>
+                    <p className="text-sm text-slate-500">Peak Power</p>
+                  </div>
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    <p className="text-2xl font-bold text-emerald-600">8,000</p>
+                    <p className="text-sm text-slate-500">Life Cycles</p>
+                  </div>
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    <p className="text-2xl font-bold text-emerald-600">5 Year</p>
+                    <p className="text-sm text-slate-500">Warranty</p>
                   </div>
                 </div>
-                <div className="flex-grow text-center lg:text-left">
-                  <div className="flex items-center justify-center lg:justify-start gap-2 mb-2">
-                    <h2 className="text-2xl font-bold text-gray-900">Make Your Generator Smarter</h2>
-                    <Badge className="bg-emerald-600 text-white">New</Badge>
-                  </div>
-                  <p className="text-gray-700 mb-4">
-                    Add <span className="font-semibold text-emerald-700">EnerGenius Smart Connect</span> to any generator for real-time monitoring, predictive maintenance, and AI-powered cost optimization. Starting at just <span className="font-bold text-emerald-600">$9.99/month</span>.
-                  </p>
-                  <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <Activity className="h-4 w-4 text-emerald-600" />
-                      <span>24/7 Monitoring</span>
+                
+                <div className="space-y-2 mb-6">
+                  {[
+                    'Powers commercial HVAC, refrigeration, medical equipment',
+                    'Qualifies for 30% Federal Tax Credit',
+                    'Zero fuel costs, zero maintenance',
+                    'Professional installation available',
+                  ].map((benefit) => (
+                    <div key={benefit} className="flex items-center gap-2 text-slate-700">
+                      <CheckCircle className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                      <span>{benefit}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="h-4 w-4 text-emerald-600" />
-                      <span>AI Insights</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-emerald-600" />
-                      <span>Predictive Maintenance</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-                <div className="flex-shrink-0 flex flex-col gap-3">
-                  <Link href="/subscription">
-                    <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white w-full lg:w-auto">
-                      View Plans & Pricing
+                
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link href={`/products/${nomad20k.id}`} className="flex-1">
+                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6">
+                      View Full Details
+                      <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Link>
-                  <Link href="/dashboard">
-                    <Button size="lg" variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-50 w-full lg:w-auto">
-                      See Demo Dashboard
+                  <Link href="/quote" className="flex-1">
+                    <Button variant="outline" className="w-full border-emerald-600 text-emerald-700 hover:bg-emerald-50 py-6">
+                      Get Custom Quote
                     </Button>
                   </Link>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Solar Generators Section */}
-        {generators.length > 0 && (
-          <div className="mb-16">
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">
-                Solar Generators
-              </h2>
-              <p className="text-gray-600">
-                Complete power stations from 400W to 30,000W - Scout series first, then sorted by capacity
-              </p>
-            </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {generators.map((product) => (
-                <Card key={product?.id} id={product?.sku} className="overflow-hidden hover:shadow-xl transition-all">
-                  <div className="relative aspect-square">
-                    <Image
-                      src={product?.imageUrl || ''}
-                      alt={product?.model || ''}
-                      fill
-                      className="object-cover"
-                    />
-                    {/* EnerGenius Branding Badge */}
-                    <div className="absolute bottom-2 left-2 bg-white/95 backdrop-blur rounded-lg p-2 shadow-md">
-                      <Image
-                        src="/energenius-badge.png"
-                        alt="EnerGenius"
-                        width={40}
-                        height={40}
-                        className="object-contain"
-                      />
-                    </div>
-                    <div className="absolute top-2 right-2">
-                      <Badge className="bg-emerald-600">{product?.tier}</Badge>
-                    </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">{product?.model}</h3>
-                    <p className="text-2xl font-bold text-emerald-600 mb-2">{product?.price}</p>
-
-                    {(() => {
-                      // Parse wattage for benefit calculations
-                      const wattsMatch = product?.wattage?.match(/(\d+)/);
-                      const watts = wattsMatch ? parseInt(wattsMatch[1]) : 0;
-                      const isBattery = product?.tier === 'Battery';
-                      const benefitHeadline = isBattery ? 'Expandable Energy Storage' : getBenefitHeadline(watts);
-                      const benefitTags = getQuickBenefitTags(watts);
-                      
-                      // Parse battery capacity and convert to Watt Hours for accurate runtime examples
-                      const wattHours = parseCapacityToWattHours(product?.batteryCapacity, watts);
-                      const runtimeExamples = getBatteryRuntimeExamples(wattHours);
-
-                      return (
-                        <>
-                          {/* Benefit Headline */}
-                          <p className="text-xs font-semibold text-emerald-700 mb-3 uppercase tracking-wide">
-                            {benefitHeadline}
-                          </p>
-
-                          {/* Real-World Benefits - Prominent Display */}
-                          {runtimeExamples.length > 0 && (
-                            <div className="mb-4 p-3 bg-gradient-to-br from-emerald-50 to-sky-50 rounded-lg border border-emerald-200">
-                              <p className="text-xs font-semibold text-gray-700 mb-2">Real-World Power:</p>
-                              <div className="space-y-1.5">
-                                {runtimeExamples.slice(0, 3).map((example, idx) => (
-                                  <div key={idx} className="text-xs text-gray-700 flex items-start gap-1.5">
-                                    <span className="text-emerald-600 flex-shrink-0">✓</span>
-                                    <span className="leading-tight">{example}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Technical Specs - Compact */}
-                          <div className="space-y-1 mb-4 text-xs text-gray-500">
-                            {!isBattery && (
-                              <div className="flex items-center gap-2">
-                                <Zap className="h-3 w-3 text-emerald-600" />
-                                <span>{product?.wattage}</span>
-                              </div>
-                            )}
-                            <div className="flex items-center gap-2">
-                              <Battery className="h-3 w-3 text-sky-600" />
-                              <span>{wattHours > 0 ? `${wattHours.toLocaleString()}Wh` : product?.batteryCapacity} {product?.batteryType}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Shield className="h-3 w-3 text-emerald-600" />
-                              <span>{product?.warranty}</span>
-                            </div>
-                          </div>
-                        </>
-                      );
-                    })()}
-
-                    <div className="space-y-2">
-                      <Link href={`/products/${product?.id}`}>
-                        <Button className="w-full bg-gradient-to-r from-emerald-600 to-sky-600">
-                          View Details & Purchase
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                      <Link href={`/quote?product=${product?.sku}`}>
-                        <Button variant="outline" className="w-full text-sm">
-                          Request Custom Quote
-                        </Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </div>
-        )}
+        </section>
+      )}
 
-        {/* Power Banks & Accessories Section */}
-        {powerBanks.length > 0 && (
-          <div>
-            <div className="mb-8 pb-6 border-t-2 border-gray-200 pt-12">
-              <div className="flex items-center gap-4 mb-3">
-                <Battery className="h-10 w-10 text-sky-600" />
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-                  Power Banks & Accessories
-                </h2>
+      {/* Category Navigation */}
+      <section className="py-8 bg-slate-100 sticky top-[73px] z-40 border-b">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="flex gap-2 overflow-x-auto pb-2 -mb-2">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
+                  activeCategory === cat.id
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-white text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                <cat.icon className="h-4 w-4" />
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Products Grid */}
+      <section className="py-12">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          {activeCategory === 'featured' ? (
+            // Featured view - Show category overview
+            <div className="space-y-12">
+              {/* Residential Preview */}
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-900">Residential Solutions</h2>
+                    <p className="text-slate-600">400W - 8,000W systems for home backup</p>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setActiveCategory('residential')}
+                    className="hidden sm:flex"
+                  >
+                    View All ({residentialProducts.length})
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {residentialProducts.slice(0, 3).map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+                <div className="mt-4 sm:hidden">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setActiveCategory('residential')}
+                    className="w-full"
+                  >
+                    View All Residential ({residentialProducts.length})
+                  </Button>
+                </div>
               </div>
-              <p className="text-gray-600">
-                Expandable battery storage solutions - sorted by capacity
-              </p>
-              <div className="mt-4 p-4 bg-sky-50 rounded-lg border border-sky-200">
-                <p className="text-sm text-sky-900">
-                  <strong>💡 Pro Tip:</strong> Power banks can be added to any solar generator to extend runtime and capacity. Perfect for off-grid living, emergency backup, or maximizing your existing system.
+              
+              {/* Commercial Preview */}
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-900">Commercial Solutions</h2>
+                    <p className="text-slate-600">10,000W - 30,000W systems for business</p>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setActiveCategory('commercial')}
+                    className="hidden sm:flex"
+                  >
+                    View All ({commercialProducts.length})
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {commercialProducts.slice(0, 3).map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+                <div className="mt-4 sm:hidden">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setActiveCategory('commercial')}
+                    className="w-full"
+                  >
+                    View All Commercial ({commercialProducts.length})
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            // Category view - Show all products in category
+            <div>
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-slate-900">
+                  {activeCategory === 'residential' && 'Residential Solutions'}
+                  {activeCategory === 'commercial' && 'Commercial Solutions'}
+                  {activeCategory === 'all' && 'All Products'}
+                </h2>
+                <p className="text-slate-600">
+                  {activeCategory === 'residential' && `${residentialProducts.length} products for home backup power`}
+                  {activeCategory === 'commercial' && `${commercialProducts.length} products for business backup power`}
+                  {activeCategory === 'all' && `${allGenerators.length} total products`}
                 </p>
               </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {getDisplayedProducts().map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {powerBanks.map((product) => (
-                <Card key={product?.id} id={product?.sku} className="overflow-hidden hover:shadow-xl transition-all border-2 border-sky-200">
-                  <div className="relative aspect-square">
-                    <Image
-                      src={product?.imageUrl || ''}
-                      alt={product?.model || ''}
-                      fill
-                      className="object-cover"
-                    />
-                    {/* EnerGenius Branding Badge */}
-                    <div className="absolute bottom-2 left-2 bg-white/95 backdrop-blur rounded-lg p-2 shadow-md">
-                      <Image
-                        src="/energenius-badge.png"
-                        alt="EnerGenius"
-                        width={40}
-                        height={40}
-                        className="object-contain"
-                      />
-                    </div>
-                    <div className="absolute top-2 right-2">
-                      <Badge className="bg-sky-600">Accessory</Badge>
-                    </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">{product?.model}</h3>
-                    <p className="text-2xl font-bold text-sky-600 mb-2">{product?.price}</p>
+          )}
+        </div>
+      </section>
 
-                    {(() => {
-                      // Parse wattage for benefit calculations
-                      const wattsMatch = product?.wattage?.match(/(\d+)/);
-                      const watts = wattsMatch ? parseInt(wattsMatch[1]) : 0;
-                      const isBattery = true;
-                      const benefitHeadline = 'Expandable Energy Storage';
-                      
-                      // Parse battery capacity and convert to Watt Hours for accurate runtime examples
-                      const wattHours = parseCapacityToWattHours(product?.batteryCapacity, watts);
-                      const runtimeExamples = getBatteryRuntimeExamples(wattHours);
-
-                      return (
-                        <>
-                          {/* Benefit Headline */}
-                          <p className="text-xs font-semibold text-sky-700 mb-3 uppercase tracking-wide">
-                            {benefitHeadline}
-                          </p>
-
-                          {/* Real-World Benefits - Prominent Display */}
-                          {runtimeExamples.length > 0 && (
-                            <div className="mb-4 p-3 bg-gradient-to-br from-sky-50 to-blue-50 rounded-lg border border-sky-200">
-                              <p className="text-xs font-semibold text-gray-700 mb-2">Real-World Power:</p>
-                              <div className="space-y-1.5">
-                                {runtimeExamples.slice(0, 3).map((example, idx) => (
-                                  <div key={idx} className="text-xs text-gray-700 flex items-start gap-1.5">
-                                    <span className="text-sky-600 flex-shrink-0">✓</span>
-                                    <span className="leading-tight">{example}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Technical Specs - Compact */}
-                          <div className="space-y-1 mb-4 text-xs text-gray-500">
-                            <div className="flex items-center gap-2">
-                              <Battery className="h-3 w-3 text-sky-600" />
-                              <span>{wattHours > 0 ? `${wattHours.toLocaleString()}Wh` : product?.batteryCapacity} {product?.batteryType}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Shield className="h-3 w-3 text-sky-600" />
-                              <span>{product?.warranty}</span>
-                            </div>
-                          </div>
-                        </>
-                      );
-                    })()}
-
-                    <div className="space-y-2">
-                      <Link href={`/products/${product?.id}`}>
-                        <Button className="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700">
-                          View Details & Purchase
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                      <Link href={`/quote?product=${product?.sku}`}>
-                        <Button variant="outline" className="w-full text-sm border-sky-600 text-sky-600 hover:bg-sky-50">
-                          Request Custom Quote
-                        </Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+      {/* Assessment CTA */}
+      <section className="py-16 bg-emerald-600">
+        <div className="mx-auto max-w-4xl px-4 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+            Not Sure Which System Is Right for You?
+          </h2>
+          <p className="text-emerald-100 mb-8 max-w-2xl mx-auto">
+            Our 15-minute energy assessment will analyze your power needs and recommend 
+            the perfect system for your situation.
+          </p>
+          <Link href="/quote">
+            <Button className="bg-white text-emerald-700 hover:bg-slate-100 px-8 py-6 text-lg font-semibold">
+              <Calendar className="mr-2 h-5 w-5" />
+              Get Your Free Assessment
+            </Button>
+          </Link>
+        </div>
+      </section>
     </div>
+  )
+}
+
+// Simplified Product Card Component
+function ProductCard({ product }: { product: Product }) {
+  const extractWattage = (wattage: string): number => {
+    const match = wattage?.match(/(\d+)/)
+    return match ? parseInt(match[1]) : 0
+  }
+  
+  const watts = extractWattage(product.wattage)
+  
+  return (
+    <Card className="overflow-hidden hover:shadow-lg transition-all bg-white">
+      <div className="relative aspect-[4/3]">
+        <Image
+          src={product.imageUrl || ''}
+          alt={product.model || ''}
+          fill
+          className="object-cover"
+        />
+        <div className="absolute top-3 right-3">
+          <Badge className="bg-slate-900/80 text-white">{product.tier}</Badge>
+        </div>
+      </div>
+      <CardContent className="p-5">
+        <h3 className="text-lg font-bold text-slate-900 mb-1">{product.model}</h3>
+        <p className="text-xl font-bold text-emerald-600 mb-3">{product.price}</p>
+        
+        {/* Key Specs - Clean and Simple */}
+        <div className="flex flex-wrap gap-3 mb-4 text-sm text-slate-600">
+          <div className="flex items-center gap-1">
+            <Zap className="h-4 w-4 text-emerald-600" />
+            <span>{product.wattage?.split('/')[0]}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Battery className="h-4 w-4 text-sky-600" />
+            <span>{product.batteryType}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Shield className="h-4 w-4 text-slate-500" />
+            <span>{product.warranty}</span>
+          </div>
+        </div>
+        
+        {/* What it can power - Simple examples */}
+        <div className="mb-4 text-sm text-slate-500">
+          {watts <= 1000 && 'Great for: Phones, laptops, small appliances'}
+          {watts > 1000 && watts <= 3000 && 'Great for: Fridge, lights, TV, computers'}
+          {watts > 3000 && watts <= 8000 && 'Great for: Whole home essentials, AC unit'}
+          {watts > 8000 && watts <= 15000 && 'Great for: Full building, multiple AC units'}
+          {watts > 15000 && 'Great for: Commercial buildings, industrial use'}
+        </div>
+        
+        <Link href={`/products/${product.id}`}>
+          <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+            View Details
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </Link>
+      </CardContent>
+    </Card>
   )
 }

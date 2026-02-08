@@ -30,13 +30,13 @@ model Product {
   dimensions            String
   inverterType          String?
   features              String[]
-  description           String   @db.Text
+  description           String
   imageUrl              String
   warranty              String
   category              String
   includedAccessories   String[]
-  tier                  String   // Portable, Home, Professional, Commercial, Battery
-  application           String[] // residential, commercial, portable, battery
+  tier                  String
+  application           String[]
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
@@ -46,29 +46,26 @@ model Product {
 }
 
 model QuoteRequest {
-  id            String   @id @default(cuid())
-  name          String
-  email         String
-  phone         String
-  location      String   // State
-  projectType   String   // Residential or Commercial
-  powerNeeds    String   @db.Text
-  timeline      String
-  message       String?  @db.Text
-  status        String   @default("new") // new, contacted, quoted, closed, won, lost
-  interestedProducts String[] // Array of product SKUs
-  invoices      Invoice[] // Related invoices
-  
-  // Analytics Fields
-  leadSource    String?  // website, referral, phone, email, social_media
-  estimatedValue Float?  // Estimated quote value
-  closedDate    DateTime? // Date when quote was closed (won or lost)
-  lostReason    String?  // Reason if lost (price, competitor, timing, etc.)
-  assignedTo    String?  // Team member assigned to this quote
-  followUpDate  DateTime? // Next follow-up date
-  
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                 String    @id @default(cuid())
+  name               String
+  email              String
+  phone              String
+  location           String
+  projectType        String
+  powerNeeds         String
+  timeline           String
+  message            String?
+  status             String    @default("new")
+  interestedProducts String[]
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  assignedTo         String?
+  closedDate         DateTime?
+  estimatedValue     Float?
+  followUpDate       DateTime?
+  leadSource         String?
+  lostReason         String?
+  invoices           Invoice[]
 
   @@index([status])
   @@index([projectType])
@@ -83,8 +80,8 @@ model ContactSubmission {
   email     String
   phone     String?
   subject   String
-  message   String   @db.Text
-  status    String   @default("new") // new, responded, resolved
+  message   String
+  status    String   @default("new")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -93,54 +90,42 @@ model ContactSubmission {
 }
 
 model NewsletterSubscriber {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  name        String?
-  status      String   @default("active") // active, unsubscribed
-  source      String?  // homepage, footer, blog, etc.
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  status       String   @default("active")
+  source       String?
   subscribedAt DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt    DateTime @updatedAt
 
   @@index([email])
   @@index([status])
 }
 
-// RBAC Enums
-enum UserRole {
-  SUPER_ADMIN           // Full system control
-  SALES_REP             // Own records only
-  OPERATIONS_MANAGER    // View all, edit support items
-  MARKETING_SPECIALIST  // View all contacts/leads, manage campaigns
-  VIRTUAL_ASSISTANT     // Restricted field access
-  FULFILLMENT_PROVIDER  // Track orders/products assigned to them
-  INSTALLER             // Installation technicians - limited to assigned jobs
-}
-
-// Authentication Models
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  password      String
-  role          UserRole  @default(SUPER_ADMIN)
-  image         String?
-  teamId        String?   // For grouping users by team/company
-  isActive      Boolean   @default(true)
-  twoFactorEnabled Boolean @default(false)
-  twoFactorSecret String? // For 2FA setup
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  invoices      Invoice[] // Invoices created by this user
-  teamMember    TeamMember? // Link to team member profile
-  auditLogs     AuditLog[] // Actions performed by this user
-  fulfillmentProvider FulfillmentProvider? // Link to fulfillment provider profile
-  installerProfile InstallerProfile? // Link to installer profile
-  installations Installation[] @relation("AssignedInstaller") // Installations assigned to this installer
-  installationUpdates InstallationUpdate[] // Progress updates created by installer
-  installationMessages InstallationMessage[] // Messages sent by user
+  id                   String                @id @default(cuid())
+  name                 String?
+  email                String                @unique
+  emailVerified        DateTime?
+  password             String
+  image                String?
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  isActive             Boolean               @default(true)
+  teamId               String?
+  twoFactorEnabled     Boolean               @default(false)
+  twoFactorSecret      String?
+  role                 UserRole              @default(SUPER_ADMIN)
+  accounts             Account[]
+  auditLogs            AuditLog[]
+  fulfillmentProvider  FulfillmentProvider?
+  installations        Installation[]        @relation("AssignedInstaller")
+  installationMessages InstallationMessage[]
+  installationUpdates  InstallationUpdate[]
+  installerProfile     InstallerProfile?
+  invoices             Invoice[]
+  sessions             Session[]
+  teamMember           TeamMember?
 
   @@index([email])
   @@index([role])
@@ -154,15 +139,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -183,58 +167,43 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// Invoice Management Models
 model Invoice {
-  id              String        @id @default(cuid())
-  invoiceNumber   String        @unique
-  quoteRequestId  String?       // Optional link to quote request
-  quoteRequest    QuoteRequest? @relation(fields: [quoteRequestId], references: [id])
-  
-  // Customer Information
-  customerName    String
-  customerEmail   String
-  customerPhone   String
-  customerAddress String?       @db.Text
-  
-  // Invoice Details
-  status          String        @default("draft") // draft, sent, paid, cancelled
-  subtotal        Float
-  taxRate         Float         @default(0)
-  taxAmount       Float         @default(0)
-  totalAmount     Float
-  
-  // Payment Tracking
-  depositAmount   Float?
-  depositPaid     Boolean       @default(false)
-  depositPaidAt   DateTime?
-  balancePaid     Boolean       @default(false)
-  balancePaidAt   DateTime?
-  paymentMethod   String?       // ACH, wire_transfer, credit_card, check
-  paymentNotes    String?       @db.Text
-  
-  // Sales Analytics Fields
-  commissionRate  Float?        @default(0.15) // Default 15%
-  commissionAmount Float?       // Calculated commission
-  assignedSalesRep String?      // Sales rep who closed the deal
-  leadSource      String?       // Where the lead came from
-  salesCycle      Int?          // Days from quote to close
-  
-  // Dates
-  invoiceDate     DateTime      @default(now())
-  dueDate         DateTime?
-  paidDate        DateTime?     // Date when invoice was fully paid
-  
-  // Notes
-  notes           String?       @db.Text
-  internalNotes   String?       @db.Text
-  
-  // Relations
-  items           InvoiceItem[]
-  payments        Payment[]     // Stripe payment records
-  createdBy       User          @relation(fields: [createdById], references: [id])
-  createdById     String
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id               String        @id @default(cuid())
+  invoiceNumber    String        @unique
+  quoteRequestId   String?
+  customerName     String
+  customerEmail    String
+  customerPhone    String
+  customerAddress  String?
+  status           String        @default("draft")
+  subtotal         Float
+  taxRate          Float         @default(0)
+  taxAmount        Float         @default(0)
+  totalAmount      Float
+  depositAmount    Float?
+  depositPaid      Boolean       @default(false)
+  depositPaidAt    DateTime?
+  balancePaid      Boolean       @default(false)
+  balancePaidAt    DateTime?
+  paymentMethod    String?
+  paymentNotes     String?
+  invoiceDate      DateTime      @default(now())
+  dueDate          DateTime?
+  notes            String?
+  internalNotes    String?
+  createdById      String
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  assignedSalesRep String?
+  commissionAmount Float?
+  commissionRate   Float?        @default(0.15)
+  leadSource       String?
+  paidDate         DateTime?
+  salesCycle       Int?
+  createdBy        User          @relation(fields: [createdById], references: [id])
+  quoteRequest     QuoteRequest? @relation(fields: [quoteRequestId], references: [id])
+  items            InvoiceItem[]
+  payments         Payment[]
 
   @@index([status])
   @@index([invoiceNumber])
@@ -248,55 +217,39 @@ model Invoice {
 model InvoiceItem {
   id          String   @id @default(cuid())
   invoiceId   String
-  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  
-  productSku  String?  // Link to product if applicable
-  description String   @db.Text
+  productSku  String?
+  description String
   quantity    Int      @default(1)
   unitPrice   Float
   totalPrice  Float
-  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
 
   @@index([invoiceId])
 }
 
-// Phase 3: Payment Management (Stripe Integration)
 model Payment {
-  id                    String   @id @default(cuid())
-  invoiceId             String
-  invoice               Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  
-  // Stripe Information
-  stripePaymentIntentId String?  @unique // Stripe Payment Intent ID
-  stripeCheckoutSessionId String? @unique // Stripe Checkout Session ID
-  
-  // Payment Details
-  amount                Float    // Amount in USD
-  currency              String   @default("usd")
-  status                String   @default("pending") // pending, processing, succeeded, failed, cancelled
-  paymentType           String   // deposit, balance, full_payment
-  
-  // Payment Method Information
-  paymentMethod         String?  // card, ach, wire_transfer
-  last4                 String?  // Last 4 digits of card/account
-  brand                 String?  // visa, mastercard, amex, etc.
-  
-  // Metadata
-  customerEmail         String
-  customerName          String
-  description           String?  @db.Text
-  
-  // Dates
-  paidAt                DateTime?
-  failedAt              DateTime?
-  
-  // Stripe Metadata (JSON string)
-  stripeMetadata        String?  @db.Text
-  
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  id                      String    @id @default(cuid())
+  invoiceId               String
+  stripePaymentIntentId   String?   @unique
+  stripeCheckoutSessionId String?   @unique
+  amount                  Float
+  currency                String    @default("usd")
+  status                  String    @default("pending")
+  paymentType             String
+  paymentMethod           String?
+  last4                   String?
+  brand                   String?
+  customerEmail           String
+  customerName            String
+  description             String?
+  paidAt                  DateTime?
+  failedAt                DateTime?
+  stripeMetadata          String?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  invoice                 Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
 
   @@index([invoiceId])
   @@index([status])
@@ -306,148 +259,94 @@ model Payment {
   @@index([createdAt])
 }
 
-// Phase 2: Customer Management
 model Customer {
   id              String   @id @default(cuid())
-  
-  // Basic Information
   firstName       String
   lastName        String
   email           String   @unique
   phone           String
   company         String?
-  
-  // Billing Address
-  billingAddress  String?  @db.Text
+  billingAddress  String?
   billingCity     String?
   billingState    String?
   billingZip      String?
   billingCountry  String?  @default("USA")
-  
-  // Shipping Address (can be different from billing)
-  shippingAddress String?  @db.Text
+  shippingAddress String?
   shippingCity    String?
   shippingState   String?
   shippingZip     String?
   shippingCountry String?  @default("USA")
-  
-  // Customer Type & Status
-  customerType    String   @default("residential") // residential, commercial
-  status          String   @default("active") // active, inactive, prospect
-  
-  // Tax & Business Information
+  customerType    String   @default("residential")
+  status          String   @default("active")
   taxExempt       Boolean  @default(false)
-  taxId           String?  // EIN or Tax ID if applicable
-  businessLicense String?  // Document URL if uploaded
-  
-  // Notes
-  notes           String?  @db.Text
-  
-  // Relations
-  orders          Order[]
-  
+  taxId           String?
+  businessLicense String?
+  notes           String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  orders          Order[]
 
   @@index([email])
   @@index([status])
   @@index([customerType])
 }
 
-// Phase 2: Team Member Management
 model TeamMember {
-  id            String   @id @default(cuid())
-  
-  // Basic Information
-  firstName     String
-  lastName      String
-  email         String   @unique
-  phone         String?
-  
-  // Role & Permissions
-  role          String   @default("staff") // admin, staff
-  department    String?  // sales, support, fulfillment
-  
-  // Status
-  status        String   @default("active") // active, inactive, pending
-  
-  // User Association (links to User model for login)
-  userId        String?  @unique
-  user          User?    @relation(fields: [userId], references: [id])
-  
-  // Employment Details
-  hireDate      DateTime?
+  id              String    @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String    @unique
+  phone           String?
+  role            String    @default("staff")
+  department      String?
+  status          String    @default("active")
+  userId          String?   @unique
+  hireDate        DateTime?
   terminationDate DateTime?
-  
-  // Notes
-  notes         String?  @db.Text
-  
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  user            User?     @relation(fields: [userId], references: [id])
 
   @@index([email])
   @@index([role])
   @@index([status])
 }
 
-// Phase 2: Order Management
 model Order {
-  id              String   @id @default(cuid())
-  orderNumber     String   @unique
-  
-  // Customer Link
-  customerId      String?
-  customer        Customer? @relation(fields: [customerId], references: [id])
-  
-  // Invoice Link (orders are created from paid invoices)
-  invoiceId       String?  @unique
-  invoiceNumber   String?
-  
-  // Order Status Workflow
-  status          String   @default("pending") // pending, processing, shipped, delivered, completed, cancelled
-  
-  // Customer Information (snapshot at time of order)
-  customerName    String
-  customerEmail   String
-  customerPhone   String
-  
-  // Shipping Address
-  shippingAddress String   @db.Text
-  shippingCity    String
-  shippingState   String
-  shippingZip     String
-  shippingCountry String   @default("USA")
-  
-  // Billing Address
-  billingAddress  String   @db.Text
-  billingCity     String
-  billingState    String
-  billingZip      String
-  billingCountry  String   @default("USA")
-  
-  // Order Totals
-  subtotal        Float
-  taxAmount       Float
-  totalAmount     Float
-  
-  // Fulfillment
-  fulfillmentStatus String @default("pending") // pending, processing, shipped, delivered
-  
-  // Dates
-  orderDate       DateTime @default(now())
-  expectedDelivery DateTime?
-  
-  // Notes
-  customerNotes   String?  @db.Text
-  internalNotes   String?  @db.Text
-  
-  // Relations
-  items           OrderItem[]
-  shipments       Shipment[]
-  installations   Installation[]
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                String         @id @default(cuid())
+  orderNumber       String         @unique
+  customerId        String?
+  invoiceId         String?        @unique
+  invoiceNumber     String?
+  status            String         @default("pending")
+  customerName      String
+  customerEmail     String
+  customerPhone     String
+  shippingAddress   String
+  shippingCity      String
+  shippingState     String
+  shippingZip       String
+  shippingCountry   String         @default("USA")
+  billingAddress    String
+  billingCity       String
+  billingState      String
+  billingZip        String
+  billingCountry    String         @default("USA")
+  subtotal          Float
+  taxAmount         Float
+  totalAmount       Float
+  fulfillmentStatus String         @default("pending")
+  orderDate         DateTime       @default(now())
+  expectedDelivery  DateTime?
+  customerNotes     String?
+  internalNotes     String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  installations     Installation[]
+  customer          Customer?      @relation(fields: [customerId], references: [id])
+  items             OrderItem[]
+  shipments         Shipment[]
 
   @@index([status])
   @@index([orderNumber])
@@ -457,84 +356,56 @@ model Order {
   @@index([orderDate])
 }
 
-// Phase 2: Order Items
 model OrderItem {
   id          String   @id @default(cuid())
   orderId     String
-  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  
-  // Product Information (snapshot at time of order)
   productSku  String
   productName String
-  description String   @db.Text
+  description String
   quantity    Int      @default(1)
   unitPrice   Float
   totalPrice  Float
-  
-  // Fulfillment Status per item
-  status      String   @default("pending") // pending, processing, shipped, delivered
-  
+  status      String   @default("pending")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([orderId])
   @@index([productSku])
 }
 
-// Phase 2: Shipment Tracking
 model Shipment {
-  id                String   @id @default(cuid())
+  id                String    @id @default(cuid())
   orderId           String
-  order             Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  
-  // Carrier Information
-  carrier           String   // UPS, FedEx, USPS, etc.
+  carrier           String
   trackingNumber    String
   trackingUrl       String?
-  
-  // Shipment Status
-  status            String   @default("pending") // pending, in_transit, delivered, returned
-  
-  // Dates
+  status            String    @default("pending")
   shippedDate       DateTime?
   estimatedDelivery DateTime?
   actualDelivery    DateTime?
-  
-  // Package Information
   weight            String?
   dimensions        String?
-  packageCount      Int      @default(1)
-  
-  // Notes
-  notes             String?  @db.Text
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  packageCount      Int       @default(1)
+  notes             String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  order             Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([orderId])
   @@index([trackingNumber])
   @@index([status])
 }
 
-// Phase 2: Email Templates
 model EmailTemplate {
   id          String   @id @default(cuid())
-  
-  // Template Information
-  name        String   @unique // e.g., "powerx_order_notification", "customer_order_confirmation"
-  category    String   // supplier, customer, internal
+  name        String   @unique
+  category    String
   subject     String
-  body        String   @db.Text
-  
-  // Template Variables (JSON string of available variables)
-  variables   String?  @db.Text // JSON: ["orderNumber", "customerName", "items", etc.]
-  
-  // Status
+  body        String
+  variables   String?
   isActive    Boolean  @default(true)
-  
-  // Notes
-  description String?  @db.Text
-  
+  description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -542,52 +413,32 @@ model EmailTemplate {
   @@index([name])
 }
 
-// Phase 3: Service Packages (Productized Services)
 model ServicePackage {
-  id              String   @id @default(cuid())
-  
-  // Package Information
-  name            String   // "Virtual Site Audit", "Quick Start", "Turnkey", etc.
-  slug            String?  @unique // URL-friendly identifier
-  category        String   @default("residential") // residential, commercial
-  packageType     String   @default("one_time") // one_time, subscription, project_based
-  
-  // Pricing
-  price           Float
-  priceMonthly    Float?   // For subscription packages
-  currency        String   @default("USD")
-  
-  // Display Information
-  description     String   @db.Text
-  tagline         String?  // Short marketing headline
-  isPopular       Boolean  @default(false) // Mark as "Most Popular"
-  displayOrder    Int      @default(0)
-  
-  // Scope & Deliverables (JSON string)
-  deliverables    String[] // Array of included items
-  exclusions      String[] // What's NOT included
-  
-  // Guardrails (JSON string for complex rules)
-  prerequisites   String[] // Required before purchase
-  scopeLimits     String?  @db.Text // JSON: {"electrical_run_ft": 15, "revisions": 2}
-  
-  // Target Audience
-  bestFor         String?  // "PowerX 5kW-8kW Units"
-  targetWattage   String?  // "5000-8000"
-  
-  // Additional Fields
-  estimatedTimeline String? // "2-4 weeks"
-  warrantyInfo    String?  @db.Text
-  
-  // Status
-  isActive        Boolean  @default(true)
-  isPublic        Boolean  @default(true) // Show on public site
-  
-  // Relations
-  purchases       ServicePurchase[]
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                String            @id @default(cuid())
+  name              String
+  category          String            @default("residential")
+  price             Float
+  priceMonthly      Float?
+  currency          String            @default("USD")
+  description       String
+  bestFor           String?
+  deliverables      String[]
+  exclusions        String[]
+  scopeLimits       String?
+  isActive          Boolean           @default(true)
+  isPublic          Boolean           @default(true)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  displayOrder      Int               @default(0)
+  estimatedTimeline String?
+  isPopular         Boolean           @default(false)
+  packageType       String            @default("one_time")
+  slug              String?           @unique
+  tagline           String?
+  targetWattage     String?
+  warrantyInfo      String?
+  prerequisites     String[]
+  purchases         ServicePurchase[]
 
   @@index([category])
   @@index([packageType])
@@ -596,58 +447,36 @@ model ServicePackage {
   @@index([displayOrder])
 }
 
-// Phase 3: Service Purchases
 model ServicePurchase {
-  id                    String   @id @default(cuid())
-  
-  // Package Reference
+  id                    String         @id @default(cuid())
   servicePackageId      String
-  servicePackage        ServicePackage @relation(fields: [servicePackageId], references: [id])
-  
-  // Customer Information
-  customerId            String?  // Link to Customer if exists
+  customerId            String?
   customerName          String
   customerEmail         String
   customerPhone         String
-  customerAddress       String?  @db.Text
-  
-  // Purchase Details
-  purchasePrice         Float    // Locked at time of purchase
-  subscriptionMonthly   Float?   // If subscription
-  
-  // Status
-  status                String   @default("pending") // pending, active, completed, cancelled
-  
-  // Prerequisites Acknowledgment (JSON string)
-  acknowledgedTerms     String[] // Which checkboxes they agreed to
-  acknowledgedAt        DateTime @default(now())
-  
-  // Project Information
+  customerAddress       String?
+  purchasePrice         Float
+  subscriptionMonthly   Float?
+  status                String         @default("pending")
+  acknowledgedTerms     String[]
+  acknowledgedAt        DateTime       @default(now())
   projectStartDate      DateTime?
   projectEndDate        DateTime?
-  dormancyDate          DateTime? // Auto-calculated based on last activity
-  
-  // Payment Information
-  paymentStatus         String   @default("unpaid") // unpaid, deposit_paid, paid
-  paymentMethod         String?  // stripe, ach, wire_transfer
-  stripePaymentIntentId String?  @unique
-  
-  // Subscription Management (if applicable)
-  subscriptionActive    Boolean  @default(false)
+  dormancyDate          DateTime?
+  paymentStatus         String         @default("unpaid")
+  paymentMethod         String?
+  stripePaymentIntentId String?        @unique
+  subscriptionActive    Boolean        @default(false)
   subscriptionStartDate DateTime?
   subscriptionEndDate   DateTime?
-  stripSubscriptionId   String?  @unique
-  
-  // Notes
-  customerNotes         String?  @db.Text
-  internalNotes         String?  @db.Text
-  
-  // Relations
-  linkedQuoteId         String?  // Optional link to quote
-  linkedInvoiceId       String?  // Optional link to invoice
-  
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  stripSubscriptionId   String?        @unique
+  customerNotes         String?
+  internalNotes         String?
+  linkedQuoteId         String?
+  linkedInvoiceId       String?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  servicePackage        ServicePackage @relation(fields: [servicePackageId], references: [id])
 
   @@index([servicePackageId])
   @@index([customerEmail])
@@ -657,49 +486,31 @@ model ServicePurchase {
   @@index([createdAt])
 }
 
-// Support Portal - Ticket Management
 model SupportTicket {
-  id              String   @id @default(cuid())
-  
-  // Ticket Information
-  ticketNumber    String   @unique
-  subject         String
-  category        String   @default("general") // general, technical, billing, shipping, product_inquiry, installation
-  priority        String   @default("medium") // low, medium, high, urgent
-  status          String   @default("open") // open, in_progress, waiting_customer, resolved, closed
-  
-  // Customer Information
-  customerName    String
-  customerEmail   String
-  customerPhone   String?
-  customerId      String?  // Link to Customer if exists
-  
-  // Ticket Content
-  description     String   @db.Text
-  
-  // Assignment & Tracking
-  assignedTo      String?  // Team member assigned to this ticket
-  tags            String[] // Custom tags for categorization
-  
-  // Resolution
-  resolvedAt      DateTime?
-  resolvedBy      String?  // Team member who resolved
-  resolution      String?  @db.Text
-  
-  // Related Records
-  orderId         String?  // Link to order if relevant
-  orderNumber     String?
-  productSku      String?  // Related product if applicable
-  
-  // Internal Notes
-  internalNotes   String?  @db.Text
-  
-  // Relations
-  replies         SupportReply[]
-  attachments     SupportAttachment[]
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id            String              @id @default(cuid())
+  ticketNumber  String              @unique
+  subject       String
+  category      String              @default("general")
+  priority      String              @default("medium")
+  status        String              @default("open")
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  customerId    String?
+  description   String
+  assignedTo    String?
+  tags          String[]
+  resolvedAt    DateTime?
+  resolvedBy    String?
+  resolution    String?
+  orderId       String?
+  orderNumber   String?
+  productSku    String?
+  internalNotes String?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  attachments   SupportAttachment[]
+  replies       SupportReply[]
 
   @@index([ticketNumber])
   @@index([status])
@@ -710,83 +521,57 @@ model SupportTicket {
   @@index([createdAt])
 }
 
-// Support Ticket Replies
 model SupportReply {
-  id              String   @id @default(cuid())
+  id              String        @id @default(cuid())
   ticketId        String
-  ticket          SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  
-  // Reply Information
-  message         String   @db.Text
-  isCustomerReply Boolean  @default(false) // true if from customer, false if from staff
+  message         String
+  isCustomerReply Boolean       @default(false)
   authorName      String
   authorEmail     String
-  
-  // Visibility
-  isInternal      Boolean  @default(false) // Internal notes not visible to customer
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  isInternal      Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  ticket          SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   @@index([ticketId])
   @@index([createdAt])
 }
 
-// Support Ticket Attachments
 model SupportAttachment {
-  id              String   @id @default(cuid())
+  id              String        @id @default(cuid())
   ticketId        String
-  ticket          SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  
-  // File Information
   fileName        String
-  fileUrl         String   // S3 or storage URL
-  fileSize        Int      // In bytes
-  fileType        String   // MIME type
-  
-  // Upload Information
-  uploadedBy      String   // Customer name or staff name
+  fileUrl         String
+  fileSize        Int
+  fileType        String
+  uploadedBy      String
   uploadedByEmail String
-  
-  createdAt       DateTime @default(now())
+  createdAt       DateTime      @default(now())
+  ticket          SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   @@index([ticketId])
 }
 
-// Knowledge Base Articles
 model KnowledgeBaseArticle {
-  id              String   @id @default(cuid())
-  
-  // Article Information
+  id              String    @id @default(cuid())
   title           String
-  slug            String   @unique
-  category        String   @default("general") // getting_started, products, installation, maintenance, troubleshooting, shipping, returns
-  content         String   @db.Text
-  excerpt         String?  @db.Text
-  
-  // Display
-  displayOrder    Int      @default(0)
-  isPublished     Boolean  @default(true)
-  isFeatured      Boolean  @default(false)
-  
-  // SEO
-  metaDescription String?  @db.Text
+  slug            String    @unique
+  category        String    @default("general")
+  content         String
+  excerpt         String?
+  displayOrder    Int       @default(0)
+  isPublished     Boolean   @default(true)
+  isFeatured      Boolean   @default(false)
+  metaDescription String?
   keywords        String[]
-  
-  // Analytics
-  viewCount       Int      @default(0)
-  helpfulCount    Int      @default(0)
-  notHelpfulCount Int      @default(0)
-  
-  // Relations
-  relatedArticles String[] // Array of article IDs
-  
-  // Author
+  viewCount       Int       @default(0)
+  helpfulCount    Int       @default(0)
+  notHelpfulCount Int       @default(0)
+  relatedArticles String[]
   authorName      String?
   lastEditedBy    String?
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   publishedAt     DateTime?
 
   @@index([slug])
@@ -796,31 +581,21 @@ model KnowledgeBaseArticle {
   @@index([viewCount])
 }
 
-// RBAC: Audit Log for tracking sensitive actions
 model AuditLog {
-  id          String   @id @default(cuid())
-  
-  // Action Information
-  action      String   // "exported_customers", "deleted_order", "updated_invoice", "viewed_reports"
-  actionType  String   // "create", "read", "update", "delete", "export"
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  
-  // Target Information
-  targetType  String   // "Order", "Customer", "Invoice", "Product", etc.
-  targetId    String?  // ID of the affected record
-  targetLabel String?  // Human-readable label (e.g., order number, customer name)
-  
-  // Context
-  ipAddress   String?
-  userAgent   String?  @db.Text
-  metadata    String?  @db.Text // JSON string for additional context
-  
-  // Result
-  success     Boolean  @default(true)
-  errorMessage String? @db.Text
-  
-  createdAt   DateTime @default(now())
+  id           String   @id @default(cuid())
+  action       String
+  actionType   String
+  userId       String
+  targetType   String
+  targetId     String?
+  targetLabel  String?
+  ipAddress    String?
+  userAgent    String?
+  metadata     String?
+  success      Boolean  @default(true)
+  errorMessage String?
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([action])
@@ -829,31 +604,19 @@ model AuditLog {
   @@index([createdAt])
 }
 
-// RBAC: User Invitation System
 model UserInvitation {
-  id          String   @id @default(cuid())
-  
-  // Invitation Details
+  id          String    @id @default(cuid())
   email       String
   role        UserRole
-  token       String   @unique // Secure invitation token
-  
-  // Invitation Status
-  status      String   @default("pending") // pending, accepted, expired, cancelled
-  
-  // Inviter Information
-  invitedBy   String   // User ID of person who sent invitation
-  inviterName String   // Name for email display
-  
-  // Expiration
-  expiresAt   DateTime // Usually 7 days from creation
+  token       String    @unique
+  status      String    @default("pending")
+  invitedBy   String
+  inviterName String
+  expiresAt   DateTime
   acceptedAt  DateTime?
-  
-  // Notes
-  message     String?  @db.Text // Optional welcome message
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  message     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([email])
   @@index([token])
@@ -861,66 +624,40 @@ model UserInvitation {
   @@index([expiresAt])
 }
 
-// RBAC: Fulfillment Provider Management
 model FulfillmentProvider {
-  id              String   @id @default(cuid())
-  
-  // Provider Information
-  companyName     String
-  contactName     String
-  contactEmail    String   @unique
-  contactPhone    String?
-  
-  // User Association (links to User model for login)
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id])
-  
-  // Status
-  status          String   @default("active") // active, inactive, suspended
-  
-  // Capabilities
-  canUpdateOrders Boolean  @default(true)
-  canViewAnalytics Boolean @default(true)
-  
-  // Product Assignment
+  id               String                         @id @default(cuid())
+  companyName      String
+  contactName      String
+  contactEmail     String                         @unique
+  contactPhone     String?
+  userId           String                         @unique
+  status           String                         @default("active")
+  canUpdateOrders  Boolean                        @default(true)
+  canViewAnalytics Boolean                        @default(true)
+  notes            String?
+  createdAt        DateTime                       @default(now())
+  updatedAt        DateTime                       @updatedAt
   assignedProducts FulfillmentProductAssignment[]
-  
-  // Notes
-  notes           String?  @db.Text
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  user             User                           @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([status])
   @@index([contactEmail])
 }
 
-// RBAC: Fulfillment Provider Product Assignment
 model FulfillmentProductAssignment {
-  id                    String   @id @default(cuid())
-  
-  // Provider Link
+  id                    String              @id @default(cuid())
   fulfillmentProviderId String
-  fulfillmentProvider   FulfillmentProvider @relation(fields: [fulfillmentProviderId], references: [id], onDelete: Cascade)
-  
-  // Product Link
-  productSku            String   // SKU of assigned product
-  productName           String   // Product name for display
-  
-  // Assignment Status
-  isActive              Boolean  @default(true)
-  
-  // Analytics (auto-calculated)
-  totalOrdersShipped    Int      @default(0)
+  productSku            String
+  productName           String
+  isActive              Boolean             @default(true)
+  totalOrdersShipped    Int                 @default(0)
   averageShippingDays   Float?
   lastShipmentDate      DateTime?
-  
-  // Notes
-  notes                 String?  @db.Text
-  
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  notes                 String?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  fulfillmentProvider   FulfillmentProvider @relation(fields: [fulfillmentProviderId], references: [id], onDelete: Cascade)
 
   @@unique([fulfillmentProviderId, productSku])
   @@index([fulfillmentProviderId])
@@ -928,114 +665,74 @@ model FulfillmentProductAssignment {
   @@index([isActive])
 }
 
-// RBAC: Installer Management
 model InstallerProfile {
-  id              String   @id @default(cuid())
-  
-  // Installer Information
-  companyName     String?  // Company name if independent contractor
-  specialization  String[] // Types of installations (residential, commercial, solar, battery)
-  serviceAreas    String[] // States/regions they service
-  licenseNumber   String?  // Professional license number
-  insuranceNumber String?  // Insurance policy number
-  
-  // User Association (links to User model for login)
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  // Status & Availability
-  status          String   @default("active") // active, inactive, suspended
-  availability    String   @default("available") // available, busy, off_duty
-  
-  // Performance Metrics
-  totalJobsCompleted Int    @default(0)
-  averageRating   Float?
-  onTimeCompletionRate Float?  // Percentage of jobs completed on time
-  
-  // Contact Info
-  phone           String
-  email           String
-  emergencyContact String?
-  
-  // Notes
-  notes           String?  @db.Text
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                   String   @id @default(cuid())
+  companyName          String?
+  specialization       String[]
+  serviceAreas         String[]
+  licenseNumber        String?
+  insuranceNumber      String?
+  userId               String   @unique
+  status               String   @default("active")
+  availability         String   @default("available")
+  totalJobsCompleted   Int      @default(0)
+  averageRating        Float?
+  onTimeCompletionRate Float?
+  phone                String
+  email                String
+  emergencyContact     String?
+  notes                String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([status])
   @@index([availability])
 }
 
-// Installation Job Tracking
 model Installation {
-  id                  String   @id @default(cuid())
-  
-  // Job Information
-  installationNumber  String   @unique // Auto-generated: INS-YYYYMMDD-XXXX
-  title               String   // Brief description of the job
-  description         String   @db.Text
-  
-  // Related Records
-  orderId             String?  // Link to order if applicable
-  order               Order?   @relation(fields: [orderId], references: [id])
-  invoiceId           String?  // Link to invoice if applicable
-  
-  // Customer Information
+  id                  String                @id @default(cuid())
+  installationNumber  String                @unique
+  title               String
+  description         String
+  orderId             String?
+  invoiceId           String?
   customerName        String
   customerEmail       String
   customerPhone       String
-  installationAddress String   @db.Text
-  
-  // Product Details
-  products            String[] // Product SKUs being installed
-  productNames        String[] // Product names for display
-  
-  // Assignment
+  installationAddress String
+  products            String[]
+  productNames        String[]
   assignedInstallerId String?
-  assignedInstaller   User?    @relation("AssignedInstaller", fields: [assignedInstallerId], references: [id])
-  assignedBy          String?  // Sales rep who assigned the job
+  assignedBy          String?
   assignedAt          DateTime?
-  
-  // Scheduling
   scheduledDate       DateTime?
-  estimatedDuration   Int?     // Hours
+  estimatedDuration   Int?
   actualStartTime     DateTime?
   actualEndTime       DateTime?
-  
-  // Status Tracking
-  status              String   @default("pending") // pending, assigned, in_progress, completed, cancelled, on_hold
-  progress            Int      @default(0) // 0-100 percentage
-  
-  // Job Details
-  priority            String   @default("normal") // low, normal, high, urgent
-  jobType             String   // residential, commercial, maintenance, repair
-  requiresPermit      Boolean  @default(false)
+  status              String                @default("pending")
+  progress            Int                   @default(0)
+  priority            String                @default("normal")
+  jobType             String
+  requiresPermit      Boolean               @default(false)
   permitNumber        String?
-  
-  // Completion
   completedAt         DateTime?
-  completionNotes     String?  @db.Text
-  customerSignature   String?  // Base64 or URL
-  installerRating     Int?     // 1-5 stars from customer
-  customerFeedback    String?  @db.Text
-  
-  // Issues & Photos
-  hasIssues           Boolean  @default(false)
-  issueDescription    String?  @db.Text
-  photoUrls           String[] // URLs to uploaded photos
-  documentUrls        String[] // URLs to uploaded documents (permits, etc.)
-  
-  // Relations
-  updates             InstallationUpdate[]
+  completionNotes     String?
+  customerSignature   String?
+  installerRating     Int?
+  customerFeedback    String?
+  hasIssues           Boolean               @default(false)
+  issueDescription    String?
+  photoUrls           String[]
+  documentUrls        String[]
+  internalNotes       String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  assignedInstaller   User?                 @relation("AssignedInstaller", fields: [assignedInstallerId], references: [id])
+  order               Order?                @relation(fields: [orderId], references: [id])
   messages            InstallationMessage[]
-  
-  // Notes
-  internalNotes       String?  @db.Text
-  
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  updates             InstallationUpdate[]
 
   @@index([installationNumber])
   @@index([status])
@@ -1046,35 +743,23 @@ model Installation {
   @@index([customerEmail])
 }
 
-// Installation Progress Updates
 model InstallationUpdate {
-  id              String   @id @default(cuid())
-  
+  id              String       @id @default(cuid())
   installationId  String
-  installation    Installation @relation(fields: [installationId], references: [id], onDelete: Cascade)
-  
-  // Update Details
-  updateType      String   // status_change, progress, issue, note, photo
-  title           String   // Brief summary
-  description     String   @db.Text
-  
-  // Progress Info
-  oldStatus       String?  // Previous status if status change
-  newStatus       String?  // New status if status change
-  progressPercent Int?     // Current progress 0-100
-  
-  // Media
-  photoUrls       String[] // URLs to uploaded photos
-  documentUrls    String[] // URLs to uploaded documents
-  
-  // Location Data
-  latitude        Float?   // GPS coordinates when update was made
+  updateType      String
+  title           String
+  description     String
+  oldStatus       String?
+  newStatus       String?
+  progressPercent Int?
+  photoUrls       String[]
+  documentUrls    String[]
+  latitude        Float?
   longitude       Float?
-  
-  // Created By
   createdById     String
-  createdBy       User     @relation(fields: [createdById], references: [id])
-  createdAt       DateTime @default(now())
+  createdAt       DateTime     @default(now())
+  createdBy       User         @relation(fields: [createdById], references: [id])
+  installation    Installation @relation(fields: [installationId], references: [id], onDelete: Cascade)
 
   @@index([installationId])
   @@index([createdById])
@@ -1082,40 +767,37 @@ model InstallationUpdate {
   @@index([updateType])
 }
 
-// Installation Communication/Messages
 model InstallationMessage {
-  id              String   @id @default(cuid())
-  
+  id              String       @id @default(cuid())
   installationId  String
-  installation    Installation @relation(fields: [installationId], references: [id], onDelete: Cascade)
-  
-  // Message Details
-  subject         String?  // Optional subject line
-  message         String   @db.Text
-  messageType     String   @default("general") // general, question, issue, update, response
-  
-  // Priority & Status
-  priority        String   @default("normal") // low, normal, high
-  isRead          Boolean  @default(false)
-  isResolved      Boolean  @default(false)
-  
-  // Sender/Receiver
+  subject         String?
+  message         String
+  messageType     String       @default("general")
+  priority        String       @default("normal")
+  isRead          Boolean      @default(false)
+  isResolved      Boolean      @default(false)
   senderId        String
-  sender          User     @relation(fields: [senderId], references: [id])
-  receiverRole    String?  // sales_rep, installer, customer
-  
-  // Attachments
-  attachmentUrls  String[] // URLs to uploaded files
-  
-  // Threading
-  parentMessageId String?  // For replies
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  receiverRole    String?
+  attachmentUrls  String[]
+  parentMessageId String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  installation    Installation @relation(fields: [installationId], references: [id], onDelete: Cascade)
+  sender          User         @relation(fields: [senderId], references: [id])
 
   @@index([installationId])
   @@index([senderId])
   @@index([isRead])
   @@index([isResolved])
   @@index([createdAt])
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  SALES_REP
+  OPERATIONS_MANAGER
+  MARKETING_SPECIALIST
+  VIRTUAL_ASSISTANT
+  FULFILLMENT_PROVIDER
+  INSTALLER
 }

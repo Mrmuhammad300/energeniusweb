@@ -4,186 +4,201 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Battery, Shield, Award, HeadphonesIcon, Zap, Users, ArrowRight, CheckCircle } from 'lucide-react'
+import { 
+  Zap, ShieldCheck, AlertTriangle, Building2, Home, Church, 
+  Timer, Fuel, Volume2, ArrowRight, CheckCircle, Phone, Calendar,
+  Factory, Plug, BatteryCharging
+} from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
-const features = [
+// Problem statements - what prospects are experiencing
+const problems = [
   {
-    icon: Battery,
-    title: '8,000 Cycle Lifespan',
-    description: '30 years of daily use - 3x longer than competitors',
+    icon: AlertTriangle,
+    title: 'Unexpected Outages',
+    description: 'Texas grid failures, Ohio ice storms, Arizona monsoons - power outages cost businesses thousands per hour.',
+    color: 'text-red-500',
   },
   {
-    icon: Shield,
-    title: '5-Year Warranty',
-    description: 'Industry-leading coverage, double the standard',
+    icon: Fuel,
+    title: 'Diesel Headaches',
+    description: 'Fuel storage, maintenance costs, and diesel generators that fail when you need them most.',
+    color: 'text-orange-500',
   },
   {
-    icon: Award,
-    title: 'All-Inclusive Pricing',
-    description: 'Solar panels included, no hidden costs',
+    icon: Volume2,
+    title: 'Noise & Fumes',
+    description: 'Traditional generators disrupt your business, annoy neighbors, and require ventilation.',
+    color: 'text-yellow-600',
   },
   {
-    icon: HeadphonesIcon,
-    title: 'U.S.-Based Support',
-    description: '24-hour response guarantee, real experts',
-  },
-]
-
-const products = [
-  {
-    name: 'Scout Series',
-    range: '400W - 2000W',
-    image: 'https://cdn11.bigcommerce.com/s-4qrfjy9oz3/images/stencil/1280x1280/products/178/4202/RevoPower_Scout__70203.1723676273.png?c=1',
-    description: 'Perfect for camping, tailgating, and emergency backup',
-    benefits: ['📱 50+ phone charges', '💻 30+ hours laptop', '☕ Powers coffee maker'],
-    tier: 'Portable',
-  },
-  {
-    name: 'Guardian Series',
-    range: '3000W - 8000W',
-    image: 'https://naturesgenerator.com/cdn/shop/files/natures-generator-powerhouse-gold-system-262674_1200x1200_crop_center.jpg',
-    description: 'Whole-home backup power for peace of mind',
-    benefits: ['❄️ 30+ hour fridge', '💡 Lights full home', '⚕️ Powers medical devices'],
-    tier: 'Home',
-  },
-  {
-    name: 'Titan Series',
-    range: '10KW - 15KW',
-    image: 'https://www.solarelectricsupply.com/media/product-images/remote-industrial-solar/RD-Series/skid-mounted-emergency-portable-solar-system-x.jpg',
-    description: 'Professional-grade power for businesses',
-    benefits: ['🏢 Powers office equipment', '❄️ Runs AC units', '🔧 Heavy tools ready'],
-    tier: 'Professional',
-  },
-  {
-    name: 'Apex Series',
-    range: '20KW - 30KW',
-    image: 'https://temaroofingservices.com/wp-content/uploads/2023/02/Solar-panel-on-a-commercial-rooftop.jpg',
-    description: 'Maximum capacity for commercial applications',
-    benefits: ['🏭 Full building backup', '❄️ Multiple AC units', '🏢 Industrial operations'],
-    tier: 'Commercial',
+    icon: Timer,
+    title: 'Downtime Losses',
+    description: 'Every minute without power means lost revenue, spoiled inventory, or critical system failures.',
+    color: 'text-purple-500',
   },
 ]
 
-const testimonials = [
+// Who this is for
+const audiences = [
   {
-    quote: 'After the ice storm knocked out our power for 5 days, our EnerGenius Guardian kept our family comfortable and safe. Worth every penny.',
-    author: 'Sarah M.',
+    icon: Building2,
+    title: 'Commercial Buildings',
+    examples: 'Offices, retail stores, warehouses',
+  },
+  {
+    icon: Church,
+    title: 'Churches & Non-Profits',
+    examples: 'Community centers, shelters, event spaces',
+  },
+  {
+    icon: Home,
+    title: 'Property Owners',
+    examples: 'Multi-family, rental properties, HOAs',
+  },
+  {
+    icon: Factory,
+    title: 'Light Industrial',
+    examples: 'Workshops, food service, medical offices',
+  },
+]
+
+// Nomad 20K key specs
+const nomadSpecs = [
+  { label: 'Continuous Power', value: '20,000W' },
+  { label: 'Peak Power', value: '40,000W' },
+  { label: 'Battery Capacity', value: '400 Amp Hours' },
+  { label: 'Life Cycles', value: '8,000 cycles' },
+  { label: 'Voltage Output', value: '120/240V AC' },
+  { label: 'Warranty', value: '5 Years' },
+]
+
+// Social proof
+const useCases = [
+  {
+    quote: 'After the Texas freeze, our church became an emergency shelter. The Nomad 20K kept us running for 4 days straight while the grid was down.',
+    author: 'Pastor Williams',
+    location: 'Houston, TX',
+    type: 'Church',
+  },
+  {
+    quote: 'We lost $15,000 in one outage before getting our backup system. Now our cold storage stays at temp no matter what. Worth every penny.',
+    author: 'Marcus Chen',
     location: 'Columbus, OH',
+    type: 'Restaurant Owner',
   },
   {
-    quote: 'We power our entire food truck with the Titan 15K. No more noisy generators scaring away customers. Game changer for our business.',
-    author: 'Carlos R.',
-    location: 'Austin, TX',
-  },
-  {
-    quote: 'Living off-grid in New Mexico, reliability is everything. Our Apex 20K has run flawlessly for 2 years. Their support team is amazing.',
-    author: 'Michael T.',
-    location: 'Santa Fe, NM',
+    quote: 'The monsoon season used to mean crossing our fingers. Now our medical equipment stays powered and my patients stay safe.',
+    author: 'Dr. Sarah Martinez',
+    location: 'Phoenix, AZ',
+    type: 'Medical Clinic',
   },
 ]
 
 export default function HomePage() {
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 })
-  const [featuresRef, featuresInView] = useInView({ triggerOnce: true, threshold: 0.1 })
-  const [productsRef, productsInView] = useInView({ triggerOnce: true, threshold: 0.1 })
+  const [problemRef, problemInView] = useInView({ triggerOnce: true, threshold: 0.1 })
+  const [solutionRef, solutionInView] = useInView({ triggerOnce: true, threshold: 0.1 })
 
   return (
     <div className="flex flex-col">
-      {/* Hero Section */}
+      {/* Hero Section - Outcome-Based Messaging */}
       <section
         ref={heroRef}
-        className="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden"
+        className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900"
       >
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 opacity-30">
           <Image
-            src="https://www.lgcypower.com/wp-content/uploads/2021/11/how-much-solar.webp"
-            alt="Solar powered home"
+            src="https://www.energy.gov/sites/default/files/2021-06/35502216484_c1b49186db_k.jpg"
+            alt="Commercial backup power"
             fill
-            className="object-cover brightness-50"
+            className="object-cover"
             priority
           />
         </div>
         
-        <div className="relative z-10 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative z-10 w-full mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8 }}
             className="w-full"
           >
-            {/* Company Name */}
-            <p className="text-base sm:text-xl md:text-2xl font-semibold text-emerald-400 mb-3 sm:mb-4 tracking-wide">
-              Renewable Resource Group
-            </p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white px-2">
-              Power That Thinks Ahead
+            {/* Problem-Solution Headline */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight px-2">
+              Keep Your Business Running<br className="hidden sm:block" />
+              <span className="text-emerald-400">During Power Outages</span>
             </h1>
-            <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl leading-7 sm:leading-8 text-gray-200 max-w-full sm:max-w-2xl mx-auto px-4">
-              Professional-grade solar generators from 400W to 30,000W. Honest pricing, superior support, and industry-leading warranty.
+            
+            <p className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl text-slate-200 max-w-3xl mx-auto px-4 leading-relaxed">
+              Without fuel, noise, or downtime.
             </p>
-            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 px-4">
-              <Link href="/products" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6">
-                  Explore Products
-                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                </Button>
-              </Link>
+            
+            <p className="mt-4 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto px-4">
+              Commercial-grade lithium backup systems sized, installed, and monitored for real-world use.
+            </p>
+
+            {/* Primary CTA */}
+            <div className="mt-8 sm:mt-10 flex flex-col items-center gap-4 px-4">
               <Link href="/quote" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto bg-white text-emerald-600 hover:bg-gray-100 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6">
-                  Request Quote
+                <Button 
+                  size="lg" 
+                  className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white text-base sm:text-lg px-8 py-6 rounded-xl shadow-lg shadow-emerald-500/30 font-semibold"
+                >
+                  <Calendar className="mr-2 h-5 w-5" />
+                  Get a 15-Minute Energy Assessment
                 </Button>
               </Link>
+              <p className="text-sm text-slate-400">
+                Free • No obligation • Discover your backup power needs
+              </p>
             </div>
-            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 text-white text-xs sm:text-sm px-4">
-              <div className="flex items-center justify-center gap-2">
-                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
+
+            {/* Trust indicators */}
+            <div className="mt-8 flex flex-wrap justify-center gap-6 text-slate-300 text-sm">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-emerald-400" />
                 <span>5-Year Warranty</span>
               </div>
-              <div className="flex items-center justify-center gap-2">
-                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
-                <span>30% Tax Credit</span>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-emerald-400" />
+                <span>30% Federal Tax Credit</span>
               </div>
-              <div className="flex items-center justify-center gap-2">
-                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
-                <span>Free Shipping</span>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-emerald-400" />
+                <span>Professional Installation</span>
               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Value Proposition */}
-      <section className="py-24 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Why Choose EnerGenius?
+      {/* Problem Framing Section */}
+      <section ref={problemRef} className="py-16 sm:py-20 bg-slate-50">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
+              Power Outages Aren't Just Inconvenient—<span className="text-red-600">They're Expensive</span>
             </h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              We eliminate the frustrations you experience with other solar generator brands
+            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+              The average business loses $5,600 per minute of downtime. Is your backup plan ready?
             </p>
           </div>
 
-          <div
-            ref={featuresRef}
-            className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
-          >
-            {features.map((feature, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {problems.map((problem, index) => (
               <motion.div
-                key={feature.title}
+                key={problem.title}
                 initial={{ opacity: 0, y: 20 }}
-                animate={featuresInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={problemInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card className="h-full border-2 hover:border-emerald-500 hover:shadow-xl transition-all duration-300">
-                  <CardContent className="p-6 text-center">
-                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-emerald-100 to-sky-100">
-                      <feature.icon className="h-8 w-8 text-emerald-600" />
-                    </div>
-                    <h3 className="mb-2 text-xl font-bold text-gray-900">{feature.title}</h3>
-                    <p className="text-gray-600">{feature.description}</p>
+                <Card className="h-full border-2 border-slate-200 hover:border-red-200 transition-colors bg-white">
+                  <CardContent className="p-6">
+                    <problem.icon className={`h-10 w-10 mb-4 ${problem.color}`} />
+                    <h3 className="font-bold text-slate-900 mb-2">{problem.title}</h3>
+                    <p className="text-sm text-slate-600">{problem.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -192,149 +207,223 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Product Showcase */}
-      <section ref={productsRef} className="py-24 bg-gray-50">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              From Camping to Commercial
+      {/* Who It's For */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
+              Built For Organizations That Can't Afford Downtime
             </h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              The widest range in the industry - find your perfect power solution
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {audiences.map((audience) => (
+              <div key={audience.title} className="text-center p-6 rounded-xl bg-slate-50 hover:bg-emerald-50 transition-colors">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 mb-4">
+                  <audience.icon className="h-8 w-8 text-emerald-600" />
+                </div>
+                <h3 className="font-bold text-slate-900 mb-1">{audience.title}</h3>
+                <p className="text-sm text-slate-500">{audience.examples}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Nomad 20K Feature Section */}
+      <section ref={solutionRef} className="py-16 sm:py-24 bg-gradient-to-br from-emerald-900 to-slate-900 text-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={solutionInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="inline-flex items-center gap-2 bg-emerald-500/20 rounded-full px-4 py-1.5 mb-6">
+                <Zap className="h-4 w-4 text-emerald-400" />
+                <span className="text-sm font-medium text-emerald-300">Our Most Popular Commercial System</span>
+              </div>
+              
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+                EnerGenius Nomad 20K
+              </h2>
+              
+              <p className="text-lg text-slate-300 mb-8 leading-relaxed">
+                The reference standard for commercial backup power. 20,000 watts of clean, silent power 
+                that runs for days—not hours. No fuel, no fumes, no noise complaints.
+              </p>
+
+              {/* Key Specs Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+                {nomadSpecs.map((spec) => (
+                  <div key={spec.label} className="bg-white/10 rounded-lg p-4">
+                    <p className="text-2xl font-bold text-emerald-400">{spec.value}</p>
+                    <p className="text-sm text-slate-400">{spec.label}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Benefits */}
+              <div className="space-y-3 mb-8">
+                {[
+                  'Powers entire buildings for 24-72+ hours',
+                  'Silent operation—no noise complaints',
+                  'Zero fuel storage or maintenance',
+                  'Qualifies for 30% Federal Tax Credit',
+                  'Professional installation included with Turnkey package',
+                ].map((benefit) => (
+                  <div key={benefit} className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                    <span className="text-slate-200">{benefit}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/quote">
+                  <Button size="lg" className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white px-8">
+                    Get Your Assessment
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Link href="/products">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto border-emerald-300 bg-emerald-800/50 text-white hover:bg-emerald-800">
+                    See All Systems
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={solutionInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-500x375.jpg"
+                  alt="EnerGenius Nomad 20K Commercial Solar Generator"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              {/* Price badge */}
+              <div className="absolute -bottom-4 -right-4 bg-white text-slate-900 rounded-xl shadow-xl p-4">
+                <p className="text-sm text-slate-500">Starting at</p>
+                <p className="text-2xl font-bold text-emerald-600">$18,750</p>
+                <p className="text-xs text-slate-400">Tax credit eligible</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Installation Options */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
+              Two Ways to Get Started
+            </h2>
+            <p className="mt-4 text-lg text-slate-600">
+              From DIY setup to complete turnkey installation
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {products.map((product, index) => (
-              <motion.div
-                key={product.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={productsInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Link href={`/products?tier=${product.tier}`}>
-                  <Card className="h-full overflow-hidden hover:shadow-2xl transition-all duration-300 group cursor-pointer">
-                    <div className="relative aspect-square">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-1">{product.name}</h3>
-                      <p className="text-emerald-600 font-semibold mb-2">{product.range}</p>
-                      <p className="text-gray-600 text-sm mb-3">{product.description}</p>
-                      
-                      {/* Real-World Benefits */}
-                      {product.benefits && (
-                        <div className="mt-3 pt-3 border-t border-gray-200">
-                          <p className="text-xs font-semibold text-gray-500 mb-2">What You Can Power:</p>
-                          <div className="space-y-1">
-                            {product.benefits.map((benefit, idx) => (
-                              <div key={idx} className="text-xs text-gray-700 flex items-center gap-1.5">
-                                <span className="text-emerald-600">✓</span>
-                                <span>{benefit}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Quick Start */}
+            <Card className="border-2 hover:border-emerald-200 transition-colors">
+              <CardContent className="p-8">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-slate-100 mb-6">
+                  <Plug className="h-7 w-7 text-slate-600" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Quick Start Install</h3>
+                <p className="text-emerald-600 font-semibold mb-4">$399</p>
+                <p className="text-slate-600 mb-6">
+                  Perfect if you have a licensed electrician. We deliver, you handle installation.
+                </p>
+                <ul className="space-y-2 text-sm text-slate-600">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-500" />
+                    System delivery & setup guidance
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-500" />
+                    Remote technical support
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-500" />
+                    Installation documentation
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
 
-          <div className="mt-12 text-center">
-            <Link href="/products">
-              <Button size="lg" className="bg-gradient-to-r from-emerald-600 to-sky-600 text-white hover:from-emerald-700 hover:to-sky-700">
-                View All Products
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+            {/* Turnkey - Emphasized */}
+            <Card className="border-2 border-emerald-500 bg-emerald-50 relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                <span className="bg-emerald-500 text-white text-sm font-semibold px-4 py-1 rounded-full">
+                  Most Popular
+                </span>
+              </div>
+              <CardContent className="p-8">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-100 mb-6">
+                  <ShieldCheck className="h-7 w-7 text-emerald-600" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Turnkey Installation</h3>
+                <p className="text-emerald-600 font-semibold mb-4">$2,499</p>
+                <p className="text-slate-600 mb-6">
+                  We handle everything. Site audit, permits, professional installation, and commissioning.
+                </p>
+                <ul className="space-y-2 text-sm text-slate-600">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-600" />
+                    Complete site assessment
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-600" />
+                    Professional installation
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-600" />
+                    Permit coordination
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-600" />
+                    System commissioning & training
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* Divisions CTA */}
-      <section className="py-24 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {/* Residential */}
-            <div className="relative overflow-hidden rounded-2xl shadow-xl">
-              <div className="relative h-96">
-                <Image
-                  src="https://us.images.westend61.de/0001906127pw/happy-family-standing-in-front-their-family-house-with-solar-panels-on-the-roof-HAPF03484.jpg"
-                  alt="Residential solar"
-                  fill
-                  className="object-cover brightness-75"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-8 text-white">
-                  <Zap className="h-12 w-12 mb-4 text-emerald-400" />
-                  <h3 className="text-3xl font-bold mb-2">Residential Solutions</h3>
-                  <p className="text-gray-200 mb-4">
-                    Keep your family safe and comfortable during any outage
-                  </p>
-                  <Link href="/residential">
-                    <Button className="bg-white text-emerald-600 hover:bg-gray-100">
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Commercial */}
-            <div className="relative overflow-hidden rounded-2xl shadow-xl">
-              <div className="relative h-96">
-                <Image
-                  src="https://www.energy.gov/sites/default/files/2021-06/35502216484_c1b49186db_k.jpg"
-                  alt="Commercial solar"
-                  fill
-                  className="object-cover brightness-75"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-8 text-white">
-                  <Users className="h-12 w-12 mb-4 text-sky-400" />
-                  <h3 className="text-3xl font-bold mb-2">Commercial Solutions</h3>
-                  <p className="text-gray-200 mb-4">
-                    Keep your business running, no matter what
-                  </p>
-                  <Link href="/commercial">
-                    <Button className="bg-white text-emerald-600 hover:bg-gray-100">
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-24 bg-gray-50">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Trusted by Customers Across America
+      {/* Social Proof */}
+      <section className="py-16 sm:py-20 bg-slate-50">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
+              Real Businesses. Real Results.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-2 hover:border-emerald-500 transition-colors">
+          <div className="grid md:grid-cols-3 gap-8">
+            {useCases.map((useCase, index) => (
+              <Card key={index} className="border-0 shadow-lg bg-white">
                 <CardContent className="p-6">
-                  <p className="text-gray-700 italic mb-4">"{testimonial.quote}"</p>
+                  <div className="mb-4">
+                    <span className="inline-block bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">
+                      {useCase.type}
+                    </span>
+                  </div>
+                  <p className="text-slate-700 italic mb-6">"{useCase.quote}"</p>
                   <div className="border-t pt-4">
-                    <p className="font-semibold text-gray-900">{testimonial.author}</p>
-                    <p className="text-sm text-gray-600">{testimonial.location}</p>
+                    <p className="font-semibold text-slate-900">{useCase.author}</p>
+                    <p className="text-sm text-slate-500">{useCase.location}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -344,27 +433,31 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 bg-gradient-to-r from-emerald-600 to-sky-600 text-white">
-        <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-6">
-            Ready to Take Control of Your Power?
+      <section className="py-20 sm:py-24 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+            Don't Wait for the Next Outage
           </h2>
-          <p className="text-xl text-emerald-50 mb-8">
-            Join thousands of satisfied customers who chose EnerGenius for their energy independence
+          <p className="text-xl text-emerald-50 mb-8 max-w-2xl mx-auto">
+            A 15-minute assessment will tell you exactly what size system your building needs 
+            and what it will cost—no pressure, no obligation.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/products">
-              <Button size="lg" variant="outline" className="text-emerald-600 bg-white hover:bg-gray-100 border-0 px-8 py-6 text-lg">
-                Browse Products
-              </Button>
-            </Link>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/quote">
-              <Button size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 px-8 py-6 text-lg">
-                Get Free Quote
-                <ArrowRight className="ml-2 h-5 w-5" />
+              <Button 
+                size="lg" 
+                className="bg-white text-emerald-700 hover:bg-slate-100 px-10 py-7 text-lg font-semibold rounded-xl"
+              >
+                <Calendar className="mr-2 h-5 w-5" />
+                Get a 15-Minute Energy Assessment
               </Button>
             </Link>
           </div>
+          
+          <p className="mt-6 text-emerald-100 text-sm">
+            Or call us directly: <a href="tel:+18005551234" className="underline font-semibold">1-800-555-1234</a>
+          </p>
         </div>
       </section>
     </div>
