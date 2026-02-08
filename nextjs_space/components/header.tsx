@@ -57,8 +57,18 @@ export default function Header() {
           </Link>
         </div>
         
-        {/* Mobile Action Button - Right Side */}
+        {/* Mobile Action Buttons - Right Side */}
         <div className="flex items-center gap-2 lg:hidden">
+          <Link href="/calculators">
+            <Button 
+              size="sm" 
+              variant="outline"
+              className="border-emerald-600 text-emerald-600 hover:bg-emerald-50 text-xs font-semibold px-2"
+              aria-label="Calculator"
+            >
+              <Calculator className="h-4 w-4" />
+            </Button>
+          </Link>
           <Link href="/quote">
             <Button 
               size="sm" 
@@ -116,7 +126,13 @@ export default function Header() {
         </div>
         
         {/* Desktop CTA */}
-        <div className="hidden lg:flex lg:items-center lg:gap-4 lg:ml-auto">
+        <div className="hidden lg:flex lg:items-center lg:gap-3 lg:ml-auto">
+          <Link href="/calculators">
+            <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-50 font-semibold">
+              <Calculator className="mr-2 h-4 w-4" />
+              Calculator
+            </Button>
+          </Link>
           <Link href="/quote">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold">
               <Calendar className="mr-2 h-4 w-4" />

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Battery, Zap, Shield, ArrowRight, Star, CheckCircle, Calendar, Building2, Home, Briefcase } from 'lucide-react'
+import { Battery, Zap, Shield, ArrowRight, Star, CheckCircle, Calendar, Building2, Home, Briefcase, BatteryCharging } from 'lucide-react'
 
 interface Product {
   id: string
@@ -28,6 +28,7 @@ const categories = [
   { id: 'featured', label: 'Featured', icon: Star },
   { id: 'residential', label: 'Residential', icon: Home },
   { id: 'commercial', label: 'Commercial', icon: Building2 },
+  { id: 'powerbanks', label: 'Power Banks', icon: BatteryCharging },
   { id: 'all', label: 'All Products', icon: Briefcase },
 ]
 
@@ -57,19 +58,32 @@ export default function ProductsPage() {
     p.model?.toLowerCase().includes('nomad') && p.model?.toLowerCase().includes('20')
   )
 
+  // Helper to extract capacity for power banks (Amp Hours)
+  const extractCapacity = (product: Product): number => {
+    const capacityMatch = product.batteryCapacity?.match(/(\d+)/);
+    return capacityMatch ? parseInt(capacityMatch[1]) : 0;
+  }
+
   // Categorize products
+  const isPowerBank = (p: Product) => 
+    p.model?.toLowerCase().includes('powerbank') || p.tier === 'Battery'
+
+  const powerBankProducts = products
+    .filter(p => isPowerBank(p))
+    .sort((a, b) => extractCapacity(a) - extractCapacity(b))
+
   const residentialProducts = products
-    .filter(p => !p.model?.toLowerCase().includes('powerbank') && p.tier !== 'Battery')
+    .filter(p => !isPowerBank(p))
     .filter(p => extractWattage(p) <= 8000)
     .sort((a, b) => extractWattage(a) - extractWattage(b))
 
   const commercialProducts = products
-    .filter(p => !p.model?.toLowerCase().includes('powerbank') && p.tier !== 'Battery')
+    .filter(p => !isPowerBank(p))
     .filter(p => extractWattage(p) > 8000)
     .sort((a, b) => extractWattage(a) - extractWattage(b))
 
   const allGenerators = products
-    .filter(p => !p.model?.toLowerCase().includes('powerbank') && p.tier !== 'Battery')
+    .filter(p => !isPowerBank(p))
     .sort((a, b) => extractWattage(a) - extractWattage(b))
 
   // Get products based on active category
@@ -79,8 +93,10 @@ export default function ProductsPage() {
         return residentialProducts
       case 'commercial':
         return commercialProducts
+      case 'powerbanks':
+        return powerBankProducts
       case 'all':
-        return allGenerators
+        return [...allGenerators, ...powerBankProducts]
       default:
         return []
     }
@@ -295,6 +311,40 @@ export default function ProductsPage() {
                   </Button>
                 </div>
               </div>
+
+              {/* Power Banks Preview */}
+              {powerBankProducts.length > 0 && (
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h2 className="text-2xl font-bold text-slate-900">Power Banks &amp; Expandable Storage</h2>
+                      <p className="text-slate-600">Extend your system capacity with additional batteries</p>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setActiveCategory('powerbanks')}
+                      className="hidden sm:flex"
+                    >
+                      View All ({powerBankProducts.length})
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {powerBankProducts.slice(0, 3).map((product) => (
+                      <ProductCard key={product.id} product={product} isPowerBank />
+                    ))}
+                  </div>
+                  <div className="mt-4 sm:hidden">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setActiveCategory('powerbanks')}
+                      className="w-full"
+                    >
+                      View All Power Banks ({powerBankProducts.length})
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             // Category view - Show all products in category
@@ -303,17 +353,23 @@ export default function ProductsPage() {
                 <h2 className="text-2xl font-bold text-slate-900">
                   {activeCategory === 'residential' && 'Residential Solutions'}
                   {activeCategory === 'commercial' && 'Commercial Solutions'}
+                  {activeCategory === 'powerbanks' && 'Power Banks & Expandable Storage'}
                   {activeCategory === 'all' && 'All Products'}
                 </h2>
                 <p className="text-slate-600">
                   {activeCategory === 'residential' && `${residentialProducts.length} products for home backup power`}
                   {activeCategory === 'commercial' && `${commercialProducts.length} products for business backup power`}
-                  {activeCategory === 'all' && `${allGenerators.length} total products`}
+                  {activeCategory === 'powerbanks' && `${powerBankProducts.length} expansion batteries for your system`}
+                  {activeCategory === 'all' && `${allGenerators.length + powerBankProducts.length} total products`}
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {getDisplayedProducts().map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard 
+                    key={product.id} 
+                    product={product} 
+                    isPowerBank={product.model?.toLowerCase().includes('powerbank') || product.tier === 'Battery'}
+                  />
                 ))}
               </div>
             </div>
@@ -344,7 +400,7 @@ export default function ProductsPage() {
 }
 
 // Simplified Product Card Component
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product, isPowerBank = false }: { product: Product; isPowerBank?: boolean }) {
   const extractWattage = (wattage: string): number => {
     const match = wattage?.match(/(\d+)/)
     return match ? parseInt(match[1]) : 0
@@ -352,8 +408,14 @@ function ProductCard({ product }: { product: Product }) {
   
   const watts = extractWattage(product.wattage)
   
+  // Extract capacity for power banks
+  const extractCapacity = (capacity: string): string => {
+    const match = capacity?.match(/(\d+)\s*(Ah|AH|amp|Amp)/i)
+    return match ? `${match[1]} Ah` : capacity || ''
+  }
+  
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-all bg-white">
+    <Card className={`overflow-hidden hover:shadow-lg transition-all bg-white ${isPowerBank ? 'border-sky-200 border-2' : ''}`}>
       <div className="relative aspect-[4/3]">
         <Image
           src={product.imageUrl || ''}
@@ -362,23 +424,40 @@ function ProductCard({ product }: { product: Product }) {
           className="object-cover"
         />
         <div className="absolute top-3 right-3">
-          <Badge className="bg-slate-900/80 text-white">{product.tier}</Badge>
+          <Badge className={isPowerBank ? 'bg-sky-600 text-white' : 'bg-slate-900/80 text-white'}>
+            {isPowerBank ? 'Expansion Battery' : product.tier}
+          </Badge>
         </div>
       </div>
       <CardContent className="p-5">
         <h3 className="text-lg font-bold text-slate-900 mb-1">{product.model}</h3>
-        <p className="text-xl font-bold text-emerald-600 mb-3">{product.price}</p>
+        <p className={`text-xl font-bold mb-3 ${isPowerBank ? 'text-sky-600' : 'text-emerald-600'}`}>{product.price}</p>
         
         {/* Key Specs - Clean and Simple */}
         <div className="flex flex-wrap gap-3 mb-4 text-sm text-slate-600">
-          <div className="flex items-center gap-1">
-            <Zap className="h-4 w-4 text-emerald-600" />
-            <span>{product.wattage?.split('/')[0]}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Battery className="h-4 w-4 text-sky-600" />
-            <span>{product.batteryType}</span>
-          </div>
+          {isPowerBank ? (
+            <>
+              <div className="flex items-center gap-1">
+                <BatteryCharging className="h-4 w-4 text-sky-600" />
+                <span>{extractCapacity(product.batteryCapacity)}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Battery className="h-4 w-4 text-sky-600" />
+                <span>{product.batteryType}</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex items-center gap-1">
+                <Zap className="h-4 w-4 text-emerald-600" />
+                <span>{product.wattage?.split('/')[0]}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Battery className="h-4 w-4 text-sky-600" />
+                <span>{product.batteryType}</span>
+              </div>
+            </>
+          )}
           <div className="flex items-center gap-1">
             <Shield className="h-4 w-4 text-slate-500" />
             <span>{product.warranty}</span>
@@ -387,15 +466,21 @@ function ProductCard({ product }: { product: Product }) {
         
         {/* What it can power - Simple examples */}
         <div className="mb-4 text-sm text-slate-500">
-          {watts <= 1000 && 'Great for: Phones, laptops, small appliances'}
-          {watts > 1000 && watts <= 3000 && 'Great for: Fridge, lights, TV, computers'}
-          {watts > 3000 && watts <= 8000 && 'Great for: Whole home essentials, AC unit'}
-          {watts > 8000 && watts <= 15000 && 'Great for: Full building, multiple AC units'}
-          {watts > 15000 && 'Great for: Commercial buildings, industrial use'}
+          {isPowerBank ? (
+            'Expands storage capacity for longer backup runtime'
+          ) : (
+            <>
+              {watts <= 1000 && 'Great for: Phones, laptops, small appliances'}
+              {watts > 1000 && watts <= 3000 && 'Great for: Fridge, lights, TV, computers'}
+              {watts > 3000 && watts <= 8000 && 'Great for: Whole home essentials, AC unit'}
+              {watts > 8000 && watts <= 15000 && 'Great for: Full building, multiple AC units'}
+              {watts > 15000 && 'Great for: Commercial buildings, industrial use'}
+            </>
+          )}
         </div>
         
         <Link href={`/products/${product.id}`}>
-          <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+          <Button className={`w-full ${isPowerBank ? 'bg-sky-600 hover:bg-sky-700' : 'bg-emerald-600 hover:bg-emerald-700'} text-white`}>
             View Details
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>

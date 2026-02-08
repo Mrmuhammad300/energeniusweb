@@ -127,7 +127,7 @@ export default function HomePage() {
           >
             {/* Problem-Solution Headline */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight px-2">
-              Your Business Never Stops —<br className="hidden sm:block" />
+              Your Business Never Stops<br className="hidden sm:block" />
               <span className="text-emerald-400">Even When the Grid Does</span>
             </h1>
             
@@ -212,7 +212,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <p className="text-emerald-600 font-semibold text-sm uppercase tracking-wide mb-3">
-              Stay Online, Stay Productive — No Fuel, No Noise, No Downtime
+              Stay Online, Stay Productive. No Fuel. No Noise. No Downtime.
             </p>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
               Built For Organizations That Can't Afford Downtime
