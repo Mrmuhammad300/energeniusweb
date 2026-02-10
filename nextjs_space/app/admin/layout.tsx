@@ -24,6 +24,7 @@ import {
   Headphones,
   Shield,
   Package,
+  Calculator,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -106,9 +107,15 @@ const navItems: NavItem[] = [
     icon: FileType,
     permissions: ['settings:edit'],
   },
-  { 
-    href: '/admin/audit-logs', 
-    label: 'Audit Logs', 
+  {
+    href: '/admin/install-calculator',
+    label: 'Install Calculator',
+    icon: Calculator,
+    permissions: ['quotes:view_all', 'quotes:view_own', 'invoices:view_all', 'invoices:view_own'],
+  },
+  {
+    href: '/admin/audit-logs',
+    label: 'Audit Logs',
     icon: Shield,
     permissions: ['audit:view'],
   },
