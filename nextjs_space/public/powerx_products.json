@@ -1,7 +1,7 @@
 {
   "generators": [
     {
-      "model": "Power X Lithium 30000 Watt Solar Generator",
+      "model": "EnerGenius Nomad 30K Solar Generator",
       "price": "$31,475.00",
       "wattage": "30,000W Continuous / 40,000W Peak",
       "specifications": {
@@ -28,20 +28,21 @@
         "Overload Protection",
         "Weatherproof Enclosure with Folding Handles",
         "EMP Production Certified",
-        "Qualifies for 30% Federal Tax Credit"
+        "Qualifies for 30% Federal Tax Credit",
+        "SmartConnect™ remote monitoring compatible"
       ],
-      "description": "The Power X-Lithium 30000 Watt is the ultimate solar generator solution, utilizing advanced lithium battery technology for extended runtime and faster recharging. With 30,000 watts of continuous power and 40,000 watts peak, it can handle the most demanding power needs. Features 800 amp hours of battery capacity, dual voltage output (120/240V), and weatherproof construction for reliability in any conditions.",
+      "description": "The EnerGenius Nomad 30K is the ultimate solar generator solution, utilizing advanced lithium battery technology for extended runtime and faster recharging. With 30,000 watts of continuous power and 40,000 watts peak, it can handle the most demanding power needs. Features 800 amp hours of battery capacity, dual voltage output (120/240V), and weatherproof construction for reliability in any conditions.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-1-500x375.jpg",
       "warranty": "1 Year (8-year warranty emphasized)",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Nomad Series",
       "included_accessories": [
         "Solar Panels",
         "50 Foot MC4 Connector Cable"
       ],
-      "sku": "Lithium-30000-1-1"
+      "sku": "EG-30000-1-1"
     },
     {
-      "model": "Power X Lithium 25000 Watt Solar Generator",
+      "model": "EnerGenius Nomad 25K Solar Generator",
       "price": "$24,750.00",
       "wattage": "25,000W Continuous / 40,000W Peak",
       "specifications": {
@@ -68,20 +69,21 @@
         "Overload Protection",
         "Weatherproof Enclosures with folding handles",
         "EMP Production Certified",
-        "Qualifies for 30% Federal Tax Credit"
+        "Qualifies for 30% Federal Tax Credit",
+        "SmartConnect™ remote monitoring compatible"
       ],
-      "description": "The Power X-Lithium 25000 Watt Solar Generator combines innovative design with lithium battery technology for superior performance. Delivering 25,000 watts continuous and 40,000 watts peak power, this unit offers exceptional reliability for large-scale power needs. Features 800 amp hours of capacity and dual voltage output for versatile applications.",
+      "description": "The EnerGenius Nomad 25K Solar Generator combines innovative design with lithium battery technology for superior performance. Delivering 25,000 watts continuous and 40,000 watts peak power, this unit offers exceptional reliability for large-scale power needs. Features 800 amp hours of capacity and dual voltage output for versatile applications.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-1-500x375.jpg",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Nomad Series",
       "included_accessories": [
         "Solar Panels",
         "50 Foot MC4 Connector Cable"
       ],
-      "sku": "Lithium-25000"
+      "sku": "EG-25000"
     },
     {
-      "model": "Power X Lithium 20000 Watt Solar Generator",
+      "model": "EnerGenius Nomad 20K Solar Generator",
       "price": "$18,750.00",
       "wattage": "20,000W Continuous / 40,000W Peak",
       "specifications": {
@@ -108,20 +110,21 @@
         "Overload Protection",
         "Weather-Proof Enclosures with Folding Handles",
         "EMP Production Provided",
-        "Qualifies for 30% Federal Tax Credit"
+        "Qualifies for 30% Federal Tax Credit",
+        "SmartConnect™ remote monitoring compatible"
       ],
-      "description": "The Power X-Lithium 20000 Watt Solar Generator provides substantial power for demanding applications with 20,000 watts continuous output and 40,000 watts peak capacity. Built with lithium battery technology for extended runtime and rapid recharging, featuring 400 amp hours of storage and dual voltage capabilities.",
+      "description": "The EnerGenius Nomad 20K Solar Generator provides substantial power for demanding applications with 20,000 watts continuous output and 40,000 watts peak capacity. Built with lithium battery technology for extended runtime and rapid recharging, featuring 400 amp hours of storage and dual voltage capabilities.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-500x375.jpg",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Nomad Series",
       "included_accessories": [
         "Solar Panels",
         "50 Foot MC4 Connector Cable"
       ],
-      "sku": "Lithium-20000"
+      "sku": "EG-20000"
     },
     {
-      "model": "Power X Lithium 15000 Watt Solar Generator",
+      "model": "EnerGenius Nomad 15K Solar Generator",
       "price": "$14,950.00",
       "wattage": "15,000W Continuous / 30,000W Peak",
       "specifications": {
@@ -147,20 +150,21 @@
         "Built-in AC/DC voltage meter",
         "Low voltage indicator",
         "Overload protection",
-        "Qualifies for 30% Federal Tax Credit"
+        "Qualifies for 30% Federal Tax Credit",
+        "SmartConnect™ remote monitoring compatible"
       ],
-      "description": "The Power X-Lithium 15000 Watt Solar Generator delivers reliable 15,000 watts continuous power with 30,000 watts peak capacity. Advanced lithium battery technology provides 600 amp hours of storage with superior cycle life and performance for whole-home backup or commercial applications.",
+      "description": "The EnerGenius Nomad 15K Solar Generator delivers reliable 15,000 watts continuous power with 30,000 watts peak capacity. Advanced lithium battery technology provides 600 amp hours of storage with superior cycle life and performance for whole-home backup or commercial applications.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-500x375.jpg",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Nomad Series",
       "included_accessories": [
         "Solar Panels",
         "50 Foot MC4 Connector Cable"
       ],
-      "sku": "Lithium-15000"
+      "sku": "EG-15000"
     },
     {
-      "model": "Power X Lithium 10000 Watt Solar Generator",
+      "model": "EnerGenius Nomad 10K Solar Generator",
       "price": "$10,350.00",
       "wattage": "10,000W Continuous / 20,000W Peak",
       "specifications": {
@@ -186,20 +190,21 @@
         "Low Voltage Indicator",
         "Overload Protection",
         "EMP Production Provided",
-        "Qualifies for 30% Federal Tax Credit"
+        "Qualifies for 30% Federal Tax Credit",
+        "SmartConnect™ remote monitoring compatible"
       ],
-      "description": "The Power X-Lithium 10000 Watt Solar Generator features the same innovative design as traditional Power X Solar Generators but utilizes lithium batteries for enhanced performance. With 10,000 watts continuous power and 400 amp hours of storage, it's ideal for home backup or off-grid applications.",
+      "description": "The EnerGenius Nomad 10K Solar Generator features the same innovative design as traditional EnerGenius Solar Generators but utilizes lithium batteries for enhanced performance. With 10,000 watts continuous power and 400 amp hours of storage, it's ideal for home backup or off-grid applications.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/2new5000.jpg",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Nomad Series",
       "included_accessories": [
         "Solar Panels",
         "50 Foot MC4 Connector Cable"
       ],
-      "sku": "Lithium-10000"
+      "sku": "EG-10000"
     },
     {
-      "model": "Power X Lithium 8000 Watt Solar Generator",
+      "model": "EnerGenius Nomad 8K Solar Generator",
       "price": "$8,825.00",
       "wattage": "8,000W Continuous / 16,000W Peak",
       "specifications": {
@@ -227,20 +232,21 @@
         "Overload Protection",
         "Low Voltage Indicator",
         "Integrated Volt Meter",
-        "Qualifies for 30% Federal Tax Credit"
+        "Qualifies for 30% Federal Tax Credit",
+        "SmartConnect™ remote monitoring compatible"
       ],
-      "description": "The Power X-Lithium 8000 Watt Solar Generator provides robust 8,000 watts of continuous power with lithium battery technology for extended runtime and rapid recharging. Features 400 amp hours of capacity, dual voltage output, and weatherproof construction for reliable performance.",
+      "description": "The EnerGenius Nomad 8K Solar Generator provides robust 8,000 watts of continuous power with lithium battery technology for extended runtime and rapid recharging. Features 400 amp hours of capacity, dual voltage output, and weatherproof construction for reliable performance.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/2new5000.jpg",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Nomad Series",
       "included_accessories": [
         "Solar Panels",
         "50 Foot MC4 Connector Cable"
       ],
-      "sku": "Lithium-8000"
+      "sku": "EG-8000"
     },
     {
-      "model": "Power X Lithium 5000 Watt Solar Generator",
+      "model": "EnerGenius Nomad 5K Solar Generator",
       "price": "$6,325.00",
       "wattage": "5,000W Continuous / 10,000W Peak",
       "specifications": {
@@ -267,20 +273,21 @@
         "Weather Proof Enclosures with Retractable Handle",
         "Overload Protection",
         "Low Voltage Indicator",
-        "Qualifies for 30% Federal Tax Credit"
+        "Qualifies for 30% Federal Tax Credit",
+        "SmartConnect™ remote monitoring compatible"
       ],
-      "description": "The Power X-Lithium 5000 Watt Solar Generator combines innovative design with lithium battery technology for superior performance. Delivers 5,000 watts continuous power with 10,000 watts peak capacity, featuring 400 amp hours of storage and dual voltage output for versatile applications.",
+      "description": "The EnerGenius Nomad 5K Solar Generator combines innovative design with lithium battery technology for superior performance. Delivers 5,000 watts continuous power with 10,000 watts peak capacity, featuring 400 amp hours of storage and dual voltage output for versatile applications.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/2new5000.jpg",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Nomad Series",
       "included_accessories": [
         "Solar Panels",
         "50 Foot MC4 Connector Cable"
       ],
-      "sku": "Lithium-5000"
+      "sku": "EG-5000"
     },
     {
-      "model": "Power X Lithium 3000 Watt Solar Generator",
+      "model": "EnerGenius Guardian 3K Solar Generator",
       "price": "$3,750.00",
       "wattage": "3,000W Continuous / 6,000W Peak",
       "specifications": {
@@ -308,17 +315,17 @@
         "Includes Solar Panel Kit",
         "Qualifies for 30% Federal Tax Credit"
       ],
-      "description": "The Power X-Lithium 3000 Watt Solar Generator retains the innovative Power X design with enhanced lithium battery technology. Perfect for medium power needs, providing 3,000 watts continuous and 6,000 watts peak with 200 amp hours of capacity.",
+      "description": "The EnerGenius Guardian 3K Solar Generator retains the innovative EnerGenius design with enhanced lithium battery technology. Perfect for medium power needs, providing 3,000 watts continuous and 6,000 watts peak with 200 amp hours of capacity.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/3600-500x357.png",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Guardian Series",
       "included_accessories": [
         "Solar Panel Kit"
       ],
-      "sku": "Lithium-3000"
+      "sku": "EG-3000"
     },
     {
-      "model": "Power X Lithium 2000 Watt Solar Generator",
+      "model": "EnerGenius Guardian 2K Solar Generator",
       "price": "$2,495.00",
       "wattage": "2,000W Continuous / 4,000W Peak",
       "specifications": {
@@ -346,17 +353,17 @@
         "Solar Panel Kit Included",
         "Qualifies for 30% Federal Tax Credit"
       ],
-      "description": "The Power X-Lithium 2000 Watt Solar Generator features lithium battery technology with 2.5x faster recharging and extended runtime. Compact and portable at 55 lbs, delivering 2,000 watts continuous power with 120 amp hours of capacity.",
+      "description": "The EnerGenius Guardian 2K Solar Generator features lithium battery technology with 2.5x faster recharging and extended runtime. Compact and portable at 55 lbs, delivering 2,000 watts continuous power with 120 amp hours of capacity.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/Picture1-500x338.png",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Guardian Series",
       "included_accessories": [
         "Solar Panel Kit"
       ],
-      "sku": "Lithium-2000"
+      "sku": "EG-2000"
     },
     {
-      "model": "Power X Lithium 1500 Watt Solar Generator",
+      "model": "EnerGenius Guardian 1.5K Solar Generator",
       "price": "$2,045.00",
       "wattage": "1,500W Continuous / 3,000W Peak",
       "specifications": {
@@ -384,17 +391,17 @@
         "Solar Panel Kit Included",
         "Qualifies for 30% Federal Tax Credit"
       ],
-      "description": "The Power X-Lithium 1500 Watt Solar Generator combines innovative design with lithium battery technology, offering 2.5 times longer runtime and faster recharging. Compact at 55 lbs with 1,500 watts continuous power and 120 amp hours of capacity.",
+      "description": "The EnerGenius Guardian 1.5K Solar Generator combines innovative design with lithium battery technology, offering 2.5 times longer runtime and faster recharging. Compact at 55 lbs with 1,500 watts continuous power and 120 amp hours of capacity.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/Picture1-500x338.png",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Guardian Series",
       "included_accessories": [
         "Solar Panel Kit"
       ],
-      "sku": "Lithium-1500"
+      "sku": "EG-1500"
     },
     {
-      "model": "Power X Lithium 1000 Watt Solar Generator (Mini)",
+      "model": "EnerGenius Scout 1K Solar Generator",
       "price": "$1,000.00",
       "wattage": "1,000W Continuous / 2,000W Peak",
       "specifications": {
@@ -422,17 +429,17 @@
         "Stackable (compatible with 750, 1000, 1500, 2000)",
         "Qualifies for 30% Federal Tax Credit"
       ],
-      "description": "The Power X Lithium 1000 Watt Mini Solar Generator is ultra-portable at just 33 lbs while delivering 1,000 watts of continuous power. Features 40 amp hours of lithium battery capacity with stackable design for expandability.",
+      "description": "The EnerGenius Scout 1K Solar Generator is ultra-portable at just 33 lbs while delivering 1,000 watts of continuous power. Features 40 amp hours of lithium battery capacity with stackable design for expandability.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/px-400-pic-new2-1-500x331.jpg",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator - Mini",
+      "category": "EnerGenius Scout Series",
       "included_accessories": [
         "Solar Panel"
       ],
-      "sku": "Lithium-1000-mini"
+      "sku": "EG-1000-mini"
     },
     {
-      "model": "Power X Lithium 1000 Watt Solar Generator",
+      "model": "EnerGenius Guardian 1K Solar Generator",
       "price": "$1,995.00",
       "wattage": "1,000W Continuous / 2,000W Peak",
       "specifications": {
@@ -461,17 +468,17 @@
         "Solar Panel Kit Included",
         "Qualifies for 30% Federal Tax Credit"
       ],
-      "description": "The Power X-Lithium 1000 Watt Solar Generator features innovative design with lithium batteries for 2.5x more runtime and faster recharging. With 120 amp hours of capacity and 1,000 watts continuous power in a portable 40 lb package.",
+      "description": "The EnerGenius Guardian 1K Solar Generator features innovative design with lithium batteries for 2.5x more runtime and faster recharging. With 120 amp hours of capacity and 1,000 watts continuous power in a portable 40 lb package.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/Picture1-500x338.png",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Guardian Series",
       "included_accessories": [
         "Solar Panel Kit"
       ],
-      "sku": "Lithium-1000"
+      "sku": "EG-1000"
     },
     {
-      "model": "Power X Lithium 750 Watt Solar Generator (Mini)",
+      "model": "EnerGenius Scout 750 Solar Generator",
       "price": "$945.00",
       "wattage": "750W Continuous / 1,500W Peak",
       "specifications": {
@@ -498,17 +505,17 @@
         "Compatible with Stackable Units (750, 1000, 1500, 2000)",
         "Qualifies for 30% Federal Tax Credit"
       ],
-      "description": "The Power X Lithium 750 Watt Mini Solar Generator is compact and portable at 33 lbs, delivering 750 watts continuous power with 1,500 watts peak. Features 40 amp hours of lithium battery capacity with stackable design.",
+      "description": "The EnerGenius Scout 750 Solar Generator is compact and portable at 33 lbs, delivering 750 watts continuous power with 1,500 watts peak. Features 40 amp hours of lithium battery capacity with stackable design.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/px-400-pic-new2-1-500x331.jpg",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator - Mini",
+      "category": "EnerGenius Scout Series",
       "included_accessories": [
         "Solar Panel"
       ],
-      "sku": "Lithium-750-mini"
+      "sku": "EG-750-mini"
     },
     {
-      "model": "Power X Lithium 750 Watt Solar Generators",
+      "model": "EnerGenius Guardian 750 Solar Generator",
       "price": "$1,920.00",
       "wattage": "750W Continuous / 1,500W Peak",
       "specifications": {
@@ -535,17 +542,17 @@
         "Includes solar panel kit",
         "Qualifies for 30% Federal Tax Credit"
       ],
-      "description": "The Power X-Lithium 750 Watt Solar Generator offers enhanced performance with lithium battery technology. Features 2.5x longer runtime and faster recharge with 120 amp hours of capacity and 750 watts continuous power.",
+      "description": "The EnerGenius Guardian 750 Solar Generator offers enhanced performance with lithium battery technology. Features 2.5x longer runtime and faster recharge with 120 amp hours of capacity and 750 watts continuous power.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/750Lithium2-500x546.jpg",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator",
+      "category": "EnerGenius Guardian Series",
       "included_accessories": [
         "Solar Panel Kit"
       ],
-      "sku": "Lithium-750"
+      "sku": "EG-750"
     },
     {
-      "model": "Power X Lithium 400 Watt Solar Generator (Mini)",
+      "model": "EnerGenius Scout 400 Solar Generator",
       "price": "$750.00",
       "wattage": "400W Continuous / 800W Peak",
       "specifications": {
@@ -574,17 +581,17 @@
         "Stackable Compatibility: 750, 1000, 1500, 2000 Models",
         "Qualifies for 30% Federal Tax Credit"
       ],
-      "description": "The Power X Lithium 400 Watt Mini Solar Generator is the most compact option at 33 lbs, delivering 400 watts continuous power with 800 watts peak. Features 40 amp hours of lithium battery capacity with stackable design for system expandability.",
+      "description": "The EnerGenius Scout 400 Solar Generator is the most compact option at 33 lbs, delivering 400 watts continuous power with 800 watts peak. Features 40 amp hours of lithium battery capacity with stackable design for system expandability.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/px-400-pic-new2-1-500x331.jpg",
       "warranty": "1 Year",
-      "category": "Lithium Solar Generator - Mini",
+      "category": "EnerGenius Scout Series",
       "included_accessories": [
         "Solar Panel"
       ],
-      "sku": "Lithium-400-mini"
+      "sku": "EG-400-mini"
     },
     {
-      "model": "Power X 750 AGM Solar Generator",
+      "model": "EnerGenius Guardian 750 AGM Solar Generator",
       "price": "$750.00",
       "wattage": "750W Continuous / 1,500W Peak",
       "specifications": {
@@ -606,23 +613,23 @@
         "Built-in Volt Meter",
         "Overload Protection",
         "Low Voltage Indicator",
-        "Stackable unit compatible with Power X 400",
+        "Stackable unit compatible with EnerGenius Scout 400",
         "Includes Solar Panel Kit",
         "Qualifies for 30% Federal Tax Credit"
       ],
-      "description": "The Power X 750 AGM Solar Generator features traditional AGM battery technology for reliable performance. Delivers 750 watts continuous power with 100 amp hours of capacity in a compact design with full solar charging capabilities.",
+      "description": "The EnerGenius Guardian 750 AGM Solar Generator features traditional AGM battery technology for reliable performance. Delivers 750 watts continuous power with 100 amp hours of capacity in a compact design with full solar charging capabilities.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/750Lithium2.jpg",
       "warranty": "1 Year",
-      "category": "AGM Solar Generator",
+      "category": "EnerGenius Guardian AGM Series",
       "included_accessories": [
         "Solar Panel Kit"
       ],
-      "sku": "AGM-750"
+      "sku": "EG-AGM-750"
     }
   ],
   "batteries": [
     {
-      "model": "Power X Lithium X120",
+      "model": "EnerGenius PowerCell X120",
       "price": "$1,745.00",
       "wattage": "36,000W Burst Capability",
       "specifications": {
@@ -643,14 +650,14 @@
         "Voltage range 12V-15.5V",
         "High-capacity energy storage"
       ],
-      "description": "The Power X Lithium X120 is a high-capacity lithium battery designed for long-term energy storage with 20,000 cycle lifespan. Supports voltage between 12V and 15.5V with 36,000-watt burst power capability and customizable configuration options.",
+      "description": "The EnerGenius PowerCell X120 is a high-capacity lithium battery designed for long-term energy storage with 20,000 cycle lifespan. Supports voltage between 12V and 15.5V with 36,000-watt burst power capability and customizable configuration options.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/battery5-500x269.jpg",
       "warranty": "Standard Warranty",
-      "category": "Lithium Battery",
-      "sku": "Lithium-X120-amp"
+      "category": "EnerGenius PowerCell",
+      "sku": "EG-X120-amp"
     },
     {
-      "model": "Power X Lithium X90 amp",
+      "model": "EnerGenius PowerCell X90",
       "price": "$1,300.00",
       "wattage": "N/A",
       "specifications": {
@@ -666,14 +673,14 @@
         "Compact dimensions",
         "High-quality lithium technology"
       ],
-      "description": "The Power X Lithium X90 amp battery provides 90 amp hours of reliable energy storage in a compact 39 lb package. Ideal for expanding existing solar generator systems or building custom power solutions.",
+      "description": "The EnerGenius PowerCell X90 battery provides 90 amp hours of reliable energy storage in a compact 39 lb package. Ideal for expanding existing solar generator systems or building custom power solutions.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2022/05/power-x-9o-amp-3-500x667.jpg",
       "warranty": "Standard Warranty",
-      "category": "Lithium Battery",
-      "sku": "Lithium-X90-amp"
+      "category": "EnerGenius PowerCell",
+      "sku": "EG-X90-amp"
     },
     {
-      "model": "Power X Lithium X80",
+      "model": "EnerGenius PowerCell X80",
       "price": "$1,200.00",
       "wattage": "24,000W Burst Capability",
       "specifications": {
@@ -692,14 +699,14 @@
         "4-input distribution block included",
         "Charges and operates at 12V to 15.5V"
       ],
-      "description": "The Power X Lithium X80 battery features 80 amp hours of capacity with 25,000 cycle lifespan for approximately 30 years of use. Handles up to 24,000 watt burst power with customizable configuration options.",
+      "description": "The EnerGenius PowerCell X80 battery features 80 amp hours of capacity with 25,000 cycle lifespan for approximately 30 years of use. Handles up to 24,000 watt burst power with customizable configuration options.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2020/09/battery2-500x479.jpg",
       "warranty": "Standard Warranty",
-      "category": "Lithium Battery",
-      "sku": "Lithium-X80-amp"
+      "category": "EnerGenius PowerCell",
+      "sku": "EG-X80-amp"
     },
     {
-      "model": "Power X Lithium Flat Pack 45 AH",
+      "model": "EnerGenius PowerCell Flat 45",
       "price": "$950.00",
       "wattage": "N/A",
       "specifications": {
@@ -716,14 +723,14 @@
         "Compact form factor",
         "Easy installation"
       ],
-      "description": "The Power X Lithium Flat Pack 45 AH battery features a space-efficient flat pack design with 45 amp hours of capacity. Ultra-lightweight at just 19 lbs, perfect for applications where weight and space are critical.",
+      "description": "The EnerGenius PowerCell Flat 45 battery features a space-efficient flat pack design with 45 amp hours of capacity. Ultra-lightweight at just 19 lbs, perfect for applications where weight and space are critical.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2022/05/Resized_20220602_101057-500x667.jpg",
       "warranty": "Standard Warranty",
-      "category": "Lithium Battery - Flat Pack",
-      "sku": "Lithium-45-flat-pack"
+      "category": "EnerGenius PowerCell Flat",
+      "sku": "EG-45-flat-pack"
     },
     {
-      "model": "Power X Lithium Flat Pack 40 AH",
+      "model": "EnerGenius PowerCell Flat 40",
       "price": "$850.00",
       "wattage": "N/A",
       "specifications": {
@@ -740,14 +747,14 @@
         "Compact form factor",
         "Easy installation"
       ],
-      "description": "The Power X Lithium Flat Pack 40 AH battery offers 40 amp hours of capacity in a space-efficient flat pack design. Weighing just 19 lbs, it's ideal for weight-sensitive applications and tight spaces.",
+      "description": "The EnerGenius PowerCell Flat 40 battery offers 40 amp hours of capacity in a space-efficient flat pack design. Weighing just 19 lbs, it's ideal for weight-sensitive applications and tight spaces.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2022/05/Resized_20220602_101057-500x667.jpg",
       "warranty": "Standard Warranty",
-      "category": "Lithium Battery - Flat Pack",
-      "sku": "Lithium-40-flat-pack"
+      "category": "EnerGenius PowerCell Flat",
+      "sku": "EG-40-flat-pack"
     },
     {
-      "model": "Power X Lithium 45 AH Stock Location",
+      "model": "EnerGenius PowerCell 45",
       "price": "$950.00",
       "wattage": "N/A",
       "specifications": {
@@ -764,14 +771,14 @@
         "In-stock availability",
         "High-quality lithium cells"
       ],
-      "description": "The Power X Lithium 45 AH Stock Location battery provides 45 amp hours of reliable energy storage. Lightweight at 19 lbs with compact dimensions, ready to ship from stock location.",
+      "description": "The EnerGenius PowerCell 45 battery provides 45 amp hours of reliable energy storage. Lightweight at 19 lbs with compact dimensions, ready to ship from stock location.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2022/05/power-x-4o-amp-1-500x667.jpeg",
       "warranty": "Standard Warranty",
-      "category": "Lithium Battery",
-      "sku": "Lithium-X40-amp-1"
+      "category": "EnerGenius PowerCell",
+      "sku": "EG-X40-amp-1"
     },
     {
-      "model": "Power X Lithium 40 AH Stock Location",
+      "model": "EnerGenius PowerCell 40",
       "price": "$850.00",
       "wattage": "N/A",
       "specifications": {
@@ -788,11 +795,11 @@
         "In-stock availability",
         "High-quality lithium cells"
       ],
-      "description": "The Power X Lithium 40 AH Stock Location battery delivers 40 amp hours of energy storage in a lightweight 19 lb package. Compact and ready to ship from stock location for immediate availability.",
+      "description": "The EnerGenius PowerCell 40 battery delivers 40 amp hours of energy storage in a lightweight 19 lb package. Compact and ready to ship from stock location for immediate availability.",
       "image_url": "https://powerxgenerators.com/wp-content/uploads/2022/05/power-x-4o-amp-1-500x667.jpeg",
       "warranty": "Standard Warranty",
-      "category": "Lithium Battery",
-      "sku": "Lithium-X40-amp"
+      "category": "EnerGenius PowerCell",
+      "sku": "EG-X40-amp"
     }
   ],
   "metadata": {
@@ -801,11 +808,11 @@
     "total_generators": 16,
     "total_batteries": 7,
     "notes": [
-      "All lithium generators qualify for 30% Federal Tax Credit",
+      "All EnerGenius lithium generators qualify for 30% Federal Tax Credit",
       "Shipping costs not included - must contact for rates",
       "Custom shipping selection required at checkout for some products",
-      "All lithium units feature 2.5x longer runtime and 2x faster recharge vs traditional units",
-      "Mini units (400W, 750W, 1000W) are stackable and compatible with each other"
+      "All EnerGenius lithium units feature 2.5x longer runtime and 2x faster recharge vs traditional units",
+      "EnerGenius Scout units (400W, 750W, 1000W) are stackable and compatible with each other"
     ]
   }
 }

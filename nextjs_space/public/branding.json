@@ -6,6 +6,7 @@
     },
     "product": {
       "name": "EnerGenius",
+      "tagline": "True Black Start Power",
       "primary_logo": {
         "source_asset": "energenius-logo.png",
         "role": "Primary EnerGenius product logo",
@@ -24,6 +25,12 @@
           "Large prints where full text is legible"
         ],
         "primary_colors_hex": {
+          "forest_green": "#1A5D1A",
+          "forest_green_dark": "#124712",
+          "forest_green_light": "#237A23",
+          "lime_highlight": "#BADA55",
+          "lime_dark": "#9FC23A",
+          "lime_light": "#D0E87A",
           "leaf_green_dark": "#006C4A",
           "leaf_green_light": "#4AA84B",
           "teal_leaf_shadow": "#006A73",
@@ -34,12 +41,21 @@
           "text_black": "#222222",
           "background_white": "#FFFFFF"
         },
+        "website_theme": {
+          "primary": "#1A5D1A",
+          "accent": "#BADA55",
+          "secondary": "#1CA6A3",
+          "warning": "#F5B932",
+          "dark_bg": "#0a0a0a",
+          "dark_surface": "#0d1f0d"
+        },
         "typography": {
           "wordmark_font_style": "Rounded, friendly sans-serif similar to Nunito / Poppins SemiBold.",
           "subline_font_style": "Simple geometric sans-serif in all caps for 'RENEWABLE RESOURCE GROUP'."
         }
       },
       "secondary_logo": {
+        "source_asset": "energenius-badge.png",
         "role": "Compact EnerGenius secondary mark for small or constrained spaces",
         "concept": "A simplified circular badge using the same emblem (lightning bolt + leaves + sun arc) with the 'EnerGenius' wordmark either wrapped around the circle or set tightly beneath it, and no 'Renewable Resource Group' subline.",
         "layout_variants": [
@@ -70,6 +86,35 @@
           "Maintain rounded, friendly sans-serif for 'EnerGenius' to stay consistent with the primary wordmark.",
           "Use white or very light backgrounds wherever possible for maximum contrast."
         ]
+      },
+      "product_lines": {
+        "nomad": {
+          "name": "Nomad Series",
+          "description": "Commercial-grade off-grid power systems with true black start technology (5,000W+)",
+          "target": "Commercial buildings, churches, medical facilities, warehouses"
+        },
+        "guardian": {
+          "name": "Guardian Series",
+          "description": "Residential backup power solutions (under 5,000W)",
+          "target": "Homeowners, small offices, emergency preparedness"
+        },
+        "scout": {
+          "name": "Scout Series",
+          "description": "Portable mini power stations for mobile use",
+          "target": "Camping, tailgating, outdoor events, emergency kits"
+        },
+        "powercell": {
+          "name": "PowerCell Series",
+          "description": "Standalone lithium battery modules for system expansion",
+          "target": "Existing system owners, custom installations"
+        }
+      },
+      "services": {
+        "smartconnect": {
+          "name": "SmartConnect™",
+          "description": "Remote monitoring, load prioritization, fleet management, and diagnostics platform",
+          "promo": "3 months Pro tier FREE with qualifying Nomad Series (5kW+) purchase and installation"
+        }
       }
     }
   }

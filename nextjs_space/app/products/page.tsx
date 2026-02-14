@@ -114,7 +114,7 @@ export default function ProductsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-eg-forest"></div>
       </div>
     )
   }
@@ -122,7 +122,7 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-900 to-emerald-900 text-white py-16">
+      <section className="bg-gradient-to-br from-slate-900 to-eg-forest-dark text-white py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -136,7 +136,7 @@ export default function ProductsPage() {
           {/* Quick Assessment CTA */}
           <div className="flex justify-center">
             <Link href="/quote">
-              <Button className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-6 text-lg">
+              <Button className="bg-eg-forest-light hover:bg-eg-forest text-white px-8 py-6 text-lg">
                 <Calendar className="mr-2 h-5 w-5" />
                 Not Sure What You Need? Get a Free Assessment
               </Button>
@@ -164,13 +164,13 @@ export default function ProductsPage() {
                   priority
                 />
                 <div className="absolute top-4 left-4">
-                  <Badge className="bg-emerald-600 text-white px-3 py-1">Best Seller</Badge>
+                  <Badge className="bg-eg-forest text-white px-3 py-1">Best Seller</Badge>
                 </div>
               </div>
               
               <div>
                 <h2 className="text-3xl font-bold text-slate-900 mb-2">{nomad20k.model}</h2>
-                <p className="text-3xl font-bold text-emerald-600 mb-4">{nomad20k.price}</p>
+                <p className="text-3xl font-bold text-eg-forest mb-4">{nomad20k.price}</p>
                 
                 <p className="text-slate-600 mb-6">
                   The reference standard for commercial backup power. Powers entire buildings for days, 
@@ -179,19 +179,19 @@ export default function ProductsPage() {
                 
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-slate-50 rounded-lg p-4">
-                    <p className="text-2xl font-bold text-emerald-600">20,000W</p>
+                    <p className="text-2xl font-bold text-eg-forest">20,000W</p>
                     <p className="text-sm text-slate-500">Continuous Power</p>
                   </div>
                   <div className="bg-slate-50 rounded-lg p-4">
-                    <p className="text-2xl font-bold text-emerald-600">40,000W</p>
+                    <p className="text-2xl font-bold text-eg-forest">40,000W</p>
                     <p className="text-sm text-slate-500">Peak Power</p>
                   </div>
                   <div className="bg-slate-50 rounded-lg p-4">
-                    <p className="text-2xl font-bold text-emerald-600">8,000</p>
+                    <p className="text-2xl font-bold text-eg-forest">8,000</p>
                     <p className="text-sm text-slate-500">Life Cycles</p>
                   </div>
                   <div className="bg-slate-50 rounded-lg p-4">
-                    <p className="text-2xl font-bold text-emerald-600">5 Year</p>
+                    <p className="text-2xl font-bold text-eg-forest">5 Year</p>
                     <p className="text-sm text-slate-500">Warranty</p>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export default function ProductsPage() {
                     'Professional installation available',
                   ].map((benefit) => (
                     <div key={benefit} className="flex items-center gap-2 text-slate-700">
-                      <CheckCircle className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                      <CheckCircle className="h-5 w-5 text-eg-forest-light flex-shrink-0" />
                       <span>{benefit}</span>
                     </div>
                   ))}
@@ -212,13 +212,13 @@ export default function ProductsPage() {
                 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link href={`/products/${nomad20k.id}`} className="flex-1">
-                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6">
+                    <Button className="w-full bg-eg-forest hover:bg-eg-forest-dark text-white py-6">
                       View Full Details
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Link>
                   <Link href="/quote" className="flex-1">
-                    <Button variant="outline" className="w-full border-emerald-600 text-emerald-700 hover:bg-emerald-50 py-6">
+                    <Button variant="outline" className="w-full border-eg-forest text-eg-forest-dark hover:bg-eg-forest/5 py-6">
                       Get Custom Quote
                     </Button>
                   </Link>
@@ -239,7 +239,7 @@ export default function ProductsPage() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
                   activeCategory === cat.id
-                    ? 'bg-emerald-600 text-white'
+                    ? 'bg-eg-forest text-white'
                     : 'bg-white text-slate-700 hover:bg-slate-200'
                 }`}
               >
@@ -387,17 +387,17 @@ export default function ProductsPage() {
       </section>
 
       {/* Assessment CTA */}
-      <section className="py-16 bg-emerald-600">
+      <section className="py-16 bg-eg-forest">
         <div className="mx-auto max-w-4xl px-4 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
             Not Sure Which System Is Right for You?
           </h2>
-          <p className="text-emerald-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-eg-forest/10 mb-8 max-w-2xl mx-auto">
             Our 15-minute energy assessment will analyze your power needs and recommend 
             the perfect system for your situation.
           </p>
           <Link href="/quote">
-            <Button className="bg-white text-emerald-700 hover:bg-slate-100 px-8 py-6 text-lg font-semibold">
+            <Button className="bg-white text-eg-forest-dark hover:bg-slate-100 px-8 py-6 text-lg font-semibold">
               <Calendar className="mr-2 h-5 w-5" />
               Get Your Free Assessment
             </Button>
@@ -436,7 +436,7 @@ function ProductCard({ product, isPowerBank = false }: { product: Product; isPow
       </div>
       <CardContent className="p-5">
         <h3 className="text-lg font-bold text-slate-900 mb-1">{product.model}</h3>
-        <p className={`text-xl font-bold mb-3 ${isPowerBank ? 'text-sky-600' : 'text-emerald-600'}`}>{product.price}</p>
+        <p className={`text-xl font-bold mb-3 ${isPowerBank ? 'text-sky-600' : 'text-eg-forest'}`}>{product.price}</p>
         
         {/* Key Specs - Clean and Simple */}
         <div className="flex flex-wrap gap-3 mb-4 text-sm text-slate-600">
@@ -454,7 +454,7 @@ function ProductCard({ product, isPowerBank = false }: { product: Product; isPow
           ) : (
             <>
               <div className="flex items-center gap-1">
-                <Zap className="h-4 w-4 text-emerald-600" />
+                <Zap className="h-4 w-4 text-eg-forest" />
                 <span>{product.wattage?.split('/')[0]}</span>
               </div>
               <div className="flex items-center gap-1">
@@ -485,7 +485,7 @@ function ProductCard({ product, isPowerBank = false }: { product: Product; isPow
         </div>
         
         <Link href={`/products/${product.id}`}>
-          <Button className={`w-full ${isPowerBank ? 'bg-sky-600 hover:bg-sky-700' : 'bg-emerald-600 hover:bg-emerald-700'} text-white`}>
+          <Button className={`w-full ${isPowerBank ? 'bg-sky-600 hover:bg-sky-700' : 'bg-eg-forest hover:bg-eg-forest-dark'} text-white`}>
             View Details
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>

@@ -47,40 +47,46 @@ function determineApplications(model: string, category: string, wattage: number)
 }
 
 // Helper function to white-label product name from PowerX to EnerGenius
+// Product line naming: Nomad (5kW+ commercial), Guardian (under 5kW residential),
+// Scout (mini/portable), PowerCell (batteries)
 function whiteLabel(model: string): string {
-  // Remove "Power X" and "PowerX" variations
-  let energeniusModel = model
+  let m = model
     .replace(/Power\s*X\s*/gi, '')
     .replace(/Lithium\s*/gi, '')
     .trim();
-  
-  // Map to EnerGenius product tiers based on wattage
-  // Check larger wattages first to avoid substring matching issues
-  if (energeniusModel.includes('30000') || energeniusModel.includes('30K')) return 'EnerGenius Guardian 30K';
-  if (energeniusModel.includes('25000') || energeniusModel.includes('25K')) return 'EnerGenius Guardian 25K';
-  if (energeniusModel.includes('20000') || energeniusModel.includes('20K')) return 'EnerGenius Nomad 20K';
-  if (energeniusModel.includes('15000') || energeniusModel.includes('15K')) return 'EnerGenius Nomad 15K';
-  if (energeniusModel.includes('10000') || energeniusModel.includes('10K')) return 'EnerGenius Titan 10K';
-  if (energeniusModel.includes('8000')) return 'EnerGenius Guardian 8000';
-  if (energeniusModel.includes('5000')) return 'EnerGenius Guardian 5000';
-  if (energeniusModel.includes('3000')) return 'EnerGenius Guardian 3000';
-  if (energeniusModel.includes('2000')) return 'EnerGenius Nomad 2000';
-  if (energeniusModel.includes('1500')) return 'EnerGenius Nomad 1500';
-  if (energeniusModel.includes('1000') && energeniusModel.includes('Mini')) return 'EnerGenius Scout 1000';
-  if (energeniusModel.includes('750') && energeniusModel.includes('Mini')) return 'EnerGenius Scout 750';
-  if (energeniusModel.includes('400')) return 'EnerGenius Scout 400';
-  if (energeniusModel.includes('750') && !energeniusModel.includes('Mini')) return 'EnerGenius Scout 750 Pro';
-  if (energeniusModel.includes('1000') && !energeniusModel.includes('Mini')) return 'EnerGenius Scout 1000 Pro';
-  
-  // For batteries, keep a simpler naming
-  if (energeniusModel.includes('X120')) return 'EnerGenius PowerBank 120';
-  if (energeniusModel.includes('X90')) return 'EnerGenius PowerBank 90';
-  if (energeniusModel.includes('X80')) return 'EnerGenius PowerBank 80';
-  if (energeniusModel.includes('45')) return 'EnerGenius PowerBank 45';
-  if (energeniusModel.includes('40')) return 'EnerGenius PowerBank 40';
-  if (energeniusModel.includes('AGM')) return 'EnerGenius Scout 750 AGM';
-  
-  return `EnerGenius ${energeniusModel}`;
+
+  // Nomad Series: 5,000W+ commercial generators
+  if (m.includes('30000') || m.includes('30K')) return 'EnerGenius Nomad 30K';
+  if (m.includes('25000') || m.includes('25K')) return 'EnerGenius Nomad 25K';
+  if (m.includes('20000') || m.includes('20K')) return 'EnerGenius Nomad 20K';
+  if (m.includes('15000') || m.includes('15K')) return 'EnerGenius Nomad 15K';
+  if (m.includes('10000') || m.includes('10K')) return 'EnerGenius Nomad 10K';
+  if (m.includes('8000') || m.includes('8K')) return 'EnerGenius Nomad 8K';
+  if (m.includes('5000') || m.includes('5K')) return 'EnerGenius Nomad 5K';
+
+  // Guardian Series: under 5,000W residential generators
+  if (m.includes('3000') || m.includes('3K')) return 'EnerGenius Guardian 3K';
+  if (m.includes('2000') || m.includes('2K')) return 'EnerGenius Guardian 2K';
+  if (m.includes('1500')) return 'EnerGenius Guardian 1.5K';
+  if (m.includes('1000') && !m.includes('Mini')) return 'EnerGenius Guardian 1K';
+  if (m.includes('750') && !m.includes('Mini')) return 'EnerGenius Guardian 750';
+  if (m.includes('AGM')) return 'EnerGenius Guardian 750 AGM';
+
+  // Scout Series: mini/portable generators
+  if (m.includes('1000') && m.includes('Mini')) return 'EnerGenius Scout 1K';
+  if (m.includes('750') && m.includes('Mini')) return 'EnerGenius Scout 750';
+  if (m.includes('400')) return 'EnerGenius Scout 400';
+
+  // PowerCell Series: standalone batteries
+  if (m.includes('X120')) return 'EnerGenius PowerCell X120';
+  if (m.includes('X90')) return 'EnerGenius PowerCell X90';
+  if (m.includes('X80')) return 'EnerGenius PowerCell X80';
+  if (m.includes('Flat') && m.includes('45')) return 'EnerGenius PowerCell Flat 45';
+  if (m.includes('Flat') && m.includes('40')) return 'EnerGenius PowerCell Flat 40';
+  if (m.includes('45')) return 'EnerGenius PowerCell 45';
+  if (m.includes('40')) return 'EnerGenius PowerCell 40';
+
+  return `EnerGenius ${m}`;
 }
 
 async function main() {
