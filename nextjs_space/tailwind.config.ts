@@ -58,7 +58,21 @@ const config: Config = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+  			// EnerGenius Brand Colors
+  			'eg-forest': '#1A5D1A',
+  			'eg-forest-dark': '#124712',
+  			'eg-forest-light': '#237A23',
+  			'eg-lime': '#BADA55',
+  			'eg-lime-dark': '#9FC23A',
+  			'eg-lime-light': '#D0E87A',
+  			'eg-leaf-dark': '#006C4A',
+  			'eg-leaf-light': '#4AA84B',
+  			'eg-teal': '#006A73',
+  			'eg-teal-light': '#1CA6A3',
+  			'eg-gold': '#F5B932',
+  			'eg-gold-light': '#F9C841',
+  			'eg-wordmark': '#6BA928',
   		},
   		keyframes: {
   			'accordion-down': {
