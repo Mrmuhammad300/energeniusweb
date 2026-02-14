@@ -110,3 +110,156 @@
 
 /* Import custom mobile navigation CSS */
 @import './mobile-nav.css';
+
+/* ===== EnerGenius Premium Styles ===== */
+
+/* Animated gradient text */
+.text-gradient-energenius {
+  background: linear-gradient(135deg, #BADA55 0%, #1A5D1A 50%, #1CA6A3 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 8s ease infinite;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #F5B932 0%, #BADA55 50%, #F9D56E 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* Glowing border effect */
+.glow-border {
+  position: relative;
+  overflow: hidden;
+}
+.glow-border::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #1A5D1A, #BADA55, #1CA6A3, #F5B932, #1A5D1A);
+  background-size: 400%;
+  border-radius: inherit;
+  z-index: -1;
+  animation: gradient-shift 6s linear infinite;
+}
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: inherit;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* Particle canvas background */
+.hero-gradient {
+  background: radial-gradient(ellipse at 20% 50%, rgba(26, 93, 26, 0.3) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(186, 218, 85, 0.15) 0%, transparent 40%),
+              radial-gradient(ellipse at 50% 80%, rgba(28, 166, 163, 0.2) 0%, transparent 50%),
+              linear-gradient(180deg, #050a05 0%, #0a1a0a 40%, #0d1f0d 100%);
+}
+
+/* Glass morphism card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.glass-card-light {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Animated status dot */
+.status-dot {
+  width: 10px;
+  height: 10px;
+  background: #BADA55;
+  border-radius: 50%;
+  position: relative;
+}
+.status-dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #BADA55;
+  animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Grid pattern overlay */
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(186, 218, 85, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(186, 218, 85, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Noise texture overlay */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Premium section separator */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #1A5D1A 20%, #BADA55 50%, #1A5D1A 80%, transparent 100%);
+  opacity: 0.4;
+}
+
+/* Hover lift effect */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(26, 93, 26, 0.3);
+}
+
+/* Custom scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a1a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1A5D1A;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #BADA55;
+}
+
+/* Globe animation styles */
+.globe-glow {
+  filter: drop-shadow(0 0 30px rgba(186, 218, 85, 0.3));
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes ping-slow {
+  0% { transform: scale(1); opacity: 1; }
+  75%, 100% { transform: scale(2.5); opacity: 0; }
+}
