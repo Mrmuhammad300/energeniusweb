@@ -1,0 +1,1179 @@
+{
+  "schema_version": "1.1.0",
+  "generated_at": "2026-02-10T00:00:00-05:00",
+  "currency": "USD",
+  "primary_key": "canonical_sku",
+  "notes": [
+    "This is a complete, self-contained master JSON schema/config for shared calculator + CRM core across RRG and EnerGenius.",
+    "Includes full PowerX watt-tier catalog from your provided price table, EnerGenius exclusives, packages, services, pricing/commission rules, discount guardrails, multi-unit install logic, sharing, embeds, API contract, and core objects."
+  ],
+
+  "platforms": {
+    "rrg": {
+      "brand_id": "RRG",
+      "brand_name": "Renewable Resource Group",
+      "domains": ["rrg-solutions.com", "rrgenergy-bkuws62n.manus.space"],
+      "role": "brain",
+      "default_pricing_views": ["customer_gross", "customer_net_itc"],
+      "default_cta": ["book_assessment", "request_strategy_call"]
+    },
+    "energenius": {
+      "brand_id": "ENERGENIUS",
+      "brand_name": "EnerGenius",
+      "domains": ["energenius.technology"],
+      "role": "hardware_and_systems_provider",
+      "default_pricing_views": ["customer_gross"],
+      "default_cta": ["get_custom_quote", "schedule_install_call"]
+    }
+  },
+
+  "identity_and_access": {
+    "identity_provider": {
+      "type": "jwt",
+      "issuer": "rrg-core-auth",
+      "audiences": ["rrg-solutions.com", "energenius.technology", "rrg-core-api"],
+      "token_claims_required": ["user_id", "role_id", "brand_scope", "org_scope"]
+    },
+    "roles": [
+      {
+        "role_id": "master_admin",
+        "label": "Master Admin (Global)",
+        "brand_scope_default": ["RRG", "ENERGENIUS"],
+        "permissions": [
+          "catalog_read",
+          "catalog_write",
+          "ruleset_read",
+          "ruleset_publish",
+          "ruleset_rollback",
+          "assessment_read_all",
+          "assessment_write_all",
+          "lead_read_all",
+          "lead_write_all",
+          "fulfillment_read_all",
+          "fulfillment_write_all",
+          "discount_override",
+          "approve_discounts",
+          "view_internal_margins",
+          "manage_commissions",
+          "view_audit_log"
+        ]
+      },
+      {
+        "role_id": "brand_admin",
+        "label": "Brand Admin",
+        "brand_scope_default": ["RRG"],
+        "permissions": [
+          "catalog_read",
+          "ruleset_read",
+          "assessment_read_brand",
+          "assessment_write_brand",
+          "lead_read_brand",
+          "lead_write_brand",
+          "fulfillment_read_brand",
+          "fulfillment_write_brand",
+          "approve_discounts",
+          "view_audit_log"
+        ]
+      },
+      {
+        "role_id": "sales_manager",
+        "label": "Sales Manager",
+        "brand_scope_default": ["ENERGENIUS"],
+        "permissions": [
+          "catalog_read",
+          "assessment_read_brand",
+          "lead_read_brand",
+          "fulfillment_read_brand",
+          "quote_build",
+          "approve_discounts",
+          "view_internal_margins",
+          "view_commissions",
+          "view_audit_log"
+        ]
+      },
+      {
+        "role_id": "rep",
+        "label": "Rep",
+        "brand_scope_default": ["ENERGENIUS"],
+        "permissions": [
+          "catalog_read",
+          "assessment_read_assigned",
+          "assessment_create",
+          "lead_read_assigned",
+          "lead_update_assigned",
+          "fulfillment_read_assigned",
+          "quote_build",
+          "request_discount_approval",
+          "view_commissions"
+        ]
+      },
+      {
+        "role_id": "dealer_admin",
+        "label": "Dealer Admin",
+        "brand_scope_default": ["ENERGENIUS"],
+        "permissions": [
+          "catalog_read",
+          "assessment_create",
+          "lead_create",
+          "dealer_quote_build",
+          "submit_for_approval",
+          "view_dealer_pricing"
+        ]
+      },
+      {
+        "role_id": "dealer_rep",
+        "label": "Dealer Rep",
+        "brand_scope_default": ["ENERGENIUS"],
+        "permissions": [
+          "catalog_read",
+          "assessment_create",
+          "dealer_quote_build",
+          "submit_for_approval",
+          "view_dealer_pricing"
+        ]
+      }
+    ],
+    "pricing_views": [
+      {
+        "view_id": "customer_gross",
+        "label": "Customer Gross (No ITC)",
+        "fields_visible": ["line_items", "totals", "assumptions", "warranty", "install_included", "scope_notes"]
+      },
+      {
+        "view_id": "customer_net_itc",
+        "label": "Customer Net-of-ITC",
+        "fields_visible": ["line_items", "totals", "itc_estimate", "net_total_after_itc", "assumptions", "scope_notes"],
+        "itc_logic": {
+          "default_pct": 0.3,
+          "eligible_item_types": ["generator_hardware", "eligible_accessory"],
+          "ineligible_item_types": ["professional_service", "installation_package"]
+        }
+      },
+      {
+        "view_id": "internal_margin",
+        "label": "Internal Margin View",
+        "fields_visible": ["line_items", "totals", "costs", "margin", "commission", "approval_status", "audit_trail"]
+      },
+      {
+        "view_id": "dealer_net",
+        "label": "Dealer Net View",
+        "fields_visible": ["dealer_price", "dealer_discount", "dealer_terms", "approval_status"]
+      }
+    ]
+  },
+
+  "core_objects": {
+    "assessment": {
+      "fields": [
+        "assessment_id",
+        "created_at",
+        "created_by_user_id",
+        "brand_origin",
+        "brand_owner",
+        "source_channel",
+        "inputs_json",
+        "outputs_json",
+        "canonical_recommended_sku",
+        "recommended_skus",
+        "complexity_score",
+        "status"
+      ],
+      "enums": {
+        "brand_origin": ["RRG", "ENERGENIUS"],
+        "brand_owner": ["RRG", "ENERGENIUS"],
+        "source_channel": ["public_web", "crm", "dealer_portal"],
+        "status": ["draft", "submitted", "converted_to_fulfillment", "archived"]
+      }
+    },
+    "lead": {
+      "fields": [
+        "lead_id",
+        "created_at",
+        "brand_owner",
+        "assignment_user_id",
+        "contact",
+        "site_address",
+        "state",
+        "customer_type",
+        "quantity_intent",
+        "timeline",
+        "notes",
+        "assessment_id",
+        "attribution"
+      ],
+      "enums": {
+        "brand_owner": ["RRG", "ENERGENIUS"],
+        "customer_type": ["residential", "commercial"]
+      }
+    },
+    "fulfillment_request": {
+      "fields": [
+        "request_id",
+        "created_at",
+        "created_by_user_id",
+        "brand_owner",
+        "assessment_id",
+        "lead_id",
+        "recommended_sku",
+        "quantity",
+        "install_preference",
+        "selected_packages",
+        "selected_services",
+        "notes",
+        "assigned_user_id",
+        "status"
+      ],
+      "enums": {
+        "install_preference": ["turnkey", "hardware_only", "needs_site_verification"],
+        "status": ["draft", "submitted", "assigned", "in_progress", "completed", "cancelled"]
+      }
+    },
+    "quote": {
+      "fields": [
+        "quote_id",
+        "created_at",
+        "created_by_user_id",
+        "pricing_mode",
+        "customer_type",
+        "state",
+        "assessment_id",
+        "line_items",
+        "discounts",
+        "approval",
+        "waivers",
+        "totals",
+        "commission"
+      ],
+      "enums": {
+        "pricing_mode": ["retail", "rep", "dealer"],
+        "approval_status": ["NOT_REQUIRED", "PENDING", "APPROVED", "REJECTED"]
+      }
+    },
+    "audit_log": {
+      "fields": [
+        "audit_id",
+        "created_at",
+        "actor_user_id",
+        "actor_role_id",
+        "action",
+        "entity_type",
+        "entity_id",
+        "diff_json"
+      ]
+    }
+  },
+
+  "commission_rules": [
+    {
+      "id": "GEN_HW_DEFAULT_15",
+      "applies_to": "generator_hardware",
+      "commission_pct": 0.15,
+      "priority": 1
+    },
+    {
+      "id": "GEN_HW_OVER_25K_40",
+      "applies_to": "generator_hardware",
+      "commission_pct": 0.4,
+      "condition": { "unit_price_gt": 25000 },
+      "priority": 10
+    }
+  ],
+
+  "catalog": {
+    "products": [
+      {
+        "canonical_sku": "PX-LITH-000400-MINI",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 400 Watt Solar Generator (Mini)",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 750 },
+        "power": { "continuous_w": 400, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": true, "dual_voltage": false }
+      },
+      {
+        "canonical_sku": "PX-LITH-000750-MINI",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 750 Watt Solar Generator (Mini)",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 945 },
+        "power": { "continuous_w": 750, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": true, "dual_voltage": false }
+      },
+      {
+        "canonical_sku": "PX-AGM-000750",
+        "brand": "PowerX",
+        "series": "AGM",
+        "display_name": "Power X 750 AGM Solar Generator",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 750 },
+        "power": { "continuous_w": 750, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": true, "dual_voltage": false }
+      },
+      {
+        "canonical_sku": "PX-LITH-000750",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 750 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 1920 },
+        "power": { "continuous_w": 750, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": true, "dual_voltage": false }
+      },
+      {
+        "canonical_sku": "PX-LITH-001000-MINI",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 1000 Watt Solar Generator (Mini)",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 1000 },
+        "power": { "continuous_w": 1000, "peak_w": null },
+        "battery": { "capacity_ah": 120, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": true, "dual_voltage": false }
+      },
+      {
+        "canonical_sku": "PX-LITH-001000",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 1000 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 1995 },
+        "power": { "continuous_w": 1000, "peak_w": null },
+        "battery": { "capacity_ah": 120, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": 40 },
+        "attributes": { "portable": true, "dual_voltage": false }
+      },
+      {
+        "canonical_sku": "PX-LITH-001500",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 1500 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 2045 },
+        "power": { "continuous_w": 1500, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": true, "dual_voltage": false }
+      },
+      {
+        "canonical_sku": "PX-LITH-002000",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 2000 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 2495 },
+        "power": { "continuous_w": 2000, "peak_w": null },
+        "battery": { "capacity_ah": 120, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": 55 },
+        "attributes": { "portable": true, "dual_voltage": false }
+      },
+      {
+        "canonical_sku": "PX-LITH-003000",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 3000 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 3750 },
+        "power": { "continuous_w": 3000, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": false, "dual_voltage": true }
+      },
+      {
+        "canonical_sku": "PX-LITH-005000",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 5000 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 6325 },
+        "power": { "continuous_w": 5000, "peak_w": 10000 },
+        "battery": { "capacity_ah": 400, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": false, "dual_voltage": true }
+      },
+      {
+        "canonical_sku": "PX-LITH-008000",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 8000 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 8825 },
+        "power": { "continuous_w": 8000, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": false, "dual_voltage": true }
+      },
+      {
+        "canonical_sku": "PX-LITH-010000",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 10000 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 10350 },
+        "power": { "continuous_w": 10000, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": false, "dual_voltage": true }
+      },
+      {
+        "canonical_sku": "PX-LITH-015000",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 15000 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "portable_power",
+        "pricing": { "msrp": 14950 },
+        "power": { "continuous_w": 15000, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": false, "dual_voltage": true }
+      },
+      {
+        "canonical_sku": "PX-LITH-020000",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 20000 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "commercial_power",
+        "pricing": { "msrp": 18750 },
+        "power": { "continuous_w": 20000, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": false, "dual_voltage": true },
+        "xrefs": [
+          {
+            "provider": "EnerGenius",
+            "provider_sku": "EG-NOMAD-20K",
+            "match_type": "capacity_primary",
+            "confidence": 0.98
+          }
+        ]
+      },
+      {
+        "canonical_sku": "PX-LITH-025000",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 25000 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "commercial_power",
+        "pricing": { "msrp": 24750 },
+        "power": { "continuous_w": 25000, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": false, "dual_voltage": true }
+      },
+      {
+        "canonical_sku": "PX-LITH-030000",
+        "brand": "PowerX",
+        "series": "Lithium",
+        "display_name": "Power X Lithium 30000 Watt Solar Generator",
+        "type": "generator_hardware",
+        "category": "commercial_power",
+        "pricing": { "msrp": 31475 },
+        "power": { "continuous_w": 30000, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "physical": { "weight_lb": null },
+        "attributes": { "portable": false, "dual_voltage": true }
+      },
+      {
+        "canonical_sku": "EG-NOMAD-20K",
+        "brand": "EnerGenius",
+        "series": "Nomad",
+        "display_name": "EnerGenius Nomad 20K",
+        "type": "generator_hardware",
+        "category": "commercial_power_system",
+        "pricing": { "msrp": 18750 },
+        "power": { "continuous_w": 20000, "peak_w": 40000 },
+        "battery": { "life_cycles": 8000, "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "warranty": { "years": 5 },
+        "attributes": {
+          "black_start": true,
+          "itc_eligible_30pct": true,
+          "fuel_free": true,
+          "maintenance_free": true,
+          "professional_install_available": true
+        },
+        "flags": { "exclusive_to_rrg_energenius": false },
+        "xrefs": [
+          {
+            "provider": "PowerXGenerators",
+            "provider_sku": "Lithium-20000",
+            "match_type": "capacity_primary",
+            "confidence": 0.98
+          }
+        ]
+      },
+      {
+        "canonical_sku": "EG-NOMAD-40K",
+        "brand": "EnerGenius",
+        "series": "Nomad",
+        "display_name": "EnerGenius Nomad 40K",
+        "type": "generator_hardware",
+        "category": "commercial_power_system",
+        "pricing": { "msrp": 34500 },
+        "power": { "continuous_w": 40000, "peak_w": null },
+        "battery": { "life_cycles": null, "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "warranty": { "years": null },
+        "attributes": { "black_start": true },
+        "flags": { "exclusive_to_rrg_energenius": true },
+        "xrefs": []
+      },
+      {
+        "canonical_sku": "EG-NOMAD-80K",
+        "brand": "EnerGenius",
+        "series": "Nomad",
+        "display_name": "EnerGenius Nomad 80K",
+        "type": "generator_hardware",
+        "category": "commercial_power_system",
+        "pricing": { "msrp": 67500 },
+        "power": { "continuous_w": 80000, "peak_w": null },
+        "battery": { "life_cycles": null, "capacity_ah": null, "nominal_v": null, "capacity_kwh": null },
+        "warranty": { "years": null },
+        "attributes": { "black_start": true },
+        "flags": { "exclusive_to_rrg_energenius": true },
+        "xrefs": []
+      },
+      {
+        "canonical_sku": "EG-GUARD-3000",
+        "brand": "EnerGenius",
+        "series": "Guardian",
+        "display_name": "Guardian 3000",
+        "type": "generator_hardware",
+        "category": "residential_power",
+        "pricing": { "msrp": null },
+        "power": { "continuous_w": 3000, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null }
+      },
+      {
+        "canonical_sku": "EG-GUARD-5000",
+        "brand": "EnerGenius",
+        "series": "Guardian",
+        "display_name": "Guardian 5000",
+        "type": "generator_hardware",
+        "category": "residential_power",
+        "pricing": { "msrp": null },
+        "power": { "continuous_w": 5000, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null }
+      },
+      {
+        "canonical_sku": "EG-GUARD-8000",
+        "brand": "EnerGenius",
+        "series": "Guardian",
+        "display_name": "Guardian 8000",
+        "type": "generator_hardware",
+        "category": "residential_power",
+        "pricing": { "msrp": null },
+        "power": { "continuous_w": 8000, "peak_w": null },
+        "battery": { "capacity_ah": null, "nominal_v": null, "capacity_kwh": null }
+      }
+    ],
+
+    "installation_packages": [
+      {
+        "canonical_sku": "INST-VIRTUAL-AUDIT",
+        "type": "installation_package",
+        "display_name": "Virtual Site Audit",
+        "pricing": { "msrp": 299 },
+        "rules": {
+          "eligible_for_discount": false,
+          "notes": "Pre-sales validation. No discounts."
+        }
+      },
+      {
+        "canonical_sku": "INST-QUICK-START",
+        "type": "installation_package",
+        "display_name": "Quick Start",
+        "pricing": { "msrp": 3499 },
+        "rules": {
+          "eligible_for_discount": true,
+          "recommended_for_capacity_kw_lte": 10,
+          "notes": "For small/portable systems. Not intended for PCC work."
+        }
+      },
+      {
+        "canonical_sku": "INST-TURNKEY",
+        "type": "installation_package",
+        "display_name": "Turnkey (Most Popular)",
+        "pricing": { "msrp": 5999 },
+        "rules": {
+          "eligible_for_discount": true,
+          "default_for_capacity_kw_gte": 10,
+          "notes": "Default for >=10kW. Removal requires waiver."
+        }
+      },
+      {
+        "canonical_sku": "INST-PEACE-OF-MIND",
+        "type": "installation_package",
+        "display_name": "Peace of Mind",
+        "pricing": { "msrp": 5999 },
+        "rules": {
+          "eligible_for_discount": true,
+          "notes": "Premium framing/PM. Same price as Turnkey, higher service posture."
+        }
+      }
+    ],
+
+    "professional_services": [
+      {
+        "canonical_sku": "SVC-SITE-VERIFY",
+        "type": "professional_service",
+        "display_name": "Site Verification & Load Confirmation",
+        "pricing": { "min": 1000, "default": 2000, "max": 3000, "pricing_type": "range_with_default" },
+        "notes": "Engineer/site visit to verify loads, panel capacity, short-circuit/coordination study."
+      },
+      {
+        "canonical_sku": "SVC-PANEL-ATS",
+        "type": "professional_service",
+        "display_name": "Main Panel & ATS Integration",
+        "pricing": { "min": 5000, "default": 9000, "max": 15000, "pricing_type": "range_with_default" },
+        "notes": "Panel size, breaker upgrades, ATS rating; commercial ATS costs more."
+      },
+      {
+        "canonical_sku": "SVC-PCC-TIEIN",
+        "type": "professional_service",
+        "display_name": "Electrical Tie-in at PCC",
+        "pricing": { "min": 5000, "default": 12000, "max": 20000, "pricing_type": "range_with_default" },
+        "notes": "Service entrance, meter socket, disconnects, utility-side tap."
+      },
+      {
+        "canonical_sku": "SVC-NEC-GROUND",
+        "type": "professional_service",
+        "display_name": "Grounding & NEC Compliance Package",
+        "pricing": { "min": 2000, "default": 3500, "max": 6000, "pricing_type": "range_with_default" },
+        "notes": "Ground rods, bonding, conduit, NEC corrections."
+      },
+      {
+        "canonical_sku": "SVC-AHJ-INSPECT",
+        "type": "professional_service",
+        "display_name": "Coordination with AHJ + Inspections",
+        "pricing": { "min": 800, "default": 1500, "max": 3000, "pricing_type": "range_with_default" },
+        "notes": "Permits, callbacks, documentation, punch list fixes."
+      }
+    ]
+  },
+
+  "service_range_selection": {
+    "selection_methods": [
+      { "id": "default_midpoint", "description": "Use curated default field." },
+      { "id": "low_medium_high", "description": "Map user selection to min/default/max." }
+    ],
+    "low_medium_high_mapping": { "low": "min", "medium": "default", "high": "max" }
+  },
+
+  "rulesets": {
+    "active_ruleset_id": "RULESET_CORE_V1",
+    "rules": [
+      {
+        "rule_id": "HARDWARE_COMMISSION_TIERED",
+        "type": "commission",
+        "eval_order": ["GEN_HW_OVER_25K_40", "GEN_HW_DEFAULT_15"]
+      },
+      {
+        "rule_id": "TURNKEY_DEFAULT_GTE_10KW",
+        "type": "policy",
+        "if": { "capacity_kw_gte": 10 },
+        "then": { "auto_add_line_item": "INST-TURNKEY" },
+        "notes": "Turnkey install default for >=10kW."
+      },
+      {
+        "rule_id": "TURNKEY_REMOVAL_REQUIRES_WAIVER",
+        "type": "policy",
+        "if": { "capacity_kw_gte": 10, "install_removed": true },
+        "then": {
+          "require_waiver": {
+            "waiver_id": "INSTALL_EXCLUDED_ACK",
+            "waiver_text": "Installation excluded. Customer acknowledges electrical integration, permitting, inspections, and code compliance are not included and must be handled by a licensed contractor."
+          }
+        }
+      },
+      {
+        "rule_id": "INSTALL_DISCOUNT_REQUIRES_LABOR_AND_MATERIALS_FLOOR",
+        "type": "guardrail",
+        "if": { "install_discount_applied": true },
+        "then": {
+          "require_assertions": [
+            "labor_costs_fully_covered == true",
+            "materials_must_be_fully_covered == true"
+          ],
+          "on_fail": { "action": "REQUIRES_APPROVAL", "approver_role": "sales_manager" }
+        }
+      },
+      {
+        "rule_id": "APPROVAL_THRESHOLD_DISCOUNTS",
+        "type": "approval_threshold",
+        "thresholds": {
+          "hardware_discount_pct": 0.1,
+          "install_discount_pct": 0.2,
+          "services_discount_pct": 0.0
+        }
+      }
+    ]
+  },
+
+  "calculator": {
+    "sizing_methods": [
+      {
+        "id": "sqft",
+        "display_name": "Square Feet",
+        "inputs": ["square_feet", "coverage_tier"],
+        "baseline_w_per_sqft": 3.5,
+        "coverage_multipliers": { "essential": 0.6, "partial": 0.85, "whole": 1.0 },
+        "formula": "estimated_watts = square_feet * baseline_w_per_sqft * coverage_multiplier"
+      },
+      {
+        "id": "acreage",
+        "display_name": "Acreage",
+        "inputs": ["acres", "coverage_tier"],
+        "watts_per_acre_default": 15246,
+        "coverage_multipliers": { "essential": 0.6, "partial": 0.85, "whole": 1.0 },
+        "formula": "estimated_watts = acres * watts_per_acre_default * coverage_multiplier",
+        "notes": "Replace watts_per_acre_default with final acreage baseline."
+      },
+      {
+        "id": "devices",
+        "display_name": "Devices",
+        "inputs": ["device_list"],
+        "formula": "estimated_watts = SUM(device_list.watts_running) + surge_buffer_watts",
+        "surge_buffer_watts_default": 0
+      }
+    ],
+    "recommendation_logic": {
+      "match_priority": [
+        "continuous_w_capacity_primary",
+        "peak_w_if_provided",
+        "battery_kwh_if_available",
+        "ah_plus_voltage_to_kwh_if_available",
+        "name_parsing_fallback",
+        "manual_override"
+      ],
+      "capacity_primary": { "match_if_within_pct": 0.02, "buffer_pct_default": 0.1 },
+      "selection_rule": "return_smallest_sku_where_continuous_w_gte_required",
+      "tie_breakers": [
+        "prefer EnerGenius when within 5% of continuous_w",
+        "prefer items with warranty years provided",
+        "prefer items with peak_w provided"
+      ],
+      "kwh_computation": {
+        "formula": "(capacity_ah * nominal_v) / 1000",
+        "requires_fields": ["capacity_ah", "nominal_v"]
+      }
+    }
+  },
+
+  "sku_xref_mapping_engine": {
+    "match_priority_order": [
+      "continuous_w_within_pct",
+      "continuous_w_exact",
+      "kwh_if_available",
+      "ah_plus_voltage_to_kwh",
+      "name_token_numeric_match",
+      "manual_override"
+    ],
+    "rules": {
+      "continuous_w_within_pct": { "pct_threshold": 0.02, "confidence": 0.95 },
+      "kwh_if_available": { "kwh_threshold_pct": 0.05, "confidence": 0.9 },
+      "ah_plus_voltage_to_kwh": { "formula": "(capacity_ah * nominal_v) / 1000", "confidence": 0.85 },
+      "name_token_numeric_match": { "numeric_extraction_regex": "(\\d{3,5})\\s*(w|kw|k)", "confidence": 0.7 },
+      "manual_override": { "confidence": 1.0 }
+    },
+    "exclusive_handling": {
+      "if_exclusive_to_rrg_energenius_true": "do_not_require_vendor_xref"
+    }
+  },
+
+  "pricing_engine": {
+    "quote_totals_formula": {
+      "hardware_total": "SUM(line_items where type == 'generator_hardware' => unit_price * quantity)",
+      "installation_total": "SUM(line_items where type == 'installation_package' => unit_price * quantity)",
+      "services_total": "SUM(line_items where type == 'professional_service' => unit_price * quantity)",
+      "subtotal": "hardware_total + installation_total + services_total"
+    },
+    "itc": {
+      "enabled": true,
+      "default_pct": 0.3,
+      "eligible_item_types": ["generator_hardware", "eligible_accessory"],
+      "ineligible_item_types": ["professional_service", "installation_package"],
+      "net_total_formula": "subtotal - (SUM(eligible_item_types) * itc_pct)"
+    },
+    "commissions": {
+      "rule_eval_order": ["GEN_HW_OVER_25K_40", "GEN_HW_DEFAULT_15"],
+      "formula": "SUM(generator_hardware => extended_price * commission_pct_for_line)"
+    },
+    "guardrails": {
+      "turnkey_default_for_capacity_kw_gte": 10,
+      "allow_installation_discounts_only_if": [
+        "hardware_margin_intact == true",
+        "labor_costs_fully_covered == true"
+      ],
+      "customer_ack_required_if_install_removed_for_kw_gte": 10,
+      "on_violation": {
+        "action": "REQUIRE_APPROVAL",
+        "approval_roles": ["sales_manager", "master_admin"]
+      }
+    }
+  },
+
+  "multi_unit_install_discount_logic": {
+    "install_pricing_breakdown": {
+      "mobilization_fixed": {
+        "default_amount": 1750,
+        "discountable": true,
+        "discount_notes": "Can be spread across units."
+      },
+      "per_unit_labor": {
+        "default_amount": 2400,
+        "discountable": true,
+        "max_discount_pct": 0.2
+      },
+      "per_unit_materials_allowance": {
+        "default_amount": 850,
+        "discountable": false,
+        "discount_notes": "Materials floor protected."
+      },
+      "compliance_admin": {
+        "default_amount": 750,
+        "discountable": true,
+        "max_discount_pct": 0.15
+      }
+    },
+    "multi_unit_discount_rules": [
+      {
+        "rule_id": "MOBILIZATION_SPREAD",
+        "if_quantity_gte": 2,
+        "then": { "allocate_mobilization_formula": "mobilization_fixed / quantity" }
+      },
+      {
+        "rule_id": "LABOR_EFFICIENCY_TIER_3",
+        "if_quantity_gte": 3,
+        "then": { "target": "per_unit_labor", "discount_pct": 0.1, "cap_pct": 0.2 }
+      },
+      {
+        "rule_id": "LABOR_EFFICIENCY_TIER_5",
+        "if_quantity_gte": 5,
+        "then": { "target": "per_unit_labor", "discount_pct": 0.15, "cap_pct": 0.2 }
+      }
+    ],
+    "hard_floors": {
+      "materials_must_be_fully_covered": true,
+      "minimum_install_gross_margin_pct": 0.25
+    }
+  },
+
+  "line_item_pricing_overrides": {
+    "allowed_override_fields": ["unit_price_override", "quantity_override", "note"],
+    "override_permissions": {
+      "unit_price_override": ["master_admin", "sales_manager"],
+      "quantity_override": ["master_admin", "sales_manager", "rep", "dealer_admin", "dealer_rep"]
+    },
+    "audit_log_required": true
+  },
+
+  "embeds": {
+    "embeds": [
+      {
+        "embed_id": "RRG_PUBLIC_ASSESSMENT",
+        "brand": "RRG",
+        "hosts": ["rrg-solutions.com", "rrgenergy-bkuws62n.manus.space"],
+        "mode": "public",
+        "components": ["assessment_calculator", "sku_recommendations", "lead_capture"],
+        "auth": { "type": "none" },
+        "pricing_view": "customer_gross",
+        "cta": ["book_assessment", "request_strategy_call"]
+      },
+      {
+        "embed_id": "ENERGENIUS_PUBLIC_CALCULATOR",
+        "brand": "ENERGENIUS",
+        "hosts": ["energenius.technology"],
+        "mode": "public",
+        "components": ["assessment_calculator", "sku_recommendations"],
+        "auth": { "type": "none" },
+        "pricing_view": "customer_gross",
+        "cta": ["get_custom_quote"]
+      },
+      {
+        "embed_id": "ENERGENIUS_INTERNAL_CRM",
+        "brand": "ENERGENIUS",
+        "hosts": ["energenius_crm"],
+        "mode": "authenticated",
+        "components": ["assessment_calculator", "sku_recommendations", "quote_builder", "approval_routing"],
+        "auth": { "type": "jwt" },
+        "pricing_view": "internal_margin",
+        "cta": ["create_quote", "send_quote"]
+      },
+      {
+        "embed_id": "DEALER_PORTAL",
+        "brand": "ENERGENIUS",
+        "hosts": ["energenius_dealer_portal"],
+        "mode": "authenticated",
+        "components": ["sku_browser", "dealer_quote_builder", "submit_for_approval"],
+        "auth": { "type": "jwt" },
+        "pricing_view": "dealer_net",
+        "cta": ["generate_customer_quote", "submit_for_approval"]
+      }
+    ]
+  },
+
+  "lead_capture": {
+    "fields": [
+      "first_name",
+      "last_name",
+      "email",
+      "phone",
+      "company",
+      "site_address",
+      "state",
+      "customer_type",
+      "estimated_watts",
+      "recommended_skus",
+      "quantity_intent",
+      "timeline",
+      "notes"
+    ],
+    "webhook": { "endpoint": "/api/leads/ingest", "method": "POST" }
+  },
+
+  "assessment_sharing": {
+    "method": "signed_share_token",
+    "token": {
+      "type": "jwt",
+      "claims": ["assessment_id", "allowed_brand", "expires_at"],
+      "default_ttl_days": 7
+    },
+    "routes": {
+      "create_share_link": "/api/assessments/share",
+      "view_shared": "/assessment/shared?token={token}"
+    }
+  },
+
+  "api_contract": {
+    "endpoints": {
+      "GET /api/catalog/skus": {
+        "query": ["brand", "min_continuous_w", "max_continuous_w", "category", "exclusive_only"],
+        "returns": "catalog.products[]"
+      },
+      "POST /api/assessments/compute": {
+        "in": {
+          "method": "sqft|acreage|devices",
+          "square_feet": 0,
+          "acres": 0,
+          "device_list": [{ "name": "string", "watts_running": 0, "watts_surge": 0 }],
+          "coverage_tier": "essential|partial|whole",
+          "state": "string",
+          "overage_buffer_pct": 0.1,
+          "brand_origin": "RRG|ENERGENIUS",
+          "source_channel": "public_web|crm|dealer_portal"
+        },
+        "out": {
+          "assessment_id": "uuid",
+          "estimated_watts": 0,
+          "recommended_kw": 0,
+          "recommended_skus": [{ "canonical_sku": "string", "confidence": 0.0, "why": "string" }],
+          "complexity_score": 0.0,
+          "warnings": ["string"]
+        }
+      },
+      "GET /api/assessments/{assessment_id}": { "returns": "assessment object" },
+      "POST /api/assessments/share": {
+        "in": { "assessment_id": "uuid", "allowed_brand": "RRG|ENERGENIUS", "ttl_days": 7 },
+        "out": { "share_token": "string", "share_url": "string" }
+      },
+      "POST /api/leads/ingest": {
+        "in": {
+          "brand_owner": "RRG|ENERGENIUS",
+          "contact": {
+            "first_name": "string",
+            "last_name": "string",
+            "email": "string",
+            "phone": "string",
+            "company": "string"
+          },
+          "site_address": "string",
+          "state": "string",
+          "customer_type": "residential|commercial",
+          "quantity_intent": "string|number",
+          "timeline": "string",
+          "notes": "string",
+          "assessment_id": "uuid",
+          "attribution": { "source": "string", "campaign": "string", "medium": "string" }
+        },
+        "out": { "lead_id": "uuid" }
+      },
+      "POST /api/fulfillment/create": {
+        "in": {
+          "assessment_id": "uuid",
+          "lead_id": "uuid",
+          "brand_owner": "RRG|ENERGENIUS",
+          "recommended_sku": "canonical_sku",
+          "quantity": 1,
+          "install_preference": "turnkey|hardware_only|needs_site_verification",
+          "selected_packages": ["canonical_sku"],
+          "selected_services": ["canonical_sku"],
+          "notes": "string",
+          "assigned_user_id": "uuid"
+        },
+        "out": { "request_id": "uuid" }
+      },
+      "POST /api/quote/build": {
+        "in": {
+          "pricing_mode": "retail|rep|dealer",
+          "customer_type": "residential|commercial",
+          "state": "string",
+          "assessment_id": "uuid",
+          "selected_lines": [
+            {
+              "canonical_sku": "string",
+              "type": "generator_hardware|installation_package|professional_service",
+              "quantity": 1
+            }
+          ],
+          "discounts": {
+            "hardware_pct": 0.0,
+            "install_pct": 0.0,
+            "services_pct": 0.0,
+            "reason": "string"
+          },
+          "actor": {
+            "role_id": "rep|dealer_rep|sales_manager|brand_admin|master_admin",
+            "actor_id": "uuid"
+          }
+        },
+        "out": {
+          "quote_id": "uuid",
+          "approval": {
+            "status": "NOT_REQUIRED|PENDING|APPROVED|REJECTED",
+            "reasons": ["string"],
+            "approver_role": "sales_manager|master_admin"
+          },
+          "totals": {
+            "hardware_total": 0,
+            "installation_total": 0,
+            "services_total": 0,
+            "subtotal": 0,
+            "itc_estimate": 0,
+            "net_total_after_itc": 0
+          },
+          "commission": {
+            "total_commission": 0,
+            "line_item_commissions": []
+          }
+        }
+      }
+    }
+  },
+
+  "crm_build_sequence": {
+    "architecture": "single_shared_core_backend_two_frontends",
+    "steps": [
+      {
+        "step": 1,
+        "name": "Create Core backend",
+        "deliverables": [
+          "DB tables/collections: assessment, lead, fulfillment_request, sku, ruleset, audit_log",
+          "Load catalog + ruleset from this JSON",
+          "Implement RBAC with JWT claims"
+        ]
+      },
+      {
+        "step": 2,
+        "name": "Implement assessment compute endpoint",
+        "deliverables": [
+          "POST /api/assessments/compute",
+          "Server-side compute + persist Assessment",
+          "Recommend SKUs using capacity-first logic"
+        ]
+      },
+      {
+        "step": 3,
+        "name": "Build calculator widget once",
+        "deliverables": [
+          "UI methods: sqft, acreage, devices",
+          "Coverage tier selection",
+          "Calls /api/assessments/compute",
+          "Renders SKU recommendations"
+        ]
+      },
+      {
+        "step": 4,
+        "name": "Embed widget into both sites",
+        "deliverables": [
+          "RRG embed config: RRG_PUBLIC_ASSESSMENT",
+          "EnerGenius embed config: ENERGENIUS_PUBLIC_CALCULATOR",
+          "Same API, same math"
+        ]
+      },
+      {
+        "step": 5,
+        "name": "Add assessment sharing (RRG <> EnerGenius)",
+        "deliverables": [
+          "POST /api/assessments/share",
+          "Tokenized shared-view route",
+          "Open assessment created in one brand inside the other"
+        ]
+      },
+      {
+        "step": 6,
+        "name": "Build Master Admin panel on rrg-solutions.com",
+        "deliverables": [
+          "Global dashboard (cross-brand)",
+          "Assessment inbox + filters + assignment",
+          "Catalog manager (SKU + xrefs)",
+          "Ruleset publish/rollback",
+          "Audit log viewer"
+        ]
+      },
+      {
+        "step": 7,
+        "name": "Add lead ingest + routing",
+        "deliverables": [
+          "/api/leads/ingest webhooks from both sites",
+          "Assignment to reps/dealers by brand_owner",
+          "Convert Assessment -> FulfillmentRequest when ready"
+        ]
+      },
+      {
+        "step": 8,
+        "name": "Add quote builder later (optional)",
+        "deliverables": [
+          "POST /api/quote/build",
+          "Approval routing + discount guardrails",
+          "PDF/e-sign/payment link outputs"
+        ]
+      }
+    ]
+  },
+
+  "feature_flags": {
+    "flags": [
+      { "id": "ENABLE_ITC_VIEW", "default": true },
+      { "id": "ENABLE_DEALER_PORTAL", "default": false },
+      { "id": "ENABLE_QUOTE_BUILDER", "default": false },
+      { "id": "ENABLE_APPROVAL_ROUTING", "default": false },
+      { "id": "ENABLE_MULTI_UNIT_INSTALL_LOGIC", "default": true },
+      { "id": "ENABLE_ASSESSMENT_SHARE_LINKS", "default": true },
+      { "id": "ENABLE_RULESET_VERSIONING", "default": true },
+      { "id": "ENABLE_AUDIT_LOG", "default": true }
+    ]
+  }
+}
