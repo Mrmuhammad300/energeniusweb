@@ -1,0 +1,55 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </radialGradient>
+    <linearGradient id="metal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="45%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="metalLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0f172a" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <ellipse cx="400" cy="470" rx="261" ry="22" fill="#0f172a" opacity="0.14"/>
+
+  <g filter="url(#soft)"><rect x="270" y="332" width="260" height="130" rx="14" fill="url(#metal)" stroke="#0f172a"/><rect x="270" y="332" width="260" height="12" rx="7" fill="url(#accentGrad)"/><rect x="340.2" y="316" width="18" height="18" rx="4" fill="#475569"/><rect x="441.8" y="316" width="18" height="18" rx="4" fill="#475569"/><rect x="301.2" y="352.8" width="156" height="2.4" rx="1.2" fill="rgba(255,255,255,0.08)"/><rect x="301.2" y="358.8" width="156" height="2.4" rx="1.2" fill="rgba(255,255,255,0.08)"/><rect x="301.2" y="364.8" width="156" height="2.4" rx="1.2" fill="rgba(255,255,255,0.08)"/><rect x="301.2" y="370.8" width="156" height="2.4" rx="1.2" fill="rgba(255,255,255,0.08)"/><rect x="301.2" y="376.8" width="156" height="2.4" rx="1.2" fill="rgba(255,255,255,0.08)"/><rect x="301.2" y="382.8" width="156" height="2.4" rx="1.2" fill="rgba(255,255,255,0.08)"/><rect x="306.4" y="390.5" width="187.2" height="24" rx="6" fill="#052e21"/>
+    <rect x="308.4" y="392.5" width="183.2" height="20" rx="4" fill="#06331f" stroke="#10b981" stroke-width="1" opacity="0.8"/>
+    <text x="400" y="407.5" font-family="'Courier New', monospace" font-size="13" font-weight="700" fill="#34d399" text-anchor="middle">90 Amp Hours</text></g>
+
+  <!-- EnerGenius corner badge -->
+  <g transform="translate(36,34)">
+    <circle cx="22" cy="22" r="26" fill="url(#glow)"/>
+    <path d="M22 2 C30 16 30 16 22 30 C14 16 14 16 22 2 Z" fill="#10b981"/>
+    <path d="M22 2 L22 30 C14 16 14 16 22 2 Z" fill="#047857"/>
+    <path d="M6 30 C 6 40, 14 46, 22 46 C 30 46, 38 40, 38 30 C 30 34, 14 34, 6 30 Z" fill="#059669"/>
+    <text x="52" y="19" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#0f172a">Ener<tspan fill="#059669">Genius</tspan></text>
+    <text x="52" y="34" font-family="Arial, sans-serif" font-size="10" letter-spacing="2" fill="#475569">RENEWABLE RESOURCE GROUP</text>
+  </g>
+
+  <!-- caption plate -->
+  <g transform="translate(0,524)">
+    <rect x="40" y="0" width="720" height="56" rx="12" fill="#ffffff" opacity="0.92"/>
+    <text x="64" y="24" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#0f172a">EnerGenius PowerBank 90</text>
+    <text x="64" y="43" font-family="Arial, sans-serif" font-size="12" fill="#475569">90 Amp Hours · Lithium · 6" x 17" x 9.5"</text>
+    <rect x="580" y="14" width="156" height="28" rx="14" fill="#059669"/>
+    <text x="658" y="33" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">90 AmpH</text>
+    <text x="64" y="66" font-family="Arial, sans-serif" font-size="10" letter-spacing="1" fill="#94a3b8">SKU Lithium-X90-amp</text>
+  </g>
+</svg>

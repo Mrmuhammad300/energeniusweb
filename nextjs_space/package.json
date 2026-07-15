@@ -5,7 +5,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-product-images": "node scripts/generate-product-images.mjs",
+    "update-product-images": "tsx --require dotenv/config scripts/update-product-images.mjs"
   },
   "prisma": {
     "seed": "tsx --require dotenv/config scripts/seed.ts"

@@ -290,7 +290,7 @@ export default function HomePage() {
             >
               <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="https://powerxgenerators.com/wp-content/uploads/2021/09/Hnet.com-image-500x375.jpg"
+                  src="/products/Lithium-20000.svg"
                   alt="EnerGenius Nomad 20K Commercial Solar Generator"
                   fill
                   className="object-cover"
